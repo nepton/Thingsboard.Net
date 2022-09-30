@@ -6,7 +6,7 @@ using Thingsboard.Sdk.Utility;
 
 namespace Thingsboard.Sdk.DependencyInjection;
 
-public static class ThingsboardSdkServicesExtensions
+public static class TbThingsboardSdkServicesExtensions
 {
     /// <summary>Adds HTTP Logging services.</summary>
     /// <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for adding services.</param>
