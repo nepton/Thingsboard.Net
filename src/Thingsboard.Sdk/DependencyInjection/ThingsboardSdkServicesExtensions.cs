@@ -12,7 +12,7 @@ public static class TbThingsboardSdkServicesExtensions
     /// <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for adding services.</param>
     /// <param name="configureOptions">A delegate to configure the <see cref="T:Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions" />.</param>
     /// <returns></returns>
-    private static IServiceCollection AddThingsboardSdk(
+    public static IServiceCollection AddThingsboardSdk(
         this IServiceCollection             services,
         Action<ThingsboardSdkOptions> configureOptions)
     {
