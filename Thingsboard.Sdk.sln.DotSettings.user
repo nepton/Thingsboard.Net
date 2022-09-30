@@ -2,7 +2,7 @@
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Nepton\AppData\Local\JetBrains\Rider2022.2\resharper-host\temp\Rider\vAny\CoverageData\_Doulex.Pinyin.1180037550\Snapshot\snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3e0c4e04_002D6f9b_002D4939_002Db69e_002D0fb6845e38fc/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" Name="All tests from &amp;lt;tests&amp;gt;\&amp;lt;Doulex.Toolkit.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="D:\Project\Doulex\Doulex.Toolkits\tests\Doulex.Toolkit.Tests" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;Doulex.Toolkit.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
