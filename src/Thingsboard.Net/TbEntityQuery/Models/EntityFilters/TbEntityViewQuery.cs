@@ -41,12 +41,8 @@ public class TbEntityViewQuery : TbEntityFilter
     {
         return new
         {
-            type = "entityViewSearchQuery",
-            rootEntity = new
-            {
-                entityType = RootEntityId.Type,
-                id         = RootEntityId.Id
-            },
+            type               = "entityViewSearchQuery",
+            rootEntity         = RootEntityId,
             direction          = Direction,
             maxLevel           = MaxLevel,
             fetchLastLevelOnly = FetchLastLevelOnly,

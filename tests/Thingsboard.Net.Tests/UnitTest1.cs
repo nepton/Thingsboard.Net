@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -24,7 +25,9 @@ public class UnitTest1
 
         var service       = serviceBuilder.BuildServiceProvider();
         var options       = service.GetRequiredService<IOptions<ThingsboardNetOptions>>().Value;
-        var auth          = service.GetRequiredService<ITbAuth>();
+        var auth          = service.GetRequiredService<ITbAuthApi>();
+        
+        // do action
         var loginResponse = await auth.LoginAsync(new TbLoginRequest(options.Username!, options.Password!));
         Assert.NotNull(loginResponse);
     }

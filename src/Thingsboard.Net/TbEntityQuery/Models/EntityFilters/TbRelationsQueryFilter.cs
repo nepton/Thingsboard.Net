@@ -36,12 +36,8 @@ public class TbRelationsQueryFilter : TbEntityFilter
     {
         return new
         {
-            type = "relationsQuery",
-            rootEntity = new
-            {
-                entityType = RootEntityId.Type,
-                id         = RootEntityId.Id,
-            },
+            type               = "relationsQuery",
+            rootEntity         = RootEntityId,
             direction          = Direction,
             maxLevel           = MaxLevel,
             fetchLastLevelOnly = FetchLastLevelOnly,

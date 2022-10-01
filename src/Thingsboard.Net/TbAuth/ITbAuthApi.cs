@@ -6,7 +6,7 @@ namespace Thingsboard.Net.TbAuth;
 /// <summary>
 /// Thingsboard login endpoint
 /// </summary>
-public interface ITbAuth
+public interface ITbAuthApi
 {
     Task<TbLoginResponse> LoginAsync(TbLoginRequest request, CancellationToken cancel = default);
 }

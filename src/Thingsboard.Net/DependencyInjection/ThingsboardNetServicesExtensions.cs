@@ -25,7 +25,7 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
 
         services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
-        services.AddTransient<ITbAuth, FlurlTbAuth>();
+        services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
         return services;
     }
 }

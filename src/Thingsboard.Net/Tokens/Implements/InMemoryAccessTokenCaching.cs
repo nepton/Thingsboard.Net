@@ -14,11 +14,11 @@ namespace Thingsboard.Net.Tokens;
 public class InMemoryAccessTokenCaching : IAccessTokenCaching
 {
     private readonly        ThingsboardNetOptions                          _options;
-    private readonly        ITbAuth                                        _auth;
+    private readonly        ITbAuthApi                                        _auth;
     private static readonly ConcurrentDictionary<string, AccessTokenModel> _tokens = new();
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public InMemoryAccessTokenCaching(ITbAuth   auth,
+    public InMemoryAccessTokenCaching(ITbAuthApi   auth,
         IOptionsSnapshot<ThingsboardNetOptions> options)
     {
         _auth    = auth;

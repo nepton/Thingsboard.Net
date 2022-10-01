@@ -3,7 +3,8 @@
 namespace Thingsboard.Net.Models;
 
 /// <summary>
-/// 实体对象Id
+/// Entity object Id
+/// The object is equal with json object {entityType:entityType, id:id}
 /// </summary>
 public class TbEntityId
 {
@@ -13,14 +14,19 @@ public class TbEntityId
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbEntityId(Guid id, TbEntityType type)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+    /// </summary>
+    /// <remarks>
+    /// see TbUserInfo
+    /// </remarks>
+    public TbEntityId(TbEntityType entityType, Guid id)
     {
-        Type = type;
-        Id   = id;
+        EntityType = entityType;
+        Id         = id;
     }
 
-    public TbEntityType Type { get; }
+    public TbEntityType EntityType { get; }
 
     public Guid Id { get; }
 }

@@ -39,12 +39,8 @@ public class TbEdgeSearchQuery : TbEntityFilter
     {
         return new
         {
-            type = "deviceSearchQuery",
-            rootEntity = new
-            {
-                entityType = RootEntityId.Type,
-                id         = RootEntityId.Id
-            },
+            type               = "deviceSearchQuery",
+            rootEntity         = RootEntityId,
             direction          = Direction,
             maxLevel           = MaxLevel,
             fetchLastLevelOnly = FetchLastLevelOnly,
