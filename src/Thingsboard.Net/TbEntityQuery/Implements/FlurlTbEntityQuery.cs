@@ -5,15 +5,17 @@ using Flurl.Http;
 using Microsoft.Extensions.Options;
 using Thingsboard.Net.DependencyInjection;
 using Thingsboard.Net.Models;
-using Thingsboard.Net.Tokens;
 using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.TbEntityQuery;
 
-public class FlurlTbEntityQuery : FlurlAuthenticatedClient<ITbEntityQuery>, ITbEntityQuery
+public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQuery>, ITbEntityQuery
 {
-    public FlurlTbEntityQuery(IAccessTokenCaching accessTokenStorage, IOptionsSnapshot<ThingsboardNetOptions> options) : base(accessTokenStorage, options)
+    private readonly IRequestBuilder _builder;
+
+    public FlurlTbEntityQuery(IRequestBuilder builder)
     {
+        _builder = builder;
     }
 
     /// <summary>
@@ -43,16 +45,15 @@ public class FlurlTbEntityQuery : FlurlAuthenticatedClient<ITbEntityQuery>, ITbE
             pageLink     = pageLink.ToQuery(),
         };
 
-        var response = await CreatePolicy()
-            .ExecuteAsync(async () =>
-            {
-                var request = await CreateRequest("/api/entitiesQuery/find", cancel);
-                return await request
-                    .PostJsonAsync(requestBody, cancel)
-                    .ReceiveJson<PageCollection<TbEntity>>();
-            });
-
-        return response;
+        var policy = _builder.CreatePolicy();
+        return await policy.ExecuteAsync(async () =>
+        {
+            var request = await _builder.CreateRequest("/api/entitiesQuery/find", GetOptions(), cancel);
+            var response = await request
+                .PostJsonAsync(requestBody, cancel)
+                .ReceiveJson<PageCollection<TbEntity>>();
+            return response;
+        });
     }
 
     /// <summary>

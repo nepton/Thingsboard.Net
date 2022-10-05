@@ -39,7 +39,8 @@ public class FlurlTbAuthApi : ITbAuthApi
 
         return await policy.ExecuteAsync(async () =>
         {
-            var response = await _options.GetUrl()
+            var response = await _options
+                .GetUrl()
                 .AppendPathSegment("/api/auth/login")
                 .AllowAnyHttpStatus()
                 .WithTimeout(_options.GetTimeoutInSecOrDefault())
@@ -47,45 +48,11 @@ public class FlurlTbAuthApi : ITbAuthApi
 
             if (response.StatusCode >= 300)
             {
-                var error = await response.GetJsonAsync<TbResponseError>();
+                var error = await response.GetJsonAsync<TbResponseFault>();
                 throw new TbHttpException(error);
             }
 
             return await response.GetJsonAsync<TbLoginResponse>();
-        });
-    }
-
-    /// <summary>
-    /// Retrieves the current user.
-    /// </summary>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public async Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
-    {
-        // todo 缺少 Auth token
-        var timeoutPolicy = Policy.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(3,
-                _ => TimeSpan.FromSeconds(1),
-                (exception, span, retryCount) => _logger.LogWarning(exception, "Timeout. Retry {retryCount} in {span}", retryCount, span));
-
-        var policy = timeoutPolicy;
-
-        return await policy.ExecuteAsync(async () =>
-        {
-            var result = await _options.GetUrl()
-                .AppendPathSegment("/api/auth/user")
-                .ConfigureRequest(action =>
-                {
-                    action.OnErrorAsync = async (call) =>
-                    {
-                        var error = await call.Response.GetJsonAsync<TbResponseError>();
-                        throw new TbHttpException(error);
-                    };
-                })
-                .WithTimeout(_options.GetTimeoutInSecOrDefault())
-                .GetJsonAsync<TbUserInfo>(cancellationToken: cancel);
-
-            return result;
         });
     }
 }

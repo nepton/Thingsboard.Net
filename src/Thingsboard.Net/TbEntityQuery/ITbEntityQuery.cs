@@ -5,7 +5,7 @@ using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.TbEntityQuery;
 
-public interface ITbEntityQuery : IAuthenticatedClient<ITbEntityQuery>
+public interface ITbEntityQuery : IClientApi<ITbEntityQuery>
 {
     /// <summary>
     /// Allows to run complex queries over platform entities (devices, assets, customers, etc) based on the combination of main entity filter and multiple key filters. Returns the paginated result of the query that contains requested entity fields and latest values of requested attributes and time-series data.

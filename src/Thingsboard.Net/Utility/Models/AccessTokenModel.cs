@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thingsboard.Net.Tokens;
+namespace Thingsboard.Net.Utility;
 
 public class AccessTokenModel
 {

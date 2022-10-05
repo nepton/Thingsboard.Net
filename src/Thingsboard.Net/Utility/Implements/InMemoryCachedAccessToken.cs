@@ -9,17 +9,17 @@ using Thingsboard.Net.DependencyInjection;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.TbAuth;
 
-namespace Thingsboard.Net.Tokens;
+namespace Thingsboard.Net.Utility;
 
-public class InMemoryAccessTokenCaching : IAccessTokenCaching
+public class InMemoryCachedAccessToken : IAccessToken
 {
     private readonly        ThingsboardNetOptions                          _options;
-    private readonly        ITbAuthApi                                        _auth;
+    private readonly        ITbAuthApi                                     _auth;
     private static readonly ConcurrentDictionary<string, AccessTokenModel> _tokens = new();
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public InMemoryAccessTokenCaching(ITbAuthApi   auth,
-        IOptionsSnapshot<ThingsboardNetOptions> options)
+    public InMemoryCachedAccessToken(ITbAuthApi auth,
+        IOptionsSnapshot<ThingsboardNetOptions>  options)
     {
         _auth    = auth;
         _options = options.Value;
@@ -37,9 +37,17 @@ public class InMemoryAccessTokenCaching : IAccessTokenCaching
                 });
     }
 
-    public async Task<string> GetAccessTokenAsync(string username, string password, CancellationToken cancel)
+    /// <summary>
+    /// Retrieve the token from the cache or from the server
+    /// </summary>
+    /// <param name="credentials"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public async Task<string> GetAccessTokenAsync(TbCredentials credentials, CancellationToken cancel)
     {
-        if (_tokens.TryGetValue(username, out var model))
+        if (credentials == null) throw new ArgumentNullException(nameof(credentials));
+
+        if (_tokens.TryGetValue(credentials.Username, out var model))
         {
             if (model.ExpiresAt > DateTime.Now)
             {
@@ -47,19 +55,31 @@ public class InMemoryAccessTokenCaching : IAccessTokenCaching
             }
         }
 
-        var response = await _auth.LoginAsync(new TbLoginRequest(username, password), cancel);
+        var response = await _auth.LoginAsync(new TbLoginRequest(credentials.Username, credentials.Password), cancel);
         if (response.Token is not {Length: > 0} token)
             throw new TbException("Failed to get access token");
 
         model = new AccessTokenModel
         {
-            Username    = username,
-            Password    = password,
+            Username    = credentials.Username,
+            Password    = credentials.Password,
             AccessToken = response.Token,
             ExpiresAt   = DateTime.Now.AddSeconds(_options.GetDynamicTokenExpiresInSec())
         };
 
-        _tokens.AddOrUpdate(username, model, (_, _) => model);
+        _tokens.AddOrUpdate(credentials.Username, model, (_, _) => model);
         return model.AccessToken;
+    }
+
+    /// <summary>
+    /// Clear the token from the cache
+    /// </summary>
+    /// <returns></returns>
+    public Task RemoveExpiredTokenAsync(TbCredentials credentials)
+    {
+        if (credentials == null) throw new ArgumentNullException(nameof(credentials));
+
+        _tokens.TryRemove(credentials.Username, out _);
+        return Task.CompletedTask;
     }
 }

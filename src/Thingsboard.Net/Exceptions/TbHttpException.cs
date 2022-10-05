@@ -5,7 +5,7 @@ namespace Thingsboard.Net.Exceptions;
 
 public class TbHttpException : TbException
 {
-    public TbHttpException(TbResponseError error) : base(error.Message ?? "")
+    public TbHttpException(TbResponseFault error) : base(error.Message ?? "")
     {
         Status    = error.Status;
         Timestamp = error.Timestamp;

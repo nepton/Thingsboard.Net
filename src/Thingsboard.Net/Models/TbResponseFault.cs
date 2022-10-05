@@ -2,7 +2,7 @@
 
 namespace Thingsboard.Net.Models;
 
-public class TbResponseError
+public class TbResponseFault
 {
     public int      Status    { get; set; }
     public string?  Message   { get; set; }

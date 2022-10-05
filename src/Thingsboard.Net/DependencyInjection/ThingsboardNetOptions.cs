@@ -1,4 +1,5 @@
 ﻿using System;
+using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.DependencyInjection;
 
@@ -59,5 +60,13 @@ public sealed class ThingsboardNetOptions
     public int GetTimeoutInSecOrDefault()
     {
         return TimeoutInSec ?? 10;
+    }
+
+    public TbCredentials GetDefaultCredentials()
+    {
+        if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
+            return new TbCredentials(Username, Password);
+
+        throw new ArgumentNullException(nameof(AccessToken), "Thingsboard AccessToken is not set");
     }
 }
