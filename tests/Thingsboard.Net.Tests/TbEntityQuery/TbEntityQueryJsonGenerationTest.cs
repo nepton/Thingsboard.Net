@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
 using Quibble.Xunit;
 using Thingsboard.Net.TbEntityQuery;
-using Newtonsoft.Json;
 
-namespace Thingsboard.ClientSdk.Tests.TbEntityQuery;
+namespace Thingsboard.Net.Tests.TbEntityQuery;
 
 public class TbEntityQueryJsonGenerationTest
 {

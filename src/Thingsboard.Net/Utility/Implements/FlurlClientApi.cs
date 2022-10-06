@@ -10,7 +10,7 @@ public abstract class FlurlClientApi<TClientApi> : IClientApi<TClientApi> where 
         return (TClientApi) (object) this;
     }
 
-    protected TbClientApiOptions GetOptions()
+    protected TbClientApiOptions GetCustomOptions()
     {
         return _options;
     }

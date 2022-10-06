@@ -1,24 +1,17 @@
 ﻿using System;
+using Newtonsoft.Json;
 
-namespace Thingsboard.Net.TbAuth;
+namespace Thingsboard.Net.TbLogin;
 
 public class TbLoginRequest
 {
-    public string Username { get; }
-    public string Password { get; }
+    [JsonProperty("username")] public string Username { get; }
+    [JsonProperty("password")] public string Password { get; }
 
+    [JsonConstructor]
     public TbLoginRequest(string username, string password)
     {
         Username = username ?? throw new ArgumentNullException(nameof(username));
         Password = password ?? throw new ArgumentNullException(nameof(password));
-    }
-
-    public object ToJsonObject()
-    {
-        return new
-        {
-            username = Username,
-            password = Password
-        };
     }
 }

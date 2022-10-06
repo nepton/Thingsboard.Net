@@ -1,4 +1,5 @@
 ﻿using System;
+using Flurl;
 using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.DependencyInjection;
@@ -7,6 +8,7 @@ public sealed class ThingsboardNetOptions
 {
     /// <summary>
     /// server address for example http://localhost:8080
+    /// MUST contains protocol, server address and port
     /// </summary>
     public string? Url { get; set; }
 
@@ -15,12 +17,20 @@ public sealed class ThingsboardNetOptions
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public string GetUrl()
+    public Url GetUrl()
     {
         if (string.IsNullOrEmpty(Url))
             throw new ArgumentNullException(nameof(Url), "Thingsboard URL is not set");
 
-        return Url;
+        var url = new Url(Url);
+
+        if (url.Scheme != "http" && url.Scheme != "https")
+            throw new ArgumentException("Thingsboard URL must be http or https", nameof(Url));
+
+        if (url.Host == null)
+            throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
+
+        return url;
     }
 
     /// <summary>

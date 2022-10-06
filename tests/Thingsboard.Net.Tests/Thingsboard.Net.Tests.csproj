@@ -8,8 +8,6 @@
         <IsPackable>false</IsPackable>
 
         <LangVersion>preview</LangVersion>
-
-        <RootNamespace>Thingsboard.ClientSdk.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

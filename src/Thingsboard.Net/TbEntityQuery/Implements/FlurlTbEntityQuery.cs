@@ -48,7 +48,7 @@ public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQuery>, ITbEntityQuery
         var policy = _builder.CreatePolicy();
         return await policy.ExecuteAsync(async () =>
         {
-            var request = await _builder.CreateRequest("/api/entitiesQuery/find", GetOptions(), cancel);
+            var request = await _builder.CreateRequest("/api/entitiesQuery/find", GetCustomOptions(), cancel);
             var response = await request
                 .PostJsonAsync(requestBody, cancel)
                 .ReceiveJson<PageCollection<TbEntity>>();

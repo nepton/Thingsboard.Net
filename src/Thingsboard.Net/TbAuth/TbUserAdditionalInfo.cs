@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Thingsboard.Net.TbAuth;
 
 public class TbUserAdditionalInfo
 {
+    [JsonConstructor]
     public TbUserAdditionalInfo(
         string                     description,
         Guid                       defaultDashboardId,

@@ -1,58 +1,33 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Polly;
-using Thingsboard.Net.DependencyInjection;
-using Thingsboard.Net.Exceptions;
-using Thingsboard.Net.Models;
+using Thingsboard.Net.TbLogin;
+using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.TbAuth;
 
-/// <summary>
-/// The Thingsboard Auth API implement by flurl
-/// </summary>
-public class FlurlTbAuthApi : ITbAuthApi
+public class FlurlTbAuthApi : FlurlClientApi<ITbAuthApi>, ITbAuthApi
 {
-    private readonly ThingsboardNetOptions   _options;
-    private readonly ILogger<FlurlTbAuthApi> _logger;
+    private readonly IRequestBuilder _builder;
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public FlurlTbAuthApi(ILogger<FlurlTbAuthApi> logger,
-        IOptionsSnapshot<ThingsboardNetOptions>   options)
+    public FlurlTbAuthApi(IRequestBuilder builder)
     {
-        _logger  = logger;
-        _options = options.Value;
+        _builder = builder;
     }
 
-    public async Task<TbLoginResponse> LoginAsync(TbLoginRequest request, CancellationToken cancel = default)
+    /// <summary>
+    /// Retrieves the current user.
+    /// </summary>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public async Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
     {
-        var timeoutPolicy = Policy.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(3,
-                _ => TimeSpan.FromSeconds(1),
-                (exception, span, retryCount) => _logger.LogWarning(exception, "Timeout. Retry {retryCount} in {span}", retryCount, span));
-
-        var policy = timeoutPolicy;
-
-        return await policy.ExecuteAsync(async () =>
+        return await _builder.CreatePolicy().ExecuteAsync(async () =>
         {
-            var response = await _options
-                .GetUrl()
-                .AppendPathSegment("/api/auth/login")
-                .AllowAnyHttpStatus()
-                .WithTimeout(_options.GetTimeoutInSecOrDefault())
-                .PostJsonAsync(request.ToJsonObject(), cancel);
-
-            if (response.StatusCode >= 300)
-            {
-                var error = await response.GetJsonAsync<TbResponseFault>();
-                throw new TbHttpException(error);
-            }
-
-            return await response.GetJsonAsync<TbLoginResponse>();
+            var request  = await _builder.CreateRequest("/api/auth/user", GetCustomOptions(), cancel);
+            var response = await request.GetJsonAsync<TbUserInfo>(cancel);
+            return response;
         });
     }
 }

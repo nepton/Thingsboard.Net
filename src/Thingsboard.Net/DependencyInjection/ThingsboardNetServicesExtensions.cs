@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Thingsboard.Net.TbAuth;
 using Thingsboard.Net.TbEntityQuery;
+using Thingsboard.Net.TbLogin;
 using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.DependencyInjection;
@@ -25,7 +26,7 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
 
         services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
-        services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
+        services.AddTransient<ITbLoginApi, FlurlTbLoginApi>();
         return services;
     }
 }

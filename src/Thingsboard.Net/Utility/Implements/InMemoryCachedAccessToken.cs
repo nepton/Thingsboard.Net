@@ -7,18 +7,18 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Thingsboard.Net.DependencyInjection;
 using Thingsboard.Net.Exceptions;
-using Thingsboard.Net.TbAuth;
+using Thingsboard.Net.TbLogin;
 
 namespace Thingsboard.Net.Utility;
 
 public class InMemoryCachedAccessToken : IAccessToken
 {
     private readonly        ThingsboardNetOptions                          _options;
-    private readonly        ITbAuthApi                                     _auth;
+    private readonly        ITbLoginApi                                     _auth;
     private static readonly ConcurrentDictionary<string, AccessTokenModel> _tokens = new();
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public InMemoryCachedAccessToken(ITbAuthApi auth,
+    public InMemoryCachedAccessToken(ITbLoginApi auth,
         IOptionsSnapshot<ThingsboardNetOptions>  options)
     {
         _auth    = auth;

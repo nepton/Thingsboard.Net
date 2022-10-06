@@ -1,9 +1,11 @@
-﻿using Thingsboard.Net.Models;
+﻿using Newtonsoft.Json;
+using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.TbAuth;
 
 public class TbUserInfo
 {
+    [JsonConstructor]
     public TbUserInfo(
         TbEntityId           id,
         long                 createdTime,

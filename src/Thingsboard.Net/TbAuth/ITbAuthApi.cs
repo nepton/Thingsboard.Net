@@ -1,12 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.TbAuth;
 
-/// <summary>
-/// Thingsboard login endpoint
-/// </summary>
-public interface ITbAuthApi
+public interface ITbAuthApi : IClientApi<ITbAuthApi>
 {
-    Task<TbLoginResponse> LoginAsync(TbLoginRequest request, CancellationToken cancel = default);
+    /// <summary>
+    /// Retrieves the current user.
+    /// </summary>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default);
 }
