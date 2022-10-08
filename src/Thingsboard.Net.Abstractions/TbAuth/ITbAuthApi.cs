@@ -22,18 +22,3 @@ public interface ITbAuthApi : IClientApi<ITbAuthApi>
     /// <returns></returns>
     Task ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancel = default);
 }
-
-public class ChangePasswordRequest
-{
-    public ChangePasswordRequest(
-        string currentPassword,
-        string newPassword
-    )
-    {
-        this.CurrentPassword = currentPassword;
-        this.NewPassword     = newPassword;
-    }
-
-    public string CurrentPassword { get; }
-    public string NewPassword     { get; }
-}
