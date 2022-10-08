@@ -14,7 +14,7 @@ public class TbLoginTests
     public async Task TestLoginApi()
     {
         // arrange
-        using var service  = new TbService();
+        using var service  = new TbTestService();
         var       options  = service.GetRequiredService<IOptions<ThingsboardNetOptions>>().Value;
         var       loginApi = service.GetRequiredService<ITbLoginApi>();
 
@@ -32,7 +32,7 @@ public class TbLoginTests
     public async Task TestIfUsernameIncorrect()
     {
         // arrange
-        using var service  = new TbService();
+        using var service  = new TbTestService();
         var       options  = service.GetRequiredService<IOptions<ThingsboardNetOptions>>().Value;
         var       loginApi = service.GetRequiredService<ITbLoginApi>();
 

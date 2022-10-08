@@ -8,11 +8,11 @@ namespace Thingsboard.Net.Tests;
 /// <summary>
 /// The class for testing the Thingsboard client.
 /// </summary>
-public class TbService : IDisposable
+public class TbTestService : IDisposable
 {
     private readonly ServiceProvider _service;
 
-    public TbService()
+    public TbTestService()
     {
         _service = BuildServiceProvider(options =>
         {
@@ -22,7 +22,7 @@ public class TbService : IDisposable
         });
     }
 
-    public TbService(Action<ThingsboardNetOptions> options)
+    public TbTestService(Action<ThingsboardNetOptions> options)
     {
         _service = BuildServiceProvider(options);
     }

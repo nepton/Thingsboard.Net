@@ -15,6 +15,10 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbAuthTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbLogin.TbLoginTests.TestIfUsernameIncorrect&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests.TestChangePassword&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests.TestChangePasswordWithException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests.TestChangePasswordWithWrongCurrentPassword&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0eb8b015_002Ddeb9_002D4d09_002D88de_002Dd4106dda10ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEntityFilter #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

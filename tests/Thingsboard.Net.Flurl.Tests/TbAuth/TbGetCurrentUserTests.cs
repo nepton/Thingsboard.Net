@@ -5,13 +5,13 @@ using Thingsboard.Net.TbAuth;
 
 namespace Thingsboard.Net.Tests.TbAuth;
 
-public class TbAuthTests
+public class TbGetCurrentUserTests
 {
     [Fact]
-    public async Task TestGetLoginUserWithDefaultOptions()
+    public async Task TestGetCurrentUserWithDefaultOptions()
     {
         // arrange
-        using var service = new TbService();
+        using var service = new TbTestService();
         var       options = service.GetRequiredService<IOptions<ThingsboardNetOptions>>().Value;
         var       authApi = service.GetRequiredService<ITbAuthApi>();
 
@@ -21,10 +21,10 @@ public class TbAuthTests
     }
 
     [Fact]
-    public async Task TestGetLoginUserWithIncorrectUsernameInDefaultOptions()
+    public async Task TestGetCurrentUserWithIncorrectUsernameInDefaultOptions()
     {
         // arrange
-        using var service = new TbService(options =>
+        using var service = new TbTestService(options =>
         {
             options.Url      = "http://localhost:8080";
             options.Username = "incorrect";
@@ -37,10 +37,10 @@ public class TbAuthTests
     }
 
     [Fact]
-    public async Task TestGetLoginUserWithCustomOptions()
+    public async Task TestGetCurrentUserWithCustomOptions()
     {
         // arrange
-        using var service = new TbService();
+        using var service = new TbTestService();
         var       authApi = service.GetRequiredService<ITbAuthApi>();
 
         var username = "sysadmin@thingsboard.org";
@@ -52,10 +52,10 @@ public class TbAuthTests
     }
 
     [Fact]
-    public async Task TestGetLoginUserWithInvalidCustomUsername()
+    public async Task TestGetCurrentUserWithInvalidCustomUsername()
     {
         // arrange
-        using var service = new TbService();
+        using var service = new TbTestService();
         var       authApi = service.GetRequiredService<ITbAuthApi>();
 
         var username = "user_does_not_exists";

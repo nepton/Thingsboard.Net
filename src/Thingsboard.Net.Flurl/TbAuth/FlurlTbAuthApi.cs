@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Thingsboard.Net.Flurl.Utility;
@@ -30,5 +31,23 @@ public class FlurlTbAuthApi : FlurlClientApi<ITbAuthApi>, ITbAuthApi
             await _builder
                 .CreateRequest("/api/auth/user", GetCustomOptions(), true)
                 .GetJsonAsync<TbUserInfo>(cancel));
+    }
+
+    /// <summary>
+    /// Change the password for the User which credentials are used to perform this REST API call. Be aware that previously generated JWT tokens will be still valid until they expire.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancel = default)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        
+        var policy = _builder.CreatePolicy(true);
+        
+        return policy.ExecuteAsync(async () =>
+            await _builder
+                .CreateRequest("/api/auth/changePassword", GetCustomOptions(), true)
+                .PostJsonAsync(request, cancel));
     }
 }
