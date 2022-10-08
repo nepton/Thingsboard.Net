@@ -6,26 +6,22 @@
 /// </summary>
 public class TbDeviceTypeFilter : TbEntityFilter
 {
-    public string DeviceType { get; }
+    public override string Type => "deviceType";
+
+    public string? DeviceType { get; set; }
 
     /// <summary>
     /// 'starts with' expression over their name
     /// </summary>
-    public string? DeviceNameStartsWith { get; }
+    public string? DeviceNameFilter { get; set; }
+
+    public TbDeviceTypeFilter()
+    {
+    }
 
     public TbDeviceTypeFilter(string deviceType, string? deviceNameStartsWith)
     {
-        DeviceType           = deviceType;
-        DeviceNameStartsWith = deviceNameStartsWith;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type             = "deviceType",
-            deviceType       = DeviceType,
-            deviceNameFilter = DeviceNameStartsWith,
-        };
+        DeviceType       = deviceType;
+        DeviceNameFilter = deviceNameStartsWith;
     }
 }

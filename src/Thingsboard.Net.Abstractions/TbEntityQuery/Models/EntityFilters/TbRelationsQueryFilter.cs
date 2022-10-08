@@ -13,7 +13,8 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbRelationsQueryFilter : TbEntityFilter
 {
-    public TbEntityId RootEntityId { get; }
+    public override string     Type         =>
+    public          TbEntityId RootEntityId { get; }
 
     public TbRelationDirection Direction { get; }
 

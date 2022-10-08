@@ -6,7 +6,8 @@
 /// </summary>
 public class TbEdgeTypeFilter : TbEntityFilter
 {
-    public string EdgeType { get; }
+    public override string Type     =>
+    public          string EdgeType { get; }
 
     /// <summary>
     /// 'starts with' expression over their name

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Polly;
 using Thingsboard.Net.Exceptions;
@@ -52,10 +53,13 @@ public class FlurlRequestBuilder : IRequestBuilder
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? _defaultOptions.TimeoutInSec ?? 10))
             .ConfigureRequest(action =>
             {
-                action.JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializerSettings()
+                // Setup for newtonsoft json
+                var settings = new JsonSerializerSettings()
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                });
+                };
+                settings.Converters.Add(new StringEnumConverter());
+                action.JsonSerializer = new NewtonsoftJsonSerializer(settings);
 
                 action.BeforeCallAsync = async (call) =>
                 {

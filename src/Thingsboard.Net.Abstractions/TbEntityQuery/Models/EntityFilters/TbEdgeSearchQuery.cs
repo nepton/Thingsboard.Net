@@ -13,6 +13,8 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbEdgeSearchQuery : TbEntityFilter
 {
+    public override string Type => "deviceSearchQuery";
+
     public TbEntityId          RootEntityId       { get; }
     public TbRelationDirection Direction          { get; }
     public int                 MaxLevel           { get; }
@@ -39,7 +41,6 @@ public class TbEdgeSearchQuery : TbEntityFilter
     {
         return new
         {
-            type               = "deviceSearchQuery",
             rootEntity         = RootEntityId,
             direction          = Direction,
             maxLevel           = MaxLevel,

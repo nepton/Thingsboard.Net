@@ -6,8 +6,7 @@
 public abstract class TbEntityFilter
 {
     /// <summary>
-    /// Convert filter to the object that can be serialized to JSON
+    /// The type of filter
     /// </summary>
-    /// <returns></returns>
-    public abstract object ToQuery();
+    public abstract string Type { get; }
 }

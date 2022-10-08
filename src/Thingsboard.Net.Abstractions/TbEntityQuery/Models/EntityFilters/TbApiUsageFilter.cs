@@ -1,4 +1,5 @@
 ﻿using System;
+using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.TbEntityQuery;
 
@@ -9,24 +10,21 @@ namespace Thingsboard.Net.TbEntityQuery;
 public class TbApiUsageFilter : TbEntityFilter
 {
     /// <summary>
+    /// The type of filter
+    /// </summary>
+    public override string Type => "apiUsageState";
+
+    /// <summary>
     /// If the customer id is not set, returns current tenant API usage.
     /// </summary>
-    public Guid? CustomerId { get; set; }
+    public TbEntityId? CustomerId { get; set; }
 
-    public override object ToQuery()
+    public TbApiUsageFilter()
     {
-        var query = new
-        {
-            type = "apiUsageState",
-            customerId = CustomerId is { } customerId
-                ? new
-                {
-                    id         = customerId,
-                    entityType = "CUSTOMER"
-                }
-                : null
-        };
+    }
 
-        return query;
+    public TbApiUsageFilter(Guid customerId)
+    {
+        CustomerId = new TbEntityId(TbEntityType.CUSTOMER, customerId);
     }
 }

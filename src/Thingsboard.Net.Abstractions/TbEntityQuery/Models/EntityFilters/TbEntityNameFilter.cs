@@ -7,6 +7,7 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbEntityNameFilter : TbEntityFilter
 {
+    public override string Type =>
     public TbEntityType Type { get; }
 
     /// <summary>

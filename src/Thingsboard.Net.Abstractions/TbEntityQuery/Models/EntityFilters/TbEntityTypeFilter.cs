@@ -4,7 +4,8 @@ namespace Thingsboard.Net.TbEntityQuery;
 
 public class TbEntityTypeFilter : TbEntityFilter
 {
-    public TbEntityType Type { get; }
+    public override string       Type =>
+    public          TbEntityType Type { get; }
 
     public TbEntityTypeFilter(TbEntityType type)
     {

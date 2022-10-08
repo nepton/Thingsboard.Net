@@ -13,12 +13,13 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbEntityViewQuery : TbEntityFilter
 {
-    public TbEntityId          RootEntityId       { get; }
-    public TbRelationDirection Direction          { get; }
-    public int                 MaxLevel           { get; }
-    public bool                FetchLastLevelOnly { get; }
-    public string              RelationType       { get; }
-    public string[]            EntityViewTypes    { get; }
+    public override string              Type               =>
+    public          TbEntityId          RootEntityId       { get; }
+    public          TbRelationDirection Direction          { get; }
+    public          int                 MaxLevel           { get; }
+    public          bool                FetchLastLevelOnly { get; }
+    public          string              RelationType       { get; }
+    public          string[]            EntityViewTypes    { get; }
 
     public TbEntityViewQuery(
         TbEntityId          rootEntityId,

@@ -5,6 +5,7 @@ namespace Thingsboard.Net.TbEntityQuery;
 
 public class TbEntityListFilter : TbEntityFilter
 {
+    public override string Type =>
     public TbEntityListFilter(TbEntityType type, Guid[] entityIds)
     {
         EntityIds = entityIds;

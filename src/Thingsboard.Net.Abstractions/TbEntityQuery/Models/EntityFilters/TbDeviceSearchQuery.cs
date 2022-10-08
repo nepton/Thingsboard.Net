@@ -1,4 +1,5 @@
-﻿using Thingsboard.Net.Models;
+﻿using System;
+using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.TbEntityQuery;
 
@@ -14,12 +15,26 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbDeviceSearchQuery : TbEntityFilter
 {
-    public TbEntityId          RootEntityId       { get; }
-    public TbRelationDirection Direction          { get; }
-    public int                 MaxLevel           { get; }
-    public bool                FetchLastLevelOnly { get; }
-    public string              RelationType       { get; }
-    public string[]            DeviceTypes        { get; }
+    /// <summary>
+    /// The type of filter
+    /// </summary>
+    public override string Type => "deviceSearchQuery";
+
+    public TbEntityId? RootEntityId { get; set; }
+
+    public TbRelationDirection Direction { get; set; }
+
+    public int MaxLevel { get; set; }
+
+    public bool FetchLastLevelOnly { get; set; }
+
+    public string? RelationType { get; set; }
+
+    public string[]? DeviceTypes { get; set; }
+
+    public TbDeviceSearchQuery()
+    {
+    }
 
     public TbDeviceSearchQuery(TbEntityId rootEntityId, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] deviceTypes)
     {
@@ -29,19 +44,5 @@ public class TbDeviceSearchQuery : TbEntityFilter
         FetchLastLevelOnly = fetchLastLevelOnly;
         RelationType       = relationType;
         DeviceTypes        = deviceTypes;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type               = "deviceSearchQuery",
-            rootEntity         = RootEntityId,
-            direction          = Direction,
-            maxLevel           = MaxLevel,
-            fetchLastLevelOnly = FetchLastLevelOnly,
-            relationType       = RelationType,
-            deviceTypes        = DeviceTypes
-        };
     }
 }

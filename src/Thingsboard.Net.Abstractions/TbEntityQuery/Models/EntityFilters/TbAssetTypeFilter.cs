@@ -6,26 +6,28 @@
 /// </summary>
 public class TbAssetTypeFilter : TbEntityFilter
 {
-    public string AssetType { get; }
+    /// <summary>
+    /// The type of filter
+    /// </summary>
+    public override string Type => "assetType";
+
+    /// <summary>
+    /// The asset type
+    /// </summary>
+    public string? AssetType { get; set; }
 
     /// <summary>
     /// 'starts with' expression over their name
     /// </summary>
-    public string AssetNameStartsWith { get; }
+    public string? AssetNameFilter { get; set; }
 
-    public TbAssetTypeFilter(string assetType, string assetNameStartsWith)
+    public TbAssetTypeFilter()
     {
-        AssetType           = assetType;
-        AssetNameStartsWith = assetNameStartsWith;
     }
 
-    public override object ToQuery()
+    public TbAssetTypeFilter(string assetType, string assetNameFilter)
     {
-        return new
-        {
-            type            = "assetType",
-            assetType       = AssetType,
-            assetNameFilter = AssetNameStartsWith,
-        };
+        AssetType       = assetType;
+        AssetNameFilter = assetNameFilter;
     }
 }

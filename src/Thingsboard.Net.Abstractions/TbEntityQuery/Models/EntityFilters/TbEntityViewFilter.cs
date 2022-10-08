@@ -6,7 +6,9 @@
 /// </summary>
 public class TbEntityViewFilter : TbEntityFilter
 {
-    public string EntityViewType { get; }
+    
+    public override string Type           =>
+    public          string EntityViewType { get; }
 
     /// <summary>
     /// 'starts with' expression over their name
