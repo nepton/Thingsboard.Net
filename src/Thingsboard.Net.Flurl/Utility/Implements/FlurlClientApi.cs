@@ -1,7 +1,6 @@
 ﻿using System;
 using Thingsboard.Net.Common;
 using Thingsboard.Net.Options;
-using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.Flurl.Utility.Implements;
 
@@ -9,18 +8,18 @@ public abstract class FlurlClientApi<TClientApi> : IClientApi<TClientApi> where 
 {
     private readonly ThingsboardNetOptions _options = new();
 
-    public TClientApi WithCredentials(TbCredentials credentials)
-    {
-        if (credentials == null) throw new ArgumentNullException(nameof(credentials));
-
-        _options.Username = credentials.Username;
-        _options.Password = credentials.Password;
-
-        return (TClientApi) (object) this;
-    }
-
     protected ThingsboardNetOptions GetCustomOptions()
     {
         return _options;
+    }
+
+    public TClientApi WithCredentials(string username, string? password)
+    {
+        if (username == null) throw new ArgumentNullException(nameof(username));
+
+        _options.Username = username;
+        _options.Password = password;
+
+        return (TClientApi) (object) this;
     }
 }

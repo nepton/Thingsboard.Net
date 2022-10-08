@@ -52,7 +52,7 @@ public sealed class ThingsboardNetOptions
     {
         return new TbCredentials(
             Username ?? throw new InvalidOperationException("Username does not set"),
-            Password ?? throw new InvalidOperationException("Password does not set")
+            Password ?? ""
         );
     }
 }

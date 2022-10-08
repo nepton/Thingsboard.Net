@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Thingsboard.Net.Flurl.DependencyInjection;
+using Thingsboard.Net.Options;
 
 namespace Thingsboard.Net.Tests;
 
@@ -13,18 +14,26 @@ public class TbService : IDisposable
 
     public TbService()
     {
-        Log.Logger = new LoggerConfiguration().CreateLogger();
-
-        IServiceCollection serviceBuilder = new ServiceCollection();
-        serviceBuilder.AddLogging(configure => configure.AddSerilog());
-        serviceBuilder.AddThingsboardSdk(options =>
+        _service = BuildServiceProvider(options =>
         {
             options.Url      = "http://localhost:8080";
             options.Username = "tenant@thingsboard.org";
             options.Password = "tenant";
         });
+    }
 
-        _service = serviceBuilder.BuildServiceProvider();
+    public TbService(Action<ThingsboardNetOptions> options)
+    {
+        _service = BuildServiceProvider(options);
+    }
+
+    private ServiceProvider BuildServiceProvider(Action<ThingsboardNetOptions> options)
+    {
+        var services = new ServiceCollection();
+        services.AddLogging(builder => builder.AddSerilog());
+        services.AddThingsboardNet(options);
+
+        return services.BuildServiceProvider();
     }
 
     public T GetRequiredService<T>() where T : notnull

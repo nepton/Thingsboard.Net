@@ -34,8 +34,4 @@
       <ProjectReference Include="..\..\src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="TbAuth" />
-    </ItemGroup>
-
 </Project>

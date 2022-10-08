@@ -1,0 +1,14 @@
+﻿version: '2.2'
+
+# This docker compose file is used to run the tests for the Thingsboard.Net.Flurl library
+services:
+  mytb:
+    restart: always
+    image: "thingsboard/tb-postgres"
+    ports:
+      - "8080:9090"
+      - "1883:1883"
+      - "7070:7070"
+      - "5683-5688:5683-5688/udp"
+    environment:
+      TB_QUEUE_TYPE: in-memory

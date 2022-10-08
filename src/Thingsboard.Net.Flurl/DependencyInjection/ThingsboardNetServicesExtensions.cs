@@ -1,11 +1,13 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Thingsboard.Net.Common;
+using Thingsboard.Net.Flurl.TbAuth;
 using Thingsboard.Net.Flurl.TbEntityQuery;
 using Thingsboard.Net.Flurl.TbLogin;
 using Thingsboard.Net.Flurl.Utility;
 using Thingsboard.Net.Flurl.Utility.Implements;
 using Thingsboard.Net.Options;
+using Thingsboard.Net.TbAuth;
 using Thingsboard.Net.TbEntityQuery;
 using Thingsboard.Net.TbLogin;
 
@@ -17,8 +19,8 @@ public static class ThingsboardNetServicesExtensions
     /// <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for adding services.</param>
     /// <param name="configureOptions">A delegate to configure the <see cref="T:Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions" />.</param>
     /// <returns></returns>
-    public static IServiceCollection AddThingsboardSdk(
-        this IServiceCollection             services,
+    public static IServiceCollection AddThingsboardNet(
+        this IServiceCollection       services,
         Action<ThingsboardNetOptions> configureOptions)
     {
         if (services == null)
@@ -31,6 +33,10 @@ public static class ThingsboardNetServicesExtensions
 
         services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
         services.AddTransient<ITbLoginApi, FlurlTbLoginApi>();
+        services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
+
+        services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
+
         return services;
     }
 }

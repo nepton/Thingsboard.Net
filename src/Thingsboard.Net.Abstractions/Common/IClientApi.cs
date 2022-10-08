@@ -4,5 +4,5 @@ namespace Thingsboard.Net.Common;
 
 public interface IClientApi<out TClientApi> where TClientApi : IClientApi<TClientApi>
 {
-    TClientApi WithCredentials(TbCredentials credentials);
+    TClientApi WithCredentials(string username, string? password);
 }

@@ -1,9 +1,12 @@
 ﻿using System;
 using Flurl;
 using Flurl.Http;
+using Flurl.Http.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Models;
@@ -49,6 +52,11 @@ public class FlurlRequestBuilder : IRequestBuilder
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? _defaultOptions.TimeoutInSec ?? 10))
             .ConfigureRequest(action =>
             {
+                action.JsonSerializer = new NewtonsoftJsonSerializer(new JsonSerializerSettings()
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                });
+
                 action.BeforeCallAsync = async (call) =>
                 {
                     if (useAccessToken)
@@ -60,6 +68,7 @@ public class FlurlRequestBuilder : IRequestBuilder
                         call.Request.WithHeader("Authorization", $"Bearer {accessToken}");
                     }
                 };
+
                 action.OnErrorAsync = async (call) =>
                 {
                     if (call.Response.StatusCode == 401 && useAccessToken)
@@ -106,7 +115,7 @@ public class FlurlRequestBuilder : IRequestBuilder
         if (!retryOnUnauthorized)
             return timeoutPolicy;
 
-        var reAuthPolicy = Policy.Handle<TbHttpException>(x => x.Status == 401)
+        var reAuthPolicy = Policy.Handle<TbHttpException>(x => x.StatusCode == 401)
             .RetryAsync(1);
 
         return Policy.WrapAsync(reAuthPolicy, timeoutPolicy);

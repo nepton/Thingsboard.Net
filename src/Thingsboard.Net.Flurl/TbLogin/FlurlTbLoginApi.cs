@@ -25,9 +25,13 @@ public class FlurlTbLoginApi : FlurlClientApi<ITbLoginApi>, ITbLoginApi
         var policy = _requestBuilder.CreatePolicy(false);
 
         return await policy.ExecuteAsync(async () =>
-            await _requestBuilder
+        {
+            var response = await _requestBuilder
                 .CreateRequest("api/auth/login", GetCustomOptions(), false)
                 .PostJsonAsync(loginRequest, cancel)
-                .ReceiveJson<TbLoginResponse>());
+                .ReceiveJson<TbLoginResponse>();
+
+            return response;
+        });
     }
 }
