@@ -84,6 +84,12 @@ public class RequestPolicyBuilder<TResult>
 
     public IAsyncPolicy<TResult> Build()
     {
+        if (_policies.Count == 0)
+            return Policy.NoOpAsync<TResult>();
+
+        if (_policies.Count == 1)
+            return _policies[0];
+
         return Policy.WrapAsync(_policies.ToArray());
     }
 }
