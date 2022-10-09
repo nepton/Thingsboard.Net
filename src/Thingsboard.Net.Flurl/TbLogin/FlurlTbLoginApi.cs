@@ -22,7 +22,7 @@ public class FlurlTbLoginApi : FlurlClientApi<ITbLoginApi>, ITbLoginApi
 
     public async Task<TbLoginResponse> LoginAsync(TbLoginRequest loginRequest, CancellationToken cancel = default)
     {
-        var policy = _requestBuilder.CreatePolicy(false);
+        var policy = _requestBuilder.GetDefaultPolicy().Build();
 
         return await policy.ExecuteAsync(async () =>
         {

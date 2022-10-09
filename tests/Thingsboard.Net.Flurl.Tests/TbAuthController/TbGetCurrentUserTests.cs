@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Net;
+using Microsoft.Extensions.Options;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Options;
 using Thingsboard.Net.TbAuth;
@@ -33,7 +34,7 @@ public class TbGetCurrentUserTests
 
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await authApi
             .GetCurrentUserAsync());
-        Assert.Equal(401, ex.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
     }
 
     [Fact]
@@ -62,6 +63,6 @@ public class TbGetCurrentUserTests
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await authApi
             .WithCredentials(username, "")
             .GetCurrentUserAsync());
-        Assert.Equal(401, ex.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
     }
 }

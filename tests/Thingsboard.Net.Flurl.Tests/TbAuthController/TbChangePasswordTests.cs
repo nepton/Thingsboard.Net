@@ -1,7 +1,8 @@
-﻿using Thingsboard.Net.Exceptions;
+﻿using System.Net;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.TbAuth;
 
-namespace Thingsboard.Net.Tests.TbAuth;
+namespace Thingsboard.Net.Tests.TbAuthController;
 
 /// <summary>
 /// This class is used to test change password functionality
@@ -15,8 +16,8 @@ public class TbChangePasswordTests
         var       authApi = service.GetRequiredService<ITbAuthApi>();
 
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await authApi.ChangePasswordAsync(new ChangePasswordRequest("tenant", "tenant")));
-        Assert.Equal(400, ex.StatusCode);
-        Assert.Equal("New password should be different from existing!",  ex.Message);
+        Assert.Equal(HttpStatusCode.BadRequest,                         ex.StatusCode);
+        Assert.Equal("New password should be different from existing!", ex.Message);
     }
 
     [Fact]
@@ -26,7 +27,7 @@ public class TbChangePasswordTests
         var       authApi = service.GetRequiredService<ITbAuthApi>();
 
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await authApi.ChangePasswordAsync(new ChangePasswordRequest("WrongCurrentPassword", "tenant")));
-        Assert.Equal(400,                               ex.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,         ex.StatusCode);
         Assert.Equal("Current password doesn't match!", ex.Message);
     }
 }

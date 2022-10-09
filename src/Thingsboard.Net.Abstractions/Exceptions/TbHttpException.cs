@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.Exceptions;
@@ -7,7 +8,7 @@ public class TbHttpException : TbException
 {
     public TbHttpException(TbResponseFault error) : base(error.Message ?? "")
     {
-        StatusCode = error.Status;
+        StatusCode = (HttpStatusCode) error.Status;
         Timestamp  = error.Timestamp;
         ErrorCode  = error.ErrorCode;
     }
@@ -16,5 +17,5 @@ public class TbHttpException : TbException
 
     public DateTime Timestamp { get; }
 
-    public int StatusCode { get; }
+    public HttpStatusCode StatusCode { get; }
 }

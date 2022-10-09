@@ -2,12 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Thingsboard.Net.Common;
 using Thingsboard.Net.Flurl.TbAuth;
+using Thingsboard.Net.Flurl.TbDeviceController;
 using Thingsboard.Net.Flurl.TbEntityQuery;
 using Thingsboard.Net.Flurl.TbLogin;
 using Thingsboard.Net.Flurl.Utility;
 using Thingsboard.Net.Flurl.Utility.Implements;
 using Thingsboard.Net.Options;
 using Thingsboard.Net.TbAuth;
+using Thingsboard.Net.TbDeviceController;
 using Thingsboard.Net.TbEntityQuery;
 using Thingsboard.Net.TbLogin;
 
@@ -30,12 +32,12 @@ public static class ThingsboardNetServicesExtensions
 
         services.Configure(configureOptions);
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
+        services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
 
         services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
         services.AddTransient<ITbLoginApi, FlurlTbLoginApi>();
         services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
-
-        services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
+        services.AddTransient<ITbDeviceApi, FlurlTbDeviceApi>();
 
         return services;
     }

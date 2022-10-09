@@ -2,6 +2,8 @@
 
 public class TbKeyFilterStringValuePredicate : TbKeyFilterPredicate
 {
+    public override string Type => "STRING";
+
     public TbKeyFilterStringOperation Operation { get; }
 
     /// <summary>
@@ -13,15 +15,5 @@ public class TbKeyFilterStringValuePredicate : TbKeyFilterPredicate
     {
         Operation = operation;
         Value     = value;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            operation = Operation,
-            value     = Value.ToQuery(),
-            type      = "STRING",
-        };
     }
 }

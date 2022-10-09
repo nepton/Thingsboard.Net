@@ -14,17 +14,5 @@ namespace Thingsboard.Net.TbEntityQuery
         public TbSortOrder? SortOrder { get; set; }
 
         public string? TextSearch { get; set; }
-
-        public object ToQuery()
-        {
-            return new
-            {
-                dynamic    = Dynamic,
-                page       = Page,
-                pageSize   = PageSize,
-                sortOrder  = SortOrder?.ToQuery(),
-                textSearch = TextSearch
-            };
-        }
     }
 }

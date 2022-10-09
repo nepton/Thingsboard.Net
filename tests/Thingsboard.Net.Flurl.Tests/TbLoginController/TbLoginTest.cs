@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.Extensions.Options;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Options;
@@ -40,6 +41,6 @@ public class TbLoginTests
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await loginApi.LoginAsync(new TbLoginRequest("wrongUsername", options.Password!)));
 
         // assert
-        Assert.Equal(401, ex.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
     }
 }

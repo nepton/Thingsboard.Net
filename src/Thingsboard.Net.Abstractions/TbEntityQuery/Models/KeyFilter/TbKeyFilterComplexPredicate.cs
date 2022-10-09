@@ -4,26 +4,22 @@ namespace Thingsboard.Net.TbEntityQuery;
 
 public class TbKeyFilterComplexPredicate : TbKeyFilterPredicate
 {
-    public TbKeyFilterComplexOperation Operation { get; }
+    public override string Type => "COMPLEX";
+
+    public TbKeyFilterComplexOperation Operation { get; set; }
 
     /// <summary>
     /// The list of predicates to be evaluated.
     /// </summary>
-    public TbKeyFilterPredicate[] Predicates { get; }
+    public TbKeyFilterPredicate[]? Predicates { get; set; }
 
-    public TbKeyFilterComplexPredicate(TbKeyFilterComplexOperation operation, params TbKeyFilterPredicate[] predicates)
+    public TbKeyFilterComplexPredicate()
+    {
+    }
+
+    public TbKeyFilterComplexPredicate(TbKeyFilterComplexOperation operation, params TbKeyFilterPredicate[]? predicates)
     {
         Operation  = operation;
         Predicates = predicates;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type       = "COMPLEX",
-            operation  = Operation,
-            predicates = Predicates.Select(p => p.ToQuery()).ToArray()
-        };
     }
 }

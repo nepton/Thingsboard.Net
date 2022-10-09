@@ -1,6 +1,8 @@
 ﻿namespace Thingsboard.Net.TbEntityQuery;
 
-public abstract class TbKeyFilterValue
+public class TbKeyFilterValue
 {
-    public abstract object ToQuery();
+    public object? DefaultValue { get; set; }
+
+    public TbKeyFilterDynamicValue? DynamicValue { get; set; }
 }

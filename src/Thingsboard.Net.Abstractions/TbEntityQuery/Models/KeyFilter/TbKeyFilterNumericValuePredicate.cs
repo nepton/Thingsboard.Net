@@ -2,6 +2,8 @@
 
 public class TbKeyFilterNumericValuePredicate : TbKeyFilterPredicate
 {
+    public override string Type => "NUMERIC";
+
     public TbKeyFilterNumericOperation Operation { get; }
 
     /// <summary>
@@ -13,15 +15,5 @@ public class TbKeyFilterNumericValuePredicate : TbKeyFilterPredicate
     {
         Operation = operation;
         Value     = value;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            operation = Operation,
-            value     = Value.ToQuery(),
-            type      = "NUMERIC",
-        };
     }
 }

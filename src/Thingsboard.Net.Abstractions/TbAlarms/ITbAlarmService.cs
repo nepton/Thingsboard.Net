@@ -40,5 +40,5 @@ public interface ITbAlarmService
     /// <param name="filter"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<PageCollection<TbAlarm>> GetAlarmsAsync(TbAlarmQueryFilter filter, CancellationToken cancel = default);
+    Task<TbPage<TbAlarm>> GetAlarmsAsync(TbAlarmQueryFilter filter, CancellationToken cancel = default);
 }

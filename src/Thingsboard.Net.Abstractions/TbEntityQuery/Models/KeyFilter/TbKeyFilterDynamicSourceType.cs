@@ -5,5 +5,7 @@
 /// </summary>
 public enum TbKeyFilterDynamicSourceType
 {
-    CURRENT_USER, CURRENT_CUSTOMER, CURRENT_TENANT,
+    CURRENT_USER,
+    CURRENT_CUSTOMER,
+    CURRENT_TENANT,
 }

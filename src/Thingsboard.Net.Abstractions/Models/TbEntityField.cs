@@ -14,13 +14,4 @@ public class TbEntityField
 
     public string            Key  { get; }
     public TbEntityFieldType Type { get; }
-
-    public object ToQuery()
-    {
-        return new
-        {
-            type = Type,
-            key  = Key,
-        };
-    }
 }

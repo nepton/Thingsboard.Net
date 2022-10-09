@@ -7,5 +7,5 @@
 /// </summary>
 public abstract class TbKeyFilterPredicate
 {
-    public abstract object ToQuery();
+    public abstract string Type {get;}
 }

@@ -11,16 +11,4 @@ public class TbKeyFilterDynamicValue : TbKeyFilterValue
         SourceType      = sourceType;
         SourceAttribute = sourceAttribute;
     }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            dynamicValue = new
-            {
-                sourceType      = SourceType,
-                sourceAttribute = SourceAttribute
-            }
-        };
-    }
 }

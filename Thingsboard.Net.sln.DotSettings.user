@@ -6,7 +6,8 @@
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0\lib\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Nepton\AppData\Local\JetBrains\Rider2022.2\resharper-host\temp\Rider\vAny\CoverageData\_Thingsboard.Net.1816139863\Snapshot\snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Nepton\AppData\Local\JetBrains\Rider2022.2\resharper-host\temp\Rider\vAny\CoverageData\_Thingsboard.Net.-248613318\Snapshot\snapshot.utdcvr</s:String>
+	
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3e0c4e04_002D6f9b_002D4939_002Db69e_002D0fb6845e38fc/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" Name="All tests from &amp;lt;tests&amp;gt;\&amp;lt;Doulex.Toolkit.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="D:\Project\Doulex\Doulex.Toolkits\tests\Doulex.Toolkit.Tests" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;Doulex.Toolkit.Tests&amp;gt;" /&gt;&#xD;
@@ -20,13 +21,12 @@
     &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests.TestChangePasswordWithWrongCurrentPassword&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbAuth.TbChangePasswordTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbEntityQuery.TbEntityQueryJsonGenerationTest.TestApiUsageFilterWhenCustomerIdIsNotNull&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbDeviceController.TbDeviceApiTests.TestGetDeviceByIdWithDefaultOptions&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbDeviceController.GetDeviceByIdTests.TestGetDeviceById&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0eb8b015_002Ddeb9_002D4d09_002D88de_002Dd4106dda10ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestEntityFilter #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbEntityQuery.TbEntityQueryJsonGenerationTest.TestApiUsageFilterWhenCustomerIdIsNotNull&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::Thingsboard.Net.Tests.TbEntityQuery.TbEntityQueryJsonGenerationTest.TestApiUsageFilterWhenCustomerIdIsNull&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="D:\Project\Doulex\Thingsboard.Net\tests\Thingsboard.Net.Flurl.Tests" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;Thingsboard.Net.Flurl.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=src_002FDoulex_002EPinyin_002FPinyinResource/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>

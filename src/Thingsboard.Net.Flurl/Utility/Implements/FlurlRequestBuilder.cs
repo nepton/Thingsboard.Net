@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Models;
 using Thingsboard.Net.Options;
@@ -86,6 +85,12 @@ public class FlurlRequestBuilder : IRequestBuilder
                     var error = await call.Response.GetJsonAsync<TbResponseFault>();
                     throw new TbHttpException(error);
                 };
+
+                action.AfterCallAsync = async (call) =>
+                {
+                    var log = await call.Response.GetStringAsync();
+                    _logger.LogInformation("Request: {Url} {ResponseBody}", call.Request.Url, log);
+                };
             });
 
         return flurl;
@@ -95,34 +100,19 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// Create a new FlurlRequest with a retry policy
     /// </summary>
     /// <returns></returns>
-    public IAsyncPolicy CreateAnonymousPolicy()
+    public RequestPolicyBuilder GetDefaultPolicy()
     {
-        var timeoutPolicy = Policy.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(3,
-                _ => TimeSpan.FromSeconds(1),
-                (exception, span, retryCount) => _logger.LogWarning(exception, "Timeout. Retry {RetryCount} in {Span}", retryCount, span));
-
-        return timeoutPolicy;
+        return new RequestPolicyBuilder().RetryOnTimeout(3, 1);
     }
 
     /// <summary>
-    /// Create a policy for requests with access token
+    /// Create a new FlurlRequest with a retry policy
     /// </summary>
+    /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
-    public IAsyncPolicy CreatePolicy(bool retryOnUnauthorized)
+    public RequestPolicyBuilder<TResult> GetDefaultPolicy<TResult>()
     {
-        var timeoutPolicy = Policy.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(3,
-                _ => TimeSpan.FromSeconds(1),
-                (exception, span, retryCount) => _logger.LogWarning(exception, "Timeout. Retry {RetryCount} in {Span}", retryCount, span));
-
-        if (!retryOnUnauthorized)
-            return timeoutPolicy;
-
-        var reAuthPolicy = Policy.Handle<TbHttpException>(x => x.StatusCode == 401)
-            .RetryAsync(1);
-
-        return Policy.WrapAsync(reAuthPolicy, timeoutPolicy);
+        return new RequestPolicyBuilder<TResult>().RetryOnTimeout(3, 1);
     }
 
     /// <summary>

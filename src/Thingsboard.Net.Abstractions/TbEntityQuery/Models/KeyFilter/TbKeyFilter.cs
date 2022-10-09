@@ -13,32 +13,26 @@ public class TbKeyFilter
     /// The key is a string that defines the entity field, attribute or latest time-series value to be filtered.
     /// The following keys are supported:
     /// </summary>
-    public TbEntityField Key { get; }
+    public TbEntityField? Key { get; set;}
 
     /// <summary>
     /// The value type defines the type of the value to be filtered. The following value types are supported:
     /// </summary>
-    public TbEntityKeyFilterValueType ValueType { get; }
+    public TbEntityKeyFilterValueType ValueType { get; set;}
 
     /// <summary>
     /// The predicate defines the filtering operation to be performed. The following predicates are supported:
     /// </summary>
-    public TbKeyFilterPredicate Predicate { get; }
+    public TbKeyFilterPredicate? Predicate { get; set;}
 
-    public TbKeyFilter(TbEntityField key, TbEntityKeyFilterValueType valueType, TbKeyFilterPredicate predicate)
+    public TbKeyFilter()
+    {
+    }
+
+    public TbKeyFilter(TbEntityField? key, TbEntityKeyFilterValueType valueType, TbKeyFilterPredicate? predicate)
     {
         Key       = key;
         ValueType = valueType;
         Predicate = predicate;
-    }
-
-    public object ToQuery()
-    {
-        return new
-        {
-            key = Key.ToQuery(),
-            valueType = ValueType,
-            predicate = Predicate.ToQuery(),
-        };
     }
 }

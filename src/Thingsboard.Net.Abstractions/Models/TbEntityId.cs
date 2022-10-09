@@ -8,11 +8,7 @@ namespace Thingsboard.Net.Models;
 /// </summary>
 public class TbEntityId
 {
-    public static TbEntityId Empty => new();
-
-    private TbEntityId()
-    {
-    }
+    public static readonly TbEntityId Empty = new(0, Guid.Empty);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="T:System.Object" /> class.
@@ -26,7 +22,14 @@ public class TbEntityId
         Id         = id;
     }
 
+    public Guid Id { get; }
+
     public TbEntityType EntityType { get; }
 
-    public Guid Id { get; }
+    /// <summary>Returns a string that represents the current object.</summary>
+    /// <returns>A string that represents the current object.</returns>
+    public override string ToString()
+    {
+        return $"{nameof(Id)}: {Id}, {nameof(EntityType)}: {EntityType}";
+    }
 }

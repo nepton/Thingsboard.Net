@@ -25,11 +25,13 @@ public class FlurlTbAuthApi : FlurlClientApi<ITbAuthApi>, ITbAuthApi
     /// <returns></returns>
     public async Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
     {
-        var policy = _builder.CreatePolicy(true);
+        var policy = _builder.GetDefaultPolicy()
+            .RetryOnUnauthorized()
+            .Build();
 
         return await policy.ExecuteAsync(async () =>
             await _builder
-                .CreateRequest("/api/auth/user", GetCustomOptions(), true)
+                .CreateRequest("/api/auth/user", GetCustomOptions())
                 .GetJsonAsync<TbUserInfo>(cancel));
     }
 
@@ -42,12 +44,14 @@ public class FlurlTbAuthApi : FlurlClientApi<ITbAuthApi>, ITbAuthApi
     public Task ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancel = default)
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
-        
-        var policy = _builder.CreatePolicy(true);
-        
+
+        var policy = _builder.GetDefaultPolicy()
+            .RetryOnUnauthorized()
+            .Build();
+
         return policy.ExecuteAsync(async () =>
             await _builder
-                .CreateRequest("/api/auth/changePassword", GetCustomOptions(), true)
+                .CreateRequest("/api/auth/changePassword", GetCustomOptions())
                 .PostJsonAsync(request, cancel));
     }
 }
