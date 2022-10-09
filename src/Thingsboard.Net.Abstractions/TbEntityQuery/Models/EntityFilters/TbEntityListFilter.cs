@@ -5,24 +5,19 @@ namespace Thingsboard.Net.TbEntityQuery;
 
 public class TbEntityListFilter : TbEntityFilter
 {
-    public override string Type =>
-    public TbEntityListFilter(TbEntityType type, Guid[] entityIds)
+    public override string Type => "entityList";
+
+    public TbEntityListFilter()
     {
-        EntityIds = entityIds;
-        Type      = type;
     }
 
-    public Guid[] EntityIds { get; }
-
-    public TbEntityType Type { get; }
-
-    public override object ToQuery()
+    public TbEntityListFilter(TbEntityType type, Guid[] entityList)
     {
-        return new
-        {
-            type       = "entityList",
-            entityType = Type,
-            entityList = EntityIds
-        };
+        EntityList = entityList;
+        EntityType = type;
     }
+
+    public Guid[]? EntityList { get; }
+
+    public TbEntityType EntityType { get; set; }
 }

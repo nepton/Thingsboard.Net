@@ -13,36 +13,24 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbRelationsQueryFilter : TbEntityFilter
 {
-    public override string     Type         =>
-    public          TbEntityId RootEntityId { get; }
+    public override string Type => "relationsQuery";
 
-    public TbRelationDirection Direction { get; }
+    public TbEntityId?             RootEntity         { get; set; }
+    public TbRelationDirection     Direction          { get; set; }
+    public int                     MaxLevel           { get; set; }
+    public bool                    FetchLastLevelOnly { get; set; }
+    public TbRelationsQueryItem[]? Filters            { get; set; }
 
-    public int MaxLevel { get; }
-
-    public bool FetchLastLevelOnly { get; }
-
-    public TbRelationsQueryItem[] Filters { get; }
+    public TbRelationsQueryFilter()
+    {
+    }
 
     public TbRelationsQueryFilter(TbEntityId rootEntityId, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, TbRelationsQueryItem[] filters)
     {
-        RootEntityId       = rootEntityId;
+        RootEntity         = rootEntityId;
         Direction          = direction;
         MaxLevel           = maxLevel;
         FetchLastLevelOnly = fetchLastLevelOnly;
         Filters            = filters;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type               = "relationsQuery",
-            rootEntity         = RootEntityId,
-            direction          = Direction,
-            maxLevel           = MaxLevel,
-            fetchLastLevelOnly = FetchLastLevelOnly,
-            filters            = Filters.Select(f => f.ToQuery()).ToArray(),
-        };
     }
 }

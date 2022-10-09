@@ -6,28 +6,22 @@
 /// </summary>
 public class TbEntityViewFilter : TbEntityFilter
 {
-    
-    public override string Type           =>
-    public          string EntityViewType { get; }
+    public override string Type => "entityViewType";
+
+    public string? EntityViewType { get; }
 
     /// <summary>
     /// 'starts with' expression over their name
     /// </summary>
-    public string? EntityViewNameStartsWith { get; }
+    public string? EntityViewNameFilter { get; set; }
+
+    public TbEntityViewFilter()
+    {
+    }
 
     public TbEntityViewFilter(string entityViewType, string? entityViewNameStartsWith)
     {
-        EntityViewType           = entityViewType;
-        EntityViewNameStartsWith = entityViewNameStartsWith;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type                 = "entityViewType",
-            entityViewType       = EntityViewType,
-            entityViewNameFilter = EntityViewNameStartsWith
-        };
+        EntityViewType       = entityViewType;
+        EntityViewNameFilter = entityViewNameStartsWith;
     }
 }

@@ -13,13 +13,18 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbEntityViewQuery : TbEntityFilter
 {
-    public override string              Type               =>
-    public          TbEntityId          RootEntityId       { get; }
-    public          TbRelationDirection Direction          { get; }
-    public          int                 MaxLevel           { get; }
-    public          bool                FetchLastLevelOnly { get; }
-    public          string              RelationType       { get; }
-    public          string[]            EntityViewTypes    { get; }
+    public override string Type => "entityViewSearchQuery";
+
+    public TbEntityId?         RootEntity         { get; set; }
+    public TbRelationDirection Direction          { get; set; }
+    public int                 MaxLevel           { get; set; }
+    public bool                FetchLastLevelOnly { get; set; }
+    public string?             RelationType       { get; set; }
+    public string[]?           EntityViewTypes    { get; set; }
+
+    public TbEntityViewQuery()
+    {
+    }
 
     public TbEntityViewQuery(
         TbEntityId          rootEntityId,
@@ -30,25 +35,11 @@ public class TbEntityViewQuery : TbEntityFilter
         string[]            entityViewTypes
     )
     {
-        RootEntityId       = rootEntityId;
+        RootEntity         = rootEntityId;
         Direction          = direction;
         MaxLevel           = maxLevel;
         FetchLastLevelOnly = fetchLastLevelOnly;
         RelationType       = relationType;
         EntityViewTypes    = entityViewTypes;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type               = "entityViewSearchQuery",
-            rootEntity         = RootEntityId,
-            direction          = Direction,
-            maxLevel           = MaxLevel,
-            fetchLastLevelOnly = FetchLastLevelOnly,
-            relationType       = RelationType,
-            entityViewTypes    = EntityViewTypes
-        };
     }
 }

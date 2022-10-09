@@ -8,27 +8,16 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbSingleEntityFilter : TbEntityFilter
 {
-    public override string       Type       =>
-    public          TbEntityType EntityType { get; }
+    public override string Type => "singleEntity";
 
-    public Guid EntityId { get; }
+    public TbEntityId? SingleEntity { get; set; }
+
+    public TbSingleEntityFilter()
+    {
+    }
 
     public TbSingleEntityFilter(TbEntityType entityType, Guid entityId)
     {
-        EntityType = entityType;
-        EntityId   = entityId;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type = "singleEntity",
-            singleEntity = new
-            {
-                id         = EntityId,
-                entityType = EntityType,
-            }
-        };
+        SingleEntity = new TbEntityId(entityType, entityId);
     }
 }

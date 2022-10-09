@@ -7,28 +7,23 @@ namespace Thingsboard.Net.TbEntityQuery;
 /// </summary>
 public class TbEntityNameFilter : TbEntityFilter
 {
-    public override string Type =>
-    public TbEntityType Type { get; }
+    public override string Type => "entityName";
+
+    public TbEntityType EntityType { get; set; }
 
     /// <summary>
     /// Allows to filter entities of the same type using the 'starts with' expression over entity name.
     /// For example, this entity filter selects all devices which name starts with 'Air Quality':
     /// </summary>
-    public string EntityNameStartsWith { get; }
+    public string? EntityNameFilter { get; set; }
+
+    public TbEntityNameFilter()
+    {
+    }
 
     public TbEntityNameFilter(TbEntityType type, string entityName)
     {
-        Type                 = type;
-        EntityNameStartsWith = entityName;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            type             = "entityName",
-            entityType       = Type,
-            entityNameFilter = EntityNameStartsWith
-        };
+        EntityType       = type;
+        EntityNameFilter = entityName;
     }
 }

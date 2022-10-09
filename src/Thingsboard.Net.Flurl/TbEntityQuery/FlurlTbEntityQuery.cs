@@ -38,7 +38,7 @@ public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQuery>, ITbEntityQuery
     {
         var requestBody = new
         {
-            entityFilter = entityFilter.ToQuery(),
+            entityFilter = entityFilter,
             keyFilter    = keyFilter.ToQuery(),
             entityFields = entityFields.Select(x => x.ToQuery()).ToArray(),
             latestValues = latestValues.Select(x => x.ToQuery()).ToArray(),

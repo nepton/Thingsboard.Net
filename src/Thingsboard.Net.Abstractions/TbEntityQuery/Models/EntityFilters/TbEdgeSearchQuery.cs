@@ -15,38 +15,29 @@ public class TbEdgeSearchQuery : TbEntityFilter
 {
     public override string Type => "deviceSearchQuery";
 
-    public TbEntityId          RootEntityId       { get; }
-    public TbRelationDirection Direction          { get; }
-    public int                 MaxLevel           { get; }
-    public bool                FetchLastLevelOnly { get; }
-    public string              RelationType       { get; }
-    public string[]            EdgeTypes          { get; }
+    public TbEntityId?         RootEntity         { get; set; }
+    public TbRelationDirection Direction          { get; set; }
+    public int                 MaxLevel           { get; set; }
+    public bool                FetchLastLevelOnly { get; set; }
+    public string?             RelationType       { get; set; }
+    public string[]?           EdgeTypes          { get; set; }
 
-    public TbEdgeSearchQuery(TbEntityId rootEntityId,
+    public TbEdgeSearchQuery()
+    {
+    }
+
+    public TbEdgeSearchQuery(TbEntityId rootEntity,
         TbRelationDirection             direction,
         int                             maxLevel,
         bool                            fetchLastLevelOnly,
         string                          relationType,
         string[]                        edgeTypes)
     {
-        RootEntityId       = rootEntityId;
+        RootEntity         = rootEntity;
         Direction          = direction;
         MaxLevel           = maxLevel;
         FetchLastLevelOnly = fetchLastLevelOnly;
         RelationType       = relationType;
         EdgeTypes          = edgeTypes;
-    }
-
-    public override object ToQuery()
-    {
-        return new
-        {
-            rootEntity         = RootEntityId,
-            direction          = Direction,
-            maxLevel           = MaxLevel,
-            fetchLastLevelOnly = FetchLastLevelOnly,
-            relationType       = RelationType,
-            edgeTypes          = EdgeTypes
-        };
     }
 }

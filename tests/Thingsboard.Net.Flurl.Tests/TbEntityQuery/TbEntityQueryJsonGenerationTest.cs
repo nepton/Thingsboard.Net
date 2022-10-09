@@ -12,10 +12,8 @@ public class TbEntityQueryJsonGenerationTest
     public void TestApiUsageFilterWhenCustomerIdIsNull()
     {
         var request = new TbApiUsageFilter();
-        var result  = request.ToQuery();
-        Assert.NotNull(result);
 
-        var actual = JsonConvert.SerializeObject(result, JsonSerializerSettings);
+        var actual = JsonConvert.SerializeObject(request, JsonSerializerSettings);
         JsonAssert.Equal("""{"type":"apiUsageState","customerId":null}""", actual);
     }
 
@@ -23,10 +21,7 @@ public class TbEntityQueryJsonGenerationTest
     public void TestApiUsageFilterWhenCustomerIdIsNotNull()
     {
         var request = new TbApiUsageFilter(Guid.Empty);
-        var result  = request.ToQuery();
-        Assert.NotNull(result);
-
-        var actual = JsonConvert.SerializeObject(result, JsonSerializerSettings);
+        var actual  = JsonConvert.SerializeObject(request, JsonSerializerSettings);
 
         JsonAssert.Equal(
             """{"customerId":{"id":"00000000-0000-0000-0000-000000000000","entityType":"CUSTOMER"},"type":"apiUsageState"}""",

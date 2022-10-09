@@ -6,27 +6,22 @@
 /// </summary>
 public class TbEdgeTypeFilter : TbEntityFilter
 {
-    public override string Type     =>
-    public          string EdgeType { get; }
+    public override string Type => "edgeType";
+
+    public string? EdgeType { get; }
 
     /// <summary>
     /// 'starts with' expression over their name
     /// </summary>
-    public string? EdgeNameStartsWith { get; }
+    public string? EdgeNameFilter { get; }
 
-    public TbEdgeTypeFilter(string edgeType, string? edgeNameStartsWith)
+    public TbEdgeTypeFilter()
     {
-        EdgeType           = edgeType;
-        EdgeNameStartsWith = edgeNameStartsWith;
     }
 
-    public override object ToQuery()
+    public TbEdgeTypeFilter(string edgeType, string? edgeNameFilter)
     {
-        return new
-        {
-            type           = "edgeType",
-            edgeType       = EdgeType,
-            edgeNameFilter = EdgeNameStartsWith,
-        };
+        EdgeType       = edgeType;
+        EdgeNameFilter = edgeNameFilter;
     }
 }

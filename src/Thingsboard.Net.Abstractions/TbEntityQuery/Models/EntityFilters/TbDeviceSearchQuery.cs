@@ -20,7 +20,7 @@ public class TbDeviceSearchQuery : TbEntityFilter
     /// </summary>
     public override string Type => "deviceSearchQuery";
 
-    public TbEntityId? RootEntityId { get; set; }
+    public TbEntityId? RootEntity { get; set; }
 
     public TbRelationDirection Direction { get; set; }
 
@@ -36,9 +36,9 @@ public class TbDeviceSearchQuery : TbEntityFilter
     {
     }
 
-    public TbDeviceSearchQuery(TbEntityId rootEntityId, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] deviceTypes)
+    public TbDeviceSearchQuery(TbEntityId rootEntity, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] deviceTypes)
     {
-        RootEntityId       = rootEntityId;
+        RootEntity         = rootEntity;
         Direction          = direction;
         MaxLevel           = maxLevel;
         FetchLastLevelOnly = fetchLastLevelOnly;
