@@ -8,9 +8,9 @@ using Polly;
 using Thingsboard.Net.Common;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utility.Models;
+using Thingsboard.Net.Models;
 using Thingsboard.Net.Options;
 using Thingsboard.Net.TbLogin;
-using Thingsboard.Net.Utility;
 
 namespace Thingsboard.Net.Flurl.Utility.Implements;
 

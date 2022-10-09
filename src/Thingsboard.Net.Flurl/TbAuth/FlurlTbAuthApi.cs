@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using Thingsboard.Net.Flurl.Utility;
 using Thingsboard.Net.Flurl.Utility.Implements;
-using Thingsboard.Net.TbAuth;
+using Thingsboard.Net.TbAuthController;
 
 namespace Thingsboard.Net.Flurl.TbAuth;
 

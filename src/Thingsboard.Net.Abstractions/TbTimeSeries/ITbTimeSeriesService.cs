@@ -38,16 +38,16 @@ public interface ITbTimeSeriesService
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbTimeSeries[]> GetAggregatedTimeSeriesAsync(
-        TbEntityType      entityType,
-        Guid              entityId,
-        string[]          keys,
-        DateTime          start,
-        DateTime          end,
-        TbAggregateType   aggregateType,
-        long?             intervalInMs,
-        TbSortOrderDirection?      sortOrder          = null,
-        bool?             useStrictDataTypes = null,
-        CancellationToken cancel             = default);
+        TbEntityType          entityType,
+        Guid                  entityId,
+        string[]              keys,
+        DateTime              start,
+        DateTime              end,
+        TbAggregateType       aggregateType,
+        long?                 intervalInMs,
+        TbSortOrderDirection? sortOrder          = null,
+        bool?                 useStrictDataTypes = null,
+        CancellationToken     cancel             = default);
 
     /// <summary>
     /// 获取指定Id实体的TimeSeries值
@@ -63,13 +63,13 @@ public interface ITbTimeSeriesService
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbTimeSeries[]> GetTimeSeriesAsync(
-        TbEntityType      entityType,
-        Guid              entityId,
-        string[]          keys,
-        DateTime          start,
-        DateTime          end,
-        int?              limit              = null,
-        TbSortOrderDirection?      sortOrder          = null,
-        bool?             useStrictDataTypes = null,
-        CancellationToken cancel             = default);
+        TbEntityType          entityType,
+        Guid                  entityId,
+        string[]              keys,
+        DateTime              start,
+        DateTime              end,
+        int?                  limit              = null,
+        TbSortOrderDirection? sortOrder          = null,
+        bool?                 useStrictDataTypes = null,
+        CancellationToken     cancel             = default);
 }

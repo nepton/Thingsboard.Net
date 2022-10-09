@@ -8,7 +8,7 @@ using Thingsboard.Net.Flurl.TbLogin;
 using Thingsboard.Net.Flurl.Utility;
 using Thingsboard.Net.Flurl.Utility.Implements;
 using Thingsboard.Net.Options;
-using Thingsboard.Net.TbAuth;
+using Thingsboard.Net.TbAuthController;
 using Thingsboard.Net.TbDeviceController;
 using Thingsboard.Net.TbEntityQuery;
 using Thingsboard.Net.TbLogin;

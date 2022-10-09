@@ -2,6 +2,6 @@
 
 public enum TbSortOrderDirection
 {
-    Asc, Desc
+    ASC,
+    DESC
 }
-

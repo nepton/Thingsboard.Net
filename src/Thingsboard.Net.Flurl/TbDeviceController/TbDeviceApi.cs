@@ -87,13 +87,14 @@ public class FlurlTbDeviceApi : FlurlClientApi<ITbDeviceApi>, ITbDeviceApi
     /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public async Task<TbDeviceInfo?> GetDeviceInfoByIdAsync(Guid deviceId, CancellationToken cancel = default)
+    public Task<TbDeviceInfo?> GetDeviceInfoByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetDefaultPolicy<TbDeviceInfo?>()
             .RetryOnUnauthorized()
+            .FallbackOnNotFound(null)
             .Build();
 
-        return await policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async () =>
         {
             var response = await _builder.CreateRequest($"/api/device/info/{deviceId}", GetCustomOptions())
                 .GetJsonAsync<TbDeviceInfo>(cancel);

@@ -1,6 +1,6 @@
 ﻿using Thingsboard.Net.Models;
 
-namespace Thingsboard.Net.TbAuth;
+namespace Thingsboard.Net.TbAuthController;
 
 public class TbUserInfo
 {

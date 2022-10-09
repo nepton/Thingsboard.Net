@@ -1,6 +1,4 @@
-﻿using Thingsboard.Net.Utility;
-
-namespace Thingsboard.Net.Common;
+﻿namespace Thingsboard.Net.Common;
 
 public interface IClientApi<out TClientApi> where TClientApi : IClientApi<TClientApi>
 {

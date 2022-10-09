@@ -1,4 +1,4 @@
-﻿namespace Thingsboard.Net.TbAlarms;
+﻿namespace Thingsboard.Net.TbAlarmController;
 
 /// <summary>
 /// Alarm severity

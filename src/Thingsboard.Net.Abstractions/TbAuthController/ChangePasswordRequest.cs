@@ -1,4 +1,4 @@
-﻿namespace Thingsboard.Net.TbAuth;
+﻿namespace Thingsboard.Net.TbAuthController;
 
 public class ChangePasswordRequest
 {

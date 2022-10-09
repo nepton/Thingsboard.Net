@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Thingsboard.Net.TbAuth;
+namespace Thingsboard.Net.TbAuthController;
 
 public class TbUserAdditionalInfo
 {

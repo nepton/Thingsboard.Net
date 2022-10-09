@@ -1,5 +1,5 @@
 ﻿using System;
-using Thingsboard.Net.Utility;
+using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.Options;
 

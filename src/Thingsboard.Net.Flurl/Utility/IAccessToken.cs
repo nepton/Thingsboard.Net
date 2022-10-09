@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Thingsboard.Net.Utility;
+using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.Flurl.Utility;
 

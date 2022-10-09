@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Thingsboard.Net.Models;
 
-namespace Thingsboard.Net.TbAlarms;
+namespace Thingsboard.Net.TbAlarmController;
 
 /// <summary>
 /// TB 系统的报警信息对象
@@ -52,17 +52,17 @@ public class TbAlarm
     /// <summary>
     /// 结束时间 (这个时间是最后一次收到报警信息的时间)
     /// </summary>
-    public DateTime EndTime { get; set; }
+    public DateTime EndTs { get; set; }
 
     /// <summary>
     /// 发送确认命令的时间
     /// </summary>
-    public DateTime AckTime { get; set; }
+    public DateTime AckTs { get; set; }
 
     /// <summary>
     /// 发送清除命令的时间
     /// </summary>
-    public DateTime ClearTime { get; set; }
+    public DateTime ClearTs { get; set; }
 
     /// <summary>
     /// 警报信息的详情

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Thingsboard.Net.Common;
 
-namespace Thingsboard.Net.TbAuth;
+namespace Thingsboard.Net.TbAuthController;
 
 public interface ITbAuthApi : IClientApi<ITbAuthApi>
 {

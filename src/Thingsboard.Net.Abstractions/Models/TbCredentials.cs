@@ -1,4 +1,4 @@
-﻿namespace Thingsboard.Net.Utility;
+﻿namespace Thingsboard.Net.Models;
 
 /// <summary>
 /// The class is used to store the information about the user.

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Options;
-using Thingsboard.Net.TbAuth;
+using Thingsboard.Net.TbAuthController;
 
 namespace Thingsboard.Net.Tests.TbAuth;
 
