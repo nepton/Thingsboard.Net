@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using Microsoft.Extensions.Options;
 using Polly;
-using Thingsboard.Net.Common;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utility.Models;
 using Thingsboard.Net.Models;

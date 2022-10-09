@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Thingsboard.Net.TbEntityQuery;
+﻿namespace Thingsboard.Net.TbEntityQuery;
 
 public class TbKeyFilterComplexPredicate : TbKeyFilterPredicate
 {

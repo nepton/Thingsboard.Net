@@ -1,5 +1,4 @@
-﻿using System;
-using Thingsboard.Net.Models;
+﻿using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.TbEntityQuery;
 

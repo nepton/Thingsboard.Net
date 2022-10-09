@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Thingsboard.Net.Common;
 using Thingsboard.Net.Flurl.TbAuth;
 using Thingsboard.Net.Flurl.TbDeviceController;
 using Thingsboard.Net.Flurl.TbEntityQuery;

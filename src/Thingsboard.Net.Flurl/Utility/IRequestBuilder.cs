@@ -1,6 +1,5 @@
 ﻿using System;
 using Flurl.Http;
-using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Options;
 

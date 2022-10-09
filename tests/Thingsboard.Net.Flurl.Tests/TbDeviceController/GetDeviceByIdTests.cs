@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Quibble.CSharp;
 using Quibble.Xunit;
 using Thingsboard.Net.TbDeviceController;
 
