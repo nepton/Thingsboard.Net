@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl", "src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj", "{7B26DD47-4F56-4838-AB66-32C383F82C0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl.DependencyInjection", "src\Thingsboard.Net.Flurl.DependencyInjection\Thingsboard.Net.Flurl.DependencyInjection.csproj", "{38E5F67A-2417-410D-92F0-730F332F9EFE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{7B26DD47-4F56-4838-AB66-32C383F82C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B26DD47-4F56-4838-AB66-32C383F82C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B26DD47-4F56-4838-AB66-32C383F82C0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38E5F67A-2417-410D-92F0-730F332F9EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38E5F67A-2417-410D-92F0-730F332F9EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38E5F67A-2417-410D-92F0-730F332F9EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38E5F67A-2417-410D-92F0-730F332F9EFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,7 +39,6 @@ Global
 		{7CF5805B-5722-4199-959C-ECF96C48A52E} = {5309EC62-08D3-4CB5-B295-0D389CFBDDA1}
 		{FE8F6FBD-4F8A-4072-A2DA-425B8A643B40} = {D89EE3E4-AABD-439A-A3CB-8EDA27EA32B0}
 		{7B26DD47-4F56-4838-AB66-32C383F82C0B} = {5309EC62-08D3-4CB5-B295-0D389CFBDDA1}
-		{38E5F67A-2417-410D-92F0-730F332F9EFE} = {5309EC62-08D3-4CB5-B295-0D389CFBDDA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CA6DE1A-C1A0-4BE1-B7BF-D3052CD20581}

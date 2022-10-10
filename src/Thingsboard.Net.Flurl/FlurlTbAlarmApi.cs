@@ -40,8 +40,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder
-                .CreateRequest($"api/alarm/{entityType}/{entityId}", GetCustomOptions())
+            var result = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"api/alarm/{entityType}/{entityId}")
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
                 .SetQueryParam("searchStatus", searchStatus)
@@ -72,8 +72,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder
-                .CreateRequest($"api/alarm/{alarmId}", GetCustomOptions())
+            var result = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"api/alarm/{alarmId}")
                 .GetJsonAsync<TbAlarm?>(cancel);
 
             return result;
@@ -94,8 +94,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder
-                .CreateRequest($"api/alarm/{tbAlarmId}/ack", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"api/alarm/{tbAlarmId}/ack")
                 .PostJsonAsync(null, cancel);
         });
     }
@@ -114,8 +114,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder
-                .CreateRequest($"api/alarm/{tbAlarmId}/clear", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"api/alarm/{tbAlarmId}/clear")
                 .PostJsonAsync(null, cancel);
         });
     }
@@ -134,8 +134,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder
-                .CreateRequest("api/alarm", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("api/alarm")
                 .PostJsonAsync(alarm, cancel);
         });
     }
@@ -154,8 +154,8 @@ public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder
-                .CreateRequest($"api/alarm/{alarmId}", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"api/alarm/{alarmId}")
                 .DeleteAsync(cancel);
         });
     }

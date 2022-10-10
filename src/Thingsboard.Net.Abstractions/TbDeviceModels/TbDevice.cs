@@ -1,57 +1,35 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 /// <summary>
-/// 设备信息
+/// Device object
 /// </summary>
 public class TbDevice
 {
     /// <summary>
-    /// 电池组的Id
+    /// Device Id
     /// </summary>
-    public TbEntityId Id { get; }
+    public TbEntityId? Id { get; set; }
 
     /// <summary>
     /// Created time in js timestamp format.
     /// </summary>
-    public long CreatedTime { get; }
+    public DateTime CreatedTime { get; set; }
 
-    public TbEntityId? TenantId { get; }
+    public TbEntityId? TenantId { get; set; }
 
-    public TbEntityId? CustomerId { get; }
+    public TbEntityId? CustomerId { get; set; }
 
-    public string? Name { get; }
+    public string? Name { get; set; }
 
-    public string? Type { get; }
+    public string? Type { get; set; }
 
-    public string? Label { get; }
+    public string? Label { get; set; }
 
-    public TbEntityId? DeviceProfileId { get; }
+    public TbEntityId? DeviceProfileId { get; set; }
 
-    public TbEntityId? FirmwareId { get; }
+    public TbEntityId? FirmwareId { get; set; }
 
-    public TbEntityId? SoftwareId { get; }
-
-    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbDevice(TbEntityId id,
-        long                   createdTime,
-        TbEntityId?            tenantId,
-        TbEntityId?            customerId,
-        string?                name,
-        string?                type,
-        string?                label,
-        TbEntityId?            deviceProfileId,
-        TbEntityId?            firmwareId,
-        TbEntityId?            softwareId)
-    {
-        Id              = id;
-        CreatedTime     = createdTime;
-        TenantId        = tenantId;
-        CustomerId      = customerId;
-        Name            = name;
-        Type            = type;
-        Label           = label;
-        DeviceProfileId = deviceProfileId;
-        FirmwareId      = firmwareId;
-        SoftwareId      = softwareId;
-    }
+    public TbEntityId? SoftwareId { get; set; }
 }

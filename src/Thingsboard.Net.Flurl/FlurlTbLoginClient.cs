@@ -26,7 +26,8 @@ public class FlurlTbLoginClient : FlurlClientApi<ITbLoginClient>, ITbLoginClient
         return await policy.ExecuteAsync(async () =>
         {
             var response = await _requestBuilder
-                .CreateRequest("api/auth/login", GetCustomOptions(), false)
+                .CreateRequest(GetCustomOptions(), false)
+                .AppendPathSegment("api/auth/login")
                 .PostJsonAsync(loginRequest, cancel)
                 .ReceiveJson<TbLoginResponse>();
 

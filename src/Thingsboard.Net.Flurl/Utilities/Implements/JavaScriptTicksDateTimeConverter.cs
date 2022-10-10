@@ -23,13 +23,31 @@ public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime>
     /// <returns>The object value.</returns>
     public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
-        var value = reader.ReadAsString();
+        try
+        {
+            if (reader.TokenType == JsonToken.String)
+            {
+                string str = reader.Value.ToString();
+                if (string.IsNullOrEmpty(str))
+                    return default;
 
-        if (string.IsNullOrEmpty(value))
-            return existingValue;
-        if (!long.TryParse(value, out var longValue))
-            return existingValue;
+                if (!long.TryParse(str, out var longValue))
+                    return existingValue;
 
-        return longValue.ToDateTime();
+                return longValue.ToDateTime();
+            }
+
+            if (reader.TokenType == JsonToken.Integer)
+            {
+                var longValue = (long) reader.Value;
+                return longValue.ToDateTime();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException($"Error converting value {reader.Value} to type '{objectType}'.", ex);
+        }
+
+        throw new JsonSerializationException("Unexpected token parsing date. Expected String or Integer, got " + reader.TokenType);
     }
 }

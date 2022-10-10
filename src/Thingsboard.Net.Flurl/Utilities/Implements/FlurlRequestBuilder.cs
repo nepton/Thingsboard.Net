@@ -17,101 +17,117 @@ namespace Thingsboard.Net.Flurl.Utilities.Implements;
 
 public class FlurlRequestBuilder : IRequestBuilder
 {
-    private readonly ThingsboardNetFlurlOptions        _defaultOptions;
+    private static NewtonsoftJsonSerializer? _cached;
+
+    private readonly ThingsboardNetFlurlOptions   _defaultOptions;
     private readonly ILogger<FlurlRequestBuilder> _logger;
     private readonly IServiceProvider             _serviceProvider;
 
     public FlurlRequestBuilder(
         IOptionsSnapshot<ThingsboardNetFlurlOptions> options,
-        ILogger<FlurlRequestBuilder>            logger,
-        IServiceProvider                        serviceProvider)
+        ILogger<FlurlRequestBuilder>                 logger,
+        IServiceProvider                             serviceProvider)
     {
         _logger          = logger;
         _serviceProvider = serviceProvider;
         _defaultOptions  = options.Value;
     }
 
+    private NewtonsoftJsonSerializer GetCachedNewtonsoftJsonSerializer()
+    {
+        // Setup for newtonsoft json
+        return _cached ??= new NewtonsoftJsonSerializer(
+            new JsonSerializerSettings()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Converters = new List<JsonConverter>()
+                {
+                    new StringEnumConverter(),
+                    new JavaScriptTicksDateTimeConverter() // tb uses javascript ticks for dates
+                },
+            });
+    }
+
     /// <summary>
     /// Create a new request builder for the specified URL without any authentication
     /// </summary>
-    /// <param name="path"></param>
     /// <param name="options"></param>
     /// <param name="useAccessToken"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TbException"></exception>
     /// <exception cref="TbHttpException"></exception>
-    public IFlurlRequest CreateRequest(string path, ThingsboardNetFlurlOptions options, bool useAccessToken)
+    public IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions options, bool useAccessToken)
     {
-        if (path == null) throw new ArgumentNullException(nameof(path));
-
         // 参数选项
         options = _defaultOptions.MergeWith(options);
 
         var flurl = GetUrl(options)
-            .AppendPathSegment(path)
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? _defaultOptions.TimeoutInSec ?? 10))
             .ConfigureRequest(action =>
             {
                 // Setup for newtonsoft json
-                var settings = new JsonSerializerSettings()
+                action.JsonSerializer = GetCachedNewtonsoftJsonSerializer();
+            })
+            .BeforeCall(async call =>
+            {
+                if (useAccessToken)
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                };
-                settings.Converters.Add(new StringEnumConverter());
-                settings.Converters.Add(new JavaScriptTicksDateTimeConverter()); // tb uses javascript ticks for dates
-
-                action.JsonSerializer = new NewtonsoftJsonSerializer(settings);
-
-                action.BeforeCallAsync = async (call) =>
+                    // WARN: accessTokenService should use ITbLogin interface, so we should avoid recursive reference
+                    var accessTokenService = _serviceProvider.GetRequiredService<IAccessToken>();
+                    var credentials        = options.GetCredentials();
+                    var accessToken        = await accessTokenService.GetAccessTokenAsync(credentials);
+                    call.Request.WithHeader("Authorization", $"Bearer {accessToken}");
+                }
+            })
+            .AfterCall(async call =>
+            {
+                // Clear the access token if the request got 401
+                if (call.Response.StatusCode == 401 && useAccessToken)
                 {
-                    if (useAccessToken)
-                    {
-                        // WARN: accessTokenService should use ITbLogin interface, so we should avoid recursive reference
-                        var accessTokenService = _serviceProvider.GetRequiredService<IAccessToken>();
-                        var credentials        = options.GetCredentials();
-                        var accessToken        = await accessTokenService.GetAccessTokenAsync(credentials);
-                        call.Request.WithHeader("Authorization", $"Bearer {accessToken}");
-                    }
-                };
+                    // WARN: accessTokenService should use ITbLogin interface, so we should avoid recursive reference
+                    var accessTokenService = _serviceProvider.GetRequiredService<IAccessToken>();
+                    var credentials        = options.GetCredentials();
+                    await accessTokenService.RemoveExpiredTokenAsync(credentials);
+                }
 
-                action.AfterCallAsync = async (call) =>
+                if (_logger.IsEnabled(LogLevel.Debug))
                 {
-                    // Clear the access token if the request got 401
-                    if (call.Response.StatusCode == 401 && useAccessToken)
+                    var responseBody = await call.Response.GetStringAsync();
+                    using var _ = _logger.BeginScope(new Dictionary<string, object>
                     {
-                        // WARN: accessTokenService should use ITbLogin interface, so we should avoid recursive reference
-                        var accessTokenService = _serviceProvider.GetRequiredService<IAccessToken>();
-                        var credentials        = options.GetCredentials();
-                        await accessTokenService.RemoveExpiredTokenAsync(credentials);
-                    }
+                        ["RequestBody"]     = call.RequestBody,
+                        ["ResponseBody"]    = responseBody,
+                        ["RequestHeaders"]  = call.Request.Headers,
+                        ["ResponseHeaders"] = call.Response.Headers,
+                    });
+                    _logger.LogInformation(call.Exception,
+                        "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
+                        call.Request.Verb,
+                        call.Request.Url,
+                        call.Response.StatusCode,
+                        call.Duration?.TotalMilliseconds);
+                }
 
-                    if (_logger.IsEnabled(LogLevel.Debug))
-                    {
-                        var responseBody = await call.Response.GetStringAsync();
-                        using var _ = _logger.BeginScope(new Dictionary<string, object>
-                        {
-                            ["RequestBody"]     = call.RequestBody,
-                            ["ResponseBody"]    = responseBody,
-                            ["RequestHeaders"]  = call.Request.Headers,
-                            ["ResponseHeaders"] = call.Response.Headers,
-                        });
-                        _logger.LogDebug(call.Exception,
-                            "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
-                            call.Request.Verb,
-                            call.Request.Url,
-                            call.Response.StatusCode,
-                            call.Duration?.TotalMilliseconds);
-                    }
-
-                    if (call.Response.StatusCode >= 400)
-                    {
-                        var error = await call.Response.GetJsonAsync<TbErrorResponse>();
-                        throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
-                    }
-                };
+                if (call.Response.StatusCode >= 400)
+                {
+                    var error = await call.Response.GetJsonAsync<TbErrorResponse>();
+                    throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
+                }
+            })
+            .OnError(async call =>
+            {
+                _logger.LogWarning(call.Exception,
+                    "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}\n" +
+                    "request body {RequestBody}\n" +
+                    "response body {ResponseBody}",
+                    call.Request.Verb,
+                    call.Request.Url,
+                    call.Response.StatusCode,
+                    call.Duration?.TotalMilliseconds,
+                    call.RequestBody,
+                    await call.Response.GetStringAsync());
             });
-
         return flurl;
     }
 

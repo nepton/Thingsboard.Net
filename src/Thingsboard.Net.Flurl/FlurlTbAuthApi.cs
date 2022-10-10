@@ -29,8 +29,8 @@ public class FlurlTbAuthApi : FlurlClientApi<ITbAuthClient>, ITbAuthClient
             .Build();
 
         return await policy.ExecuteAsync(async () =>
-            await _builder
-                .CreateRequest("/api/auth/user", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/auth/user")
                 .GetJsonAsync<TbUserInfo>(cancel));
     }
 
@@ -49,8 +49,8 @@ public class FlurlTbAuthApi : FlurlClientApi<ITbAuthClient>, ITbAuthClient
             .Build();
 
         return policy.ExecuteAsync(async () =>
-            await _builder
-                .CreateRequest("/api/auth/changePassword", GetCustomOptions())
+            await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/auth/changePassword")
                 .PostJsonAsync(request, cancel));
     }
 }

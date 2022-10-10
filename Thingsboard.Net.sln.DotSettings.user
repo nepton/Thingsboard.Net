@@ -2,14 +2,17 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7B26DD47_002D4F56_002D4838_002DAB66_002D32C383F82C0B_002Fd_003ATbAlarmController_002Ff_003AFlurlTbAlarmApi_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=TypesAndNamespaces/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
 	
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0\lib\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\serilog.extensions.logging\3.1.0\lib\netstandard2.0\Serilog.Extensions.Logging.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\flurl.http\3.2.4\lib\netstandard2.0\Flurl.Http.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\quibble.xunit\0.2.51\lib\netstandard2.0\Quibble.Xunit.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Nepton\AppData\Local\JetBrains\Rider2022.2\resharper-host\temp\Rider\vAny\CoverageData\_Thingsboard.Net.-248613318\Snapshot\snapshot.utdcvr</s:String>
+	
 	
 	
 	

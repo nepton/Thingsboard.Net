@@ -13,7 +13,7 @@ public static class ThingsboardNetServicesExtensions
     /// <param name="configureOptions">A delegate to configure the <see cref="T:Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions" />.</param>
     /// <returns></returns>
     public static IServiceCollection AddThingsboardNet(
-        this IServiceCollection       services,
+        this IServiceCollection            services,
         Action<ThingsboardNetFlurlOptions> configureOptions)
     {
         if (services == null)
@@ -25,11 +25,11 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
         services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
 
-        services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQuery>();
-        services.AddTransient<ITbLoginClient, FlurlTbLoginClient>();
+        services.AddTransient<ITbAlarmClient, FlurlTbAlarmApi>();
         services.AddTransient<ITbAuthClient, FlurlTbAuthApi>();
         services.AddTransient<ITbDeviceClient, FlurlTbDeviceClient>();
-        services.AddTransient<ITbAlarmClient, FlurlTbAlarmApi>();
+        services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQueryClient>();
+        services.AddTransient<ITbLoginClient, FlurlTbLoginClient>();
 
         return services;
     }

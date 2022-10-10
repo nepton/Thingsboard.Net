@@ -6,11 +6,11 @@ using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
-public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQueryClient>, ITbEntityQueryClient
+public class FlurlTbEntityQueryClient : FlurlClientApi<ITbEntityQueryClient>, ITbEntityQueryClient
 {
     private readonly IRequestBuilder _builder;
 
-    public FlurlTbEntityQuery(IRequestBuilder builder)
+    public FlurlTbEntityQueryClient(IRequestBuilder builder)
     {
         _builder = builder;
     }
@@ -29,7 +29,8 @@ public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQueryClient>, ITbEntit
 
         return await policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest("/api/entitiesQuery/find", GetCustomOptions())
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/entitiesQuery/find")
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<TbPage<TbEntity>>();
 
@@ -51,7 +52,8 @@ public class FlurlTbEntityQuery : FlurlClientApi<ITbEntityQueryClient>, ITbEntit
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest("/api/entitiesQuery/count", GetCustomOptions())
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/entitiesQuery/count")
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<int>();
 

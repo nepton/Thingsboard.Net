@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 /// <summary>
 /// Device info
@@ -13,7 +15,7 @@ public class TbDeviceInfo
     /// <summary>
     /// Created time in js timestamp format.
     /// </summary>
-    public long CreatedTime { get; }
+    public DateTime CreatedTime { get; }
 
     public TbEntityId? TenantId { get; }
 
@@ -39,7 +41,7 @@ public class TbDeviceInfo
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
     public TbDeviceInfo(TbEntityId id,
-        long                       createdTime,
+        DateTime                   createdTime,
         TbEntityId?                tenantId,
         TbEntityId?                customerId,
         string?                    name,
