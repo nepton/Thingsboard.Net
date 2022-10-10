@@ -111,8 +111,22 @@ public class FlurlRequestBuilder : IRequestBuilder
 
                 if (call.Response.StatusCode >= 400)
                 {
-                    var error = await call.Response.GetJsonAsync<TbErrorResponse>();
-                    throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
+                    var statusCode = (HttpStatusCode) call.Response.StatusCode;
+                    var text       = await call.Response.GetStringAsync();
+
+                    if (string.IsNullOrEmpty(text))
+                        throw new TbHttpException($"StatusCode is {statusCode}, no response body", statusCode, DateTime.Now, -1);
+
+                    try
+                    {
+                        var error = JsonConvert.DeserializeObject<TbErrorResponse>(text);
+                        throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
+                    }
+                    catch
+                    {
+                        // BE CAREFUL, sometimes (like 400 of saveEntityAttributes) the response body is not a json string
+                        throw new TbHttpException(text, statusCode, DateTime.Now, -1);
+                    }
                 }
             })
             .OnError(async call =>
@@ -128,6 +142,7 @@ public class FlurlRequestBuilder : IRequestBuilder
                     call.RequestBody,
                     await call.Response.GetStringAsync());
             });
+
         return flurl;
     }
 

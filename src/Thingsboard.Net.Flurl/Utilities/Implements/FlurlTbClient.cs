@@ -3,7 +3,7 @@ using Thingsboard.Net.Flurl.Options;
 
 namespace Thingsboard.Net.Flurl.Utilities.Implements;
 
-public abstract class FlurlClientApi<TClientApi> : ITbClient<TClientApi> where TClientApi : ITbClient<TClientApi>
+public abstract class FlurlTbClient<TClient> : ITbClient<TClient> where TClient : ITbClient<TClient>
 {
     private readonly ThingsboardNetFlurlOptions _options = new();
 
@@ -12,13 +12,13 @@ public abstract class FlurlClientApi<TClientApi> : ITbClient<TClientApi> where T
         return _options;
     }
 
-    public TClientApi WithCredentials(string username, string? password)
+    public TClient WithCredentials(string username, string? password)
     {
         if (username == null) throw new ArgumentNullException(nameof(username));
 
         _options.Username = username;
         _options.Password = password;
 
-        return (TClientApi) (object) this;
+        return (TClient) (object) this;
     }
 }

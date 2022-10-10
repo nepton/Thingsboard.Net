@@ -8,16 +8,15 @@ namespace Thingsboard.Net;
 public class TbEntityValue
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbEntityValue(TbEntityField key, DateTime time, object? value)
+    public TbEntityValue(string key, DateTime lastUpdateTs, object? value)
     {
-        Key   = key;
-        Time  = time;
-        Value = value;
+        Key          = key;
+        LastUpdateTs = lastUpdateTs;
+        Value        = value;
     }
 
-    public TbEntityField Key { get; }
-
-    public DateTime Time { get; }
+    public string   Key          { get; }
+    public DateTime LastUpdateTs { get; }
 
     public object? Value { get; }
 
@@ -25,6 +24,6 @@ public class TbEntityValue
     /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
-        return $"{nameof(Key)}: {Key}, {nameof(Time)}: {Time}, {nameof(Value)}: {Value}";
+        return $"{nameof(Key)}: {Key}, {nameof(LastUpdateTs)}: {LastUpdateTs}, {nameof(Value)}: {Value}";
     }
 }

@@ -6,7 +6,7 @@ using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
-public class FlurlTbEntityQueryClient : FlurlClientApi<ITbEntityQueryClient>, ITbEntityQueryClient
+public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITbEntityQueryClient
 {
     private readonly IRequestBuilder _builder;
 

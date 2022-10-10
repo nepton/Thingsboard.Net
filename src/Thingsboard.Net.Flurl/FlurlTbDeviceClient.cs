@@ -14,7 +14,7 @@ namespace Thingsboard.Net.Flurl;
 /// <summary>
 /// Thingsboard device controller implements by flurl
 /// </summary>
-public class FlurlTbDeviceClient : FlurlClientApi<ITbDeviceClient>, ITbDeviceClient
+public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClient
 {
     private readonly IRequestBuilder _builder;
 

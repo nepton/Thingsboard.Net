@@ -9,7 +9,7 @@ namespace Thingsboard.Net.Flurl;
 /// <summary>
 /// The Thingsboard Auth API implement by flurl
 /// </summary>
-public class FlurlTbLoginClient : FlurlClientApi<ITbLoginClient>, ITbLoginClient
+public class FlurlTbLoginClient : FlurlTbClient<ITbLoginClient>, ITbLoginClient
 {
     private readonly IRequestBuilder _requestBuilder;
 

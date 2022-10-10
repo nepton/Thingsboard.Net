@@ -30,6 +30,7 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<ITbDeviceClient, FlurlTbDeviceClient>();
         services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQueryClient>();
         services.AddTransient<ITbLoginClient, FlurlTbLoginClient>();
+        services.AddTransient<ITbTelemetryClient, FlurlTbTelemetryClient>();
 
         return services;
     }

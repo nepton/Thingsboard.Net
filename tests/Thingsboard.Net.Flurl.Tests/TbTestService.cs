@@ -16,7 +16,7 @@ public class TbTestService : IDisposable
     {
         _service = BuildServiceProvider(options =>
         {
-            options.BaseUrl      = "http://localhost:8080";
+            options.BaseUrl  = "http://localhost:8080";
             options.Username = "tenant@thingsboard.org";
             options.Password = "tenant";
         });
@@ -56,5 +56,10 @@ public class TbTestService : IDisposable
     public void Dispose()
     {
         _service.Dispose();
+    }
+
+    public Guid GetTestDeviceId()
+    {
+        return Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
     }
 }

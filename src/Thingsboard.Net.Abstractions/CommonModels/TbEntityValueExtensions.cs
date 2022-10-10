@@ -11,7 +11,7 @@ public static class TbEntityValueExtensions
         if (source == null)
             return null;
 
-        return source.FirstOrDefault(x => x.Key == key);
+        return source.FirstOrDefault(x => x.Key == key.Key);
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ public static class TbEntityValueExtensions
     /// <returns></returns>
     public static DateTime? GetTime(this IEnumerable<TbEntityValue>? source, TbEntityField key)
     {
-        return source.GetEntityValue(key)?.Time;
+        return source.GetEntityValue(key)?.LastUpdateTs;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public static class TbEntityValueExtensions
         if (entities == null)
             return defaultValue;
 
-        var entity = entities.FirstOrDefault(x => x.Key == key);
+        var entity = entities.FirstOrDefault(x => x.Key == key.Key);
         if (entity == null)
             return defaultValue;
 

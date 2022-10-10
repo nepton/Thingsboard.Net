@@ -7,7 +7,7 @@ using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
-public class FlurlTbAlarmApi : FlurlClientApi<ITbAlarmClient>, ITbAlarmClient
+public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
 {
     private readonly IRequestBuilder _builder;
 

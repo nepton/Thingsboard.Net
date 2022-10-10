@@ -7,7 +7,7 @@ using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
-public class FlurlTbAuthApi : FlurlClientApi<ITbAuthClient>, ITbAuthClient
+public class FlurlTbAuthApi : FlurlTbClient<ITbAuthClient>, ITbAuthClient
 {
     private readonly IRequestBuilder _builder;
 
