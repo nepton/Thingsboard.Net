@@ -17,8 +17,4 @@
     <ItemGroup>
       <ProjectReference Include="..\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Options" />
-    </ItemGroup>
 </Project>

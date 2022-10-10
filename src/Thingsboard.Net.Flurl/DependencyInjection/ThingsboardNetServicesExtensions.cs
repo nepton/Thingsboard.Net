@@ -1,18 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Thingsboard.Net.Flurl.TbAlarmController;
-using Thingsboard.Net.Flurl.TbAuth;
-using Thingsboard.Net.Flurl.TbDeviceController;
-using Thingsboard.Net.Flurl.TbEntityQuery;
-using Thingsboard.Net.Flurl.TbLogin;
-using Thingsboard.Net.Flurl.Utility;
-using Thingsboard.Net.Flurl.Utility.Implements;
-using Thingsboard.Net.Options;
-using Thingsboard.Net.TbAlarmController;
-using Thingsboard.Net.TbAuthController;
-using Thingsboard.Net.TbDeviceController;
-using Thingsboard.Net.TbEntityQuery;
-using Thingsboard.Net.TbLogin;
+using Thingsboard.Net.Flurl.Options;
+using Thingsboard.Net.Flurl.Utilities;
+using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl.DependencyInjection;
 
@@ -24,7 +14,7 @@ public static class ThingsboardNetServicesExtensions
     /// <returns></returns>
     public static IServiceCollection AddThingsboardNet(
         this IServiceCollection       services,
-        Action<ThingsboardNetOptions> configureOptions)
+        Action<ThingsboardNetFlurlOptions> configureOptions)
     {
         if (services == null)
             throw new ArgumentNullException(nameof(services));
@@ -35,11 +25,11 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
         services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
 
-        services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
-        services.AddTransient<ITbLoginApi, FlurlTbLoginApi>();
-        services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
+        services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQuery>();
+        services.AddTransient<ITbLoginClient, FlurlTbLoginClient>();
+        services.AddTransient<ITbAuthClient, FlurlTbAuthApi>();
         services.AddTransient<ITbDeviceClient, FlurlTbDeviceClient>();
-        services.AddTransient<ITbAlarmApi, FlurlTbAlarmApi>();
+        services.AddTransient<ITbAlarmClient, FlurlTbAlarmApi>();
 
         return services;
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using Thingsboard.Net.Models;
 
 namespace Thingsboard.Net.Exceptions;
 
