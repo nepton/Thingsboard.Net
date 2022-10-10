@@ -5,67 +5,80 @@ using Thingsboard.Net.Models;
 namespace Thingsboard.Net.TbAlarmController;
 
 /// <summary>
-/// TB 系统的报警信息对象
+/// Alarm information object of the TB system
 /// </summary>
 public class TbAlarm
 {
     /// <summary>
-    /// 警报Id
+    /// Alert Id
     /// </summary>
-    public Guid TbAlarmId { get; set; }
+    public TbEntityId? Id { get; set; }
+
+    public TbEntityId? TenantId { get; set; }
+
+    public TbEntityId? CustomerId { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// Creation time
     /// </summary>
     public DateTime CreatedTime { get; set; }
 
+    public string Name { get; set; } = "";
+
     /// <summary>
-    /// 类型
+    /// type
     /// </summary>
     public string Type { get; set; } = "";
 
     /// <summary>
-    /// 发送者
+    /// The sender
     /// </summary>
-    public TbEntityId Originator { get; set; } = TbEntityId.Empty;
+    public TbEntityId? Originator { get; set; }
 
     /// <summary>
-    /// 严重程度
+    /// severity
     /// </summary>
     public TbAlarmSeverity Severity { get; set; }
 
-    /// <summary>
-    /// 已经被清除
-    /// </summary>
-    public bool Cleared { get; set; }
+    public TbAlarmStatus Status { get; set; }
 
     /// <summary>
-    /// 已被确认
+    /// It has been cleared
     /// </summary>
-    public bool Acknowledged { get; set; }
+    public bool Cleared() => Status == TbAlarmStatus.CLEARED_ACK || Status == TbAlarmStatus.CLEARED_UNACK;
 
     /// <summary>
-    /// 开始时间
+    /// Has been acknowledged
     /// </summary>
-    public DateTime StartTime { get; set; }
+    public bool Acknowledged() => Status == TbAlarmStatus.ACTIVE_ACK || Status == TbAlarmStatus.CLEARED_ACK;
 
     /// <summary>
-    /// 结束时间 (这个时间是最后一次收到报警信息的时间)
+    /// The start time
     /// </summary>
-    public DateTime EndTs { get; set; }
+    public DateTime StartTs { get; set; }
 
     /// <summary>
-    /// 发送确认命令的时间
+    /// End time (this time is the time when the alarm information was last received)
     /// </summary>
-    public DateTime AckTs { get; set; }
+    public DateTime? EndTs { get; set; }
 
     /// <summary>
-    /// 发送清除命令的时间
+    /// The time when the acknowledgement command was sent
     /// </summary>
-    public DateTime ClearTs { get; set; }
+    public DateTime? AckTs { get; set; }
 
     /// <summary>
-    /// 警报信息的详情
+    /// Time when the clearing command was sent
+    /// </summary>
+    public DateTime? ClearTs { get; set; }
+
+    /// <summary>
+    /// Details of the alarm information
     /// </summary>
     public Dictionary<string, object> Details { get; set; } = new();
+
+    public bool Propagate         { get; set; }
+    public bool PropagateToOwner  { get; set; }
+    public bool PropagateToTenant { get; set; }
+    public string[]? PropagateRelationTypes { get; set; }
 }

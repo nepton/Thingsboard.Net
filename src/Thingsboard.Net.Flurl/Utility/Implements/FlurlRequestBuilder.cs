@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Net;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
@@ -9,7 +12,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Thingsboard.Net.Exceptions;
-using Thingsboard.Net.Models;
 using Thingsboard.Net.Options;
 
 namespace Thingsboard.Net.Flurl.Utility.Implements;
@@ -58,6 +60,8 @@ public class FlurlRequestBuilder : IRequestBuilder
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 };
                 settings.Converters.Add(new StringEnumConverter());
+                settings.Converters.Add(new JavaScriptTicksDateTimeConverter()); // tb uses javascript ticks for dates
+
                 action.JsonSerializer = new NewtonsoftJsonSerializer(settings);
 
                 action.BeforeCallAsync = async (call) =>
@@ -72,8 +76,9 @@ public class FlurlRequestBuilder : IRequestBuilder
                     }
                 };
 
-                action.OnErrorAsync = async (call) =>
+                action.AfterCallAsync = async (call) =>
                 {
+                    // Clear the access token if the request got 401
                     if (call.Response.StatusCode == 401 && useAccessToken)
                     {
                         // WARN: accessTokenService should use ITbLogin interface, so we should avoid recursive reference
@@ -82,14 +87,29 @@ public class FlurlRequestBuilder : IRequestBuilder
                         await accessTokenService.RemoveExpiredTokenAsync(credentials);
                     }
 
-                    var error = await call.Response.GetJsonAsync<TbResponseFault>();
-                    throw new TbHttpException(error);
-                };
+                    if (_logger.IsEnabled(LogLevel.Debug))
+                    {
+                        var responseBody = await call.Response.GetStringAsync();
+                        using var _ = _logger.BeginScope(new Dictionary<string, object>
+                        {
+                            ["RequestBody"]     = call.RequestBody,
+                            ["ResponseBody"]    = responseBody,
+                            ["RequestHeaders"]  = call.Request.Headers,
+                            ["ResponseHeaders"] = call.Response.Headers,
+                        });
+                        _logger.LogDebug(call.Exception,
+                            "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
+                            call.Request.Verb,
+                            call.Request.Url,
+                            call.Response.StatusCode,
+                            call.Duration?.TotalMilliseconds);
+                    }
 
-                action.AfterCallAsync = async (call) =>
-                {
-                    var log = await call.Response.GetStringAsync();
-                    _logger.LogInformation("Request: {Url} {ResponseBody}", call.Request.Url, log);
+                    if (call.Response.StatusCode >= 400)
+                    {
+                        var error = await call.Response.GetJsonAsync<TbErrorResponse>();
+                        throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
+                    }
                 };
             });
 

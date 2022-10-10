@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Thingsboard.Net.Flurl.TbAlarmController;
 using Thingsboard.Net.Flurl.TbAuth;
 using Thingsboard.Net.Flurl.TbDeviceController;
 using Thingsboard.Net.Flurl.TbEntityQuery;
@@ -7,6 +8,7 @@ using Thingsboard.Net.Flurl.TbLogin;
 using Thingsboard.Net.Flurl.Utility;
 using Thingsboard.Net.Flurl.Utility.Implements;
 using Thingsboard.Net.Options;
+using Thingsboard.Net.TbAlarmController;
 using Thingsboard.Net.TbAuthController;
 using Thingsboard.Net.TbDeviceController;
 using Thingsboard.Net.TbEntityQuery;
@@ -36,7 +38,8 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<ITbEntityQuery, FlurlTbEntityQuery>();
         services.AddTransient<ITbLoginApi, FlurlTbLoginApi>();
         services.AddTransient<ITbAuthApi, FlurlTbAuthApi>();
-        services.AddTransient<ITbDeviceApi, FlurlTbDeviceApi>();
+        services.AddTransient<ITbDeviceClient, FlurlTbDeviceClient>();
+        services.AddTransient<ITbAlarmApi, FlurlTbAlarmApi>();
 
         return services;
     }

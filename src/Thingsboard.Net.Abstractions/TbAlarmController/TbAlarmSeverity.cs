@@ -9,25 +9,25 @@ public enum TbAlarmSeverity
     /// <summary>
     /// Enum CRITICAL for value: CRITICAL
     /// </summary>
-    Critical,
+    CRITICAL,
 
     /// <summary>
     /// Enum MAJOR for value: MAJOR
     /// </summary>
-    Major,
+    MAJOR,
 
     /// <summary>
     /// Enum MINOR for value: MINOR
     /// </summary>
-    Minor,
+    MINOR,
 
     /// <summary>
     /// Enum WARNING for value: WARNING
     /// </summary>
-    Warning,
+    WARNING,
 
     /// <summary>
     /// Enum INDETERMINATE for value: INDETERMINATE
     /// </summary>
-    Indeterminate,
+    INDETERMINATE,
 }

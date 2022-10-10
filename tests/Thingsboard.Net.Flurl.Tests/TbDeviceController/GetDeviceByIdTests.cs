@@ -11,7 +11,7 @@ public class GetDeviceByIdTests
     {
         // arrange
         using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbDeviceApi>();
+        var       api     = service.GetRequiredService<ITbDeviceClient>();
 
         // act
         var deviceId = Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
@@ -29,7 +29,7 @@ public class GetDeviceByIdTests
     {
         // arrange
         using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbDeviceApi>();
+        var       api     = service.GetRequiredService<ITbDeviceClient>();
 
         // act
         var deviceId = Guid.Empty;

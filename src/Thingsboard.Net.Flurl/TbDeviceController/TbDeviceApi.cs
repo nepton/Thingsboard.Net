@@ -9,12 +9,12 @@ using Thingsboard.Net.TbDeviceController;
 
 namespace Thingsboard.Net.Flurl.TbDeviceController;
 
-public class FlurlTbDeviceApi : FlurlClientApi<ITbDeviceApi>, ITbDeviceApi
+public class FlurlTbDeviceClient : FlurlClientApi<ITbDeviceClient>, ITbDeviceClient
 {
     private readonly IRequestBuilder _builder;
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public FlurlTbDeviceApi(IRequestBuilder builder)
+    public FlurlTbDeviceClient(IRequestBuilder builder)
     {
         _builder = builder;
     }
@@ -98,6 +98,30 @@ public class FlurlTbDeviceApi : FlurlClientApi<ITbDeviceApi>, ITbDeviceApi
         {
             var response = await _builder.CreateRequest($"/api/device/info/{deviceId}", GetCustomOptions())
                 .GetJsonAsync<TbDeviceInfo>(cancel);
+
+            return response;
+        });
+    }
+
+    /// <summary>
+    /// Requested device must be owned by tenant that the user belongs to. Device name is an unique property of device. So it can be used to identify the device.
+    /// Available for users with 'TENANT_ADMIN' authority.
+    /// </summary>
+    /// <param name="deviceName">A string value representing the Device name.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<TbDevice> GetTenantDeviceByNameAsync(string deviceName, CancellationToken cancel = default)
+    {
+        var policy = _builder.GetDefaultPolicy<TbDevice?>()
+            .RetryOnUnauthorized()
+            .FallbackOnNotFound(null)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest($"/api/tenant/devices", GetCustomOptions())
+                .SetQueryParam("deviceName", deviceName)
+                .GetJsonAsync<TbDevice>(cancel);
 
             return response;
         });

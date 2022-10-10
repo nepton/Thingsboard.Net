@@ -9,7 +9,7 @@ namespace Thingsboard.Net.TbDeviceController;
 /// <summary>
 /// The interface that the device queries from Thingsboard
 /// </summary>
-public interface ITbDeviceApi : IClientApi<ITbDeviceApi>
+public interface ITbDeviceClient : IClientApi<ITbDeviceClient>
 {
     /// <summary>
     /// Obtaining the Device List
@@ -47,4 +47,13 @@ public interface ITbDeviceApi : IClientApi<ITbDeviceApi>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbDeviceInfo?> GetDeviceInfoByIdAsync(Guid deviceId, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Requested device must be owned by tenant that the user belongs to. Device name is an unique property of device. So it can be used to identify the device.
+    /// Available for users with 'TENANT_ADMIN' authority.
+    /// </summary>
+    /// <param name="deviceName">A string value representing the Device name.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task<TbDevice> GetTenantDeviceByNameAsync(string deviceName, CancellationToken cancel = default);
 }

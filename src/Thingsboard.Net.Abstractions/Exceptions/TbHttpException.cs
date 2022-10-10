@@ -6,11 +6,11 @@ namespace Thingsboard.Net.Exceptions;
 
 public class TbHttpException : TbException
 {
-    public TbHttpException(TbResponseFault error) : base(error.Message ?? "")
+    public TbHttpException(string message, HttpStatusCode statusCode, DateTime timestamp, int errorCode) : base(message)
     {
-        StatusCode = (HttpStatusCode) error.Status;
-        Timestamp  = error.Timestamp;
-        ErrorCode  = error.ErrorCode;
+        StatusCode = statusCode;
+        Timestamp  = timestamp;
+        ErrorCode  = errorCode;
     }
 
     public int ErrorCode { get; }
