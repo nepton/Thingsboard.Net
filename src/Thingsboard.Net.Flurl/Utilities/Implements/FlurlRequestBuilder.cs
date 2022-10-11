@@ -51,16 +51,16 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <summary>
     /// Create a new request builder for the specified URL without any authentication
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="customOptions"></param>
     /// <param name="useAccessToken"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TbException"></exception>
     /// <exception cref="TbHttpException"></exception>
-    public IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions? options, bool useAccessToken)
+    public IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions? customOptions, bool useAccessToken)
     {
         // 参数选项
-        options = _defaultOptions.MergeWith(options);
+        var options = _defaultOptions.MergeWith(customOptions);
 
         var flurl = GetUrl(options)
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? 10))
@@ -135,12 +135,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <returns></returns>
     public RequestPolicyBuilder GetPolicyBuilder(ThingsboardNetFlurlOptions? customOptions)
     {
-        if (customOptions == null) throw new ArgumentNullException(nameof(customOptions));
-
-        // Merge parameter options
-        customOptions = _defaultOptions.MergeWith(customOptions);
-
-        return new RequestPolicyBuilder(customOptions);
+        return new RequestPolicyBuilder(_defaultOptions.MergeWith(customOptions));
     }
 
     /// <summary>
@@ -150,12 +145,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <returns></returns>
     public RequestPolicyBuilder<TResult> GetPolicyBuilder<TResult>(ThingsboardNetFlurlOptions? customOptions)
     {
-        if (customOptions == null) throw new ArgumentNullException(nameof(customOptions));
-
-        // Merge parameter options
-        customOptions = _defaultOptions.MergeWith(customOptions);
-
-        return new RequestPolicyBuilder<TResult>(customOptions);
+        return new RequestPolicyBuilder<TResult>(_defaultOptions.MergeWith(customOptions));
     }
 
     /// <summary>
