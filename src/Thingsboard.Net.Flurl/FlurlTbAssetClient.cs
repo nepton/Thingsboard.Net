@@ -138,9 +138,22 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="query"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task FindByQueryAsync(TbAssetQueryRequest query, CancellationToken cancel = default)
+    public Task<TbAsset[]> FindByQueryAsync(TbAssetQueryRequest query, CancellationToken cancel = default)
     {
-        
+        var policy = _builder.GetDefaultPolicy<TbAsset[]>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, Array.Empty<TbAsset>())
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/assets")
+                .PostJsonAsync(query, cancel)
+                .ReceiveJson<TbAsset[]>();
+
+            return response;
+        });
     }
 
     /// <summary>
@@ -149,22 +162,47 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetIds"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAsset> GetAssetsByIdsAsync(Guid[] assetIds, CancellationToken cancel = default)
+    public Task<TbAsset[]> GetAssetsByIdsAsync(Guid[] assetIds, CancellationToken cancel = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbAsset[]>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, Array.Empty<TbAsset>())
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/assets")
+                .SetQueryParam("assetIds", string.Join(",", assetIds))
+                .GetJsonAsync<TbAsset[]>(cancel);
+
+            return response;
+        });
     }
 
     /// <summary>
     /// Creates assignment of the asset to customer. Customer will be able to query asset afterwards.
     /// Available for users with 'TENANT_ADMIN' authority.
     /// </summary>
-    /// <param name="assetId"></param>
     /// <param name="customerId"></param>
+    /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAsset> AssignAssetToCustomerAsync(Guid assetId, Guid customerId, CancellationToken cancel = default)
+    public Task<TbAsset> AssignAssetToCustomerAsync(Guid customerId, Guid assetId, CancellationToken cancel = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbAsset>()
+            .RetryOnUnauthorized()
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"/api/asset/{assetId}/assignToCustomer/{customerId}")
+                .PostJsonAsync(null, cancel)
+                .ReceiveJson<TbAsset>();
+
+            return response;
+        });
     }
 
     /// <summary>
@@ -179,16 +217,42 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAsset>> GetCustomerAssetInfosAsync(Guid customerId,
-        int                                                      pageSize,
-        int                                                      page,
-        string?                                                  type         = null,
-        string?                                                  textSearch   = null,
-        TbAssetSearchSortProperty?                               sortProperty = null,
-        TbSortOrder?                                             sortOrder    = null,
-        CancellationToken                                        cancel       = default)
+    public Task<TbPage<TbAssetInfo>> GetCustomerAssetInfosAsync(
+        Guid                       customerId,
+        int                        pageSize,
+        int                        page,
+        string?                    type         = null,
+        string?                    textSearch   = null,
+        TbAssetSearchSortProperty? sortProperty = null,
+        TbSortOrder?               sortOrder    = null,
+        CancellationToken          cancel       = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbPage<TbAssetInfo>>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, TbPage<TbAssetInfo>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var request = _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"/api/customer/{customerId}/assetInfos")
+                .SetQueryParam("pageSize", pageSize)
+                .SetQueryParam("page",     page);
+
+            if (!string.IsNullOrEmpty(type))
+                request.SetQueryParam("type", type);
+
+            if (!string.IsNullOrEmpty(textSearch))
+                request.SetQueryParam("textSearch", textSearch);
+
+            if (sortProperty.HasValue)
+                request.SetQueryParam("sortProperty", sortProperty);
+
+            if (sortOrder.HasValue)
+                request.SetQueryParam("sortOrder", sortOrder);
+
+            return await request.GetJsonAsync<TbPage<TbAssetInfo>>(cancel);
+        });
     }
 
     /// <summary>
@@ -203,16 +267,42 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAsset>> GetCustomerAssetAsync(Guid customerId,
-        int                                                 pageSize,
-        int                                                 page,
-        string?                                             type         = null,
-        string?                                             textSearch   = null,
-        TbAssetSearchSortProperty?                          sortProperty = null,
-        TbSortOrder?                                        sortOrder    = null,
-        CancellationToken                                   cancel       = default)
+    public Task<TbPage<TbAsset>> GetCustomerAssetAsync(
+        Guid                       customerId,
+        int                        pageSize,
+        int                        page,
+        string?                    type         = null,
+        string?                    textSearch   = null,
+        TbAssetSearchSortProperty? sortProperty = null,
+        TbSortOrder?               sortOrder    = null,
+        CancellationToken          cancel       = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbPage<TbAsset>>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, TbPage<TbAsset>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var request = _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"/api/customer/{customerId}/assets")
+                .SetQueryParam("pageSize", pageSize)
+                .SetQueryParam("page",     page);
+
+            if (!string.IsNullOrEmpty(type))
+                request.SetQueryParam("type", type);
+
+            if (!string.IsNullOrEmpty(textSearch))
+                request.SetQueryParam("textSearch", textSearch);
+
+            if (sortProperty.HasValue)
+                request.SetQueryParam("sortProperty", sortProperty);
+
+            if (sortOrder.HasValue)
+                request.SetQueryParam("sortOrder", sortOrder);
+
+            return await request.GetJsonAsync<TbPage<TbAsset>>(cancel);
+        });
     }
 
     /// <summary>
@@ -224,7 +314,19 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAsset> UnassignAssetFromCustomerAsync(Guid assetId, CancellationToken cancel = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbAsset>()
+            .RetryOnUnauthorized()
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"/api/customer/asset/{assetId}")
+                .PostJsonAsync(null, cancel)
+                .ReceiveJson<TbAsset>();
+
+            return response;
+        });
     }
 
     /// <summary>
@@ -239,15 +341,41 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAsset>> GetTenantAssetInfosAsync(int pageSize,
-        int                                                   page,
-        string?                                               type         = null,
-        string?                                               textSearch   = null,
-        TbAssetSearchSortProperty?                            sortProperty = null,
-        TbSortOrder?                                          sortOrder    = null,
-        CancellationToken                                     cancel       = default)
+    public Task<TbPage<TbAssetInfo>> GetTenantAssetInfosAsync(
+        int                        pageSize,
+        int                        page,
+        string?                    type         = null,
+        string?                    textSearch   = null,
+        TbAssetSearchSortProperty? sortProperty = null,
+        TbSortOrder?               sortOrder    = null,
+        CancellationToken          cancel       = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbPage<TbAssetInfo>>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, TbPage<TbAssetInfo>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var request = _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/tenant/assetInfos")
+                .SetQueryParam("pageSize", pageSize)
+                .SetQueryParam("page",     page);
+
+            if (!string.IsNullOrEmpty(type))
+                request.SetQueryParam("type", type);
+
+            if (!string.IsNullOrEmpty(textSearch))
+                request.SetQueryParam("textSearch", textSearch);
+
+            if (sortProperty.HasValue)
+                request.SetQueryParam("sortProperty", sortProperty);
+
+            if (sortOrder.HasValue)
+                request.SetQueryParam("sortOrder", sortOrder);
+
+            return await request.GetJsonAsync<TbPage<TbAssetInfo>>(cancel);
+        });
     }
 
     /// <summary>
@@ -257,9 +385,21 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetName">A string value representing the Asset name.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAsset> GetTenantAssetAsync(string assetName, CancellationToken cancel = default)
+    public Task<TbAsset?> GetTenantAssetAsync(string assetName, CancellationToken cancel = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbAsset?>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, null)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment($"/api/tenant/assets/{assetName}")
+                .GetJsonAsync<TbAsset>(cancel);
+
+            return response;
+        });
     }
 
     /// <summary>
@@ -274,14 +414,40 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAsset>> GetTenantAssetAsync(int pageSize,
-        int                                              page,
-        string?                                          type         = null,
-        string?                                          textSearch   = null,
-        TbAssetSearchSortProperty?                       sortProperty = null,
-        TbSortOrder?                                     sortOrder    = null,
-        CancellationToken                                cancel       = default)
+    public Task<TbPage<TbAsset>> GetTenantAssetAsync(
+        int                        pageSize,
+        int                        page,
+        string?                    type         = null,
+        string?                    textSearch   = null,
+        TbAssetSearchSortProperty? sortProperty = null,
+        TbSortOrder?               sortOrder    = null,
+        CancellationToken          cancel       = default)
     {
-        throw new NotImplementedException();
+        var policy = _builder.GetDefaultPolicy<TbPage<TbAsset>>()
+            .RetryOnUnauthorized()
+            .FallbackToValueOn(HttpStatusCode.NotFound, TbPage<TbAsset>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var request = _builder.CreateRequest(GetCustomOptions())
+                .AppendPathSegment("/api/tenant/assets")
+                .SetQueryParam("pageSize", pageSize)
+                .SetQueryParam("page",     page);
+
+            if (!string.IsNullOrEmpty(type))
+                request.SetQueryParam("type", type);
+
+            if (!string.IsNullOrEmpty(textSearch))
+                request.SetQueryParam("textSearch", textSearch);
+
+            if (sortProperty.HasValue)
+                request.SetQueryParam("sortProperty", sortProperty);
+
+            if (sortOrder.HasValue)
+                request.SetQueryParam("sortOrder", sortOrder);
+
+            return await request.GetJsonAsync<TbPage<TbAsset>>(cancel);
+        });
     }
 }

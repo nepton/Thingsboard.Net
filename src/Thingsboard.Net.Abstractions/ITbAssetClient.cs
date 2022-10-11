@@ -58,7 +58,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="query"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task FindByQueryAsync(TbAssetQueryRequest query, CancellationToken cancel = default);
+    Task<TbAsset[]> FindByQueryAsync(TbAssetQueryRequest query, CancellationToken cancel = default);
 
     /// <summary>
     /// Requested assets must be owned by tenant or assigned to customer which user is performing the request.
@@ -66,17 +66,17 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="assetIds"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAsset> GetAssetsByIdsAsync(Guid[] assetIds, CancellationToken cancel = default);
+    Task<TbAsset[]> GetAssetsByIdsAsync(Guid[] assetIds, CancellationToken cancel = default);
 
     /// <summary>
     /// Creates assignment of the asset to customer. Customer will be able to query asset afterwards.
     /// Available for users with 'TENANT_ADMIN' authority.
     /// </summary>
-    /// <param name="assetId"></param>
     /// <param name="customerId"></param>
+    /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAsset> AssignAssetToCustomerAsync(Guid assetId, Guid customerId, CancellationToken cancel = default);
+    Task<TbAsset> AssignAssetToCustomerAsync(Guid customerId, Guid assetId, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of assets info objects assigned to customer. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details. Asset Info is an extension of the default Asset object that contains information about the assigned customer name.
@@ -90,7 +90,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbPage<TbAsset>> GetCustomerAssetInfosAsync(
+    Task<TbPage<TbAssetInfo>> GetCustomerAssetInfosAsync(
         Guid                       customerId,
         int                        pageSize,
         int                        page,
@@ -143,7 +143,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbPage<TbAsset>> GetTenantAssetInfosAsync(
+    Task<TbPage<TbAssetInfo>> GetTenantAssetInfosAsync(
         int                        pageSize,
         int                        page,
         string?                    type         = null,
@@ -159,7 +159,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="assetName">A string value representing the Asset name.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAsset> GetTenantAssetAsync(string assetName, CancellationToken cancel = default);
+    Task<TbAsset?> GetTenantAssetAsync(string assetName, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of assets owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.

@@ -8,6 +8,11 @@ namespace Thingsboard.Net;
 /// <typeparam name="TSource"></typeparam>
 public class TbPage<TSource>
 {
+    /// <summary>
+    /// Empty page.
+    /// </summary>
+    public static readonly TbPage<TSource> Empty = new(0, 0, false, Array.Empty<TSource>());
+
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
     public TbPage(int totalPages, int totalElements, bool hasNext, TSource[] data)
     {
@@ -36,13 +41,4 @@ public class TbPage<TSource>
     /// The records
     /// </summary>
     public TSource[] Data { get; }
-
-    /// <summary>
-    /// The empty page collection
-    /// </summary>
-    /// <returns></returns>
-    public static TbPage<TSource> Empty()
-    {
-        return new TbPage<TSource>(0, 0, false, Array.Empty<TSource>());
-    }
 };
