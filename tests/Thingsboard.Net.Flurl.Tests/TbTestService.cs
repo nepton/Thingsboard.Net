@@ -46,7 +46,7 @@ public class TbTestService : IDisposable
         return _service.GetRequiredService<T>();
     }
 
-    public Task<TbDevice> GetDeviceByNameAsync(string deviceName, CancellationToken cancel = default)
+    public Task<TbDevice?> GetDeviceByNameAsync(string deviceName, CancellationToken cancel = default)
     {
         var deviceClient = GetRequiredService<ITbDeviceClient>();
         return deviceClient.GetTenantDeviceByNameAsync(deviceName, cancel);

@@ -76,8 +76,8 @@ public class TbAlarm
     /// </summary>
     public Dictionary<string, object> Details { get; set; } = new();
 
-    public bool Propagate         { get; set; }
-    public bool PropagateToOwner  { get; set; }
-    public bool PropagateToTenant { get; set; }
+    public bool      Propagate              { get; set; }
+    public bool      PropagateToOwner       { get; set; }
+    public bool      PropagateToTenant      { get; set; }
     public string[]? PropagateRelationTypes { get; set; }
 }

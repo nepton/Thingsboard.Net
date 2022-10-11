@@ -13,12 +13,13 @@ public class SaveEntityTelemetryTester
         var       deviceId = service.GetTestDeviceId();
 
         // act
-        var ex = await Record.ExceptionAsync(async () =>
-        {
-            await api.SaveEntityTelemetryAsync(TbEntityType.DEVICE, deviceId, new {temperature = 42});
-        });
+        await api.SaveEntityTelemetryAsync(TbEntityType.DEVICE, deviceId, new {temperature = 42});
+        // var ex = await Record.ExceptionAsync(async () =>
+        // {
+        //     await api.SaveEntityTelemetryAsync(TbEntityType.DEVICE, deviceId, new {temperature = 42});
+        // });
 
         // act
-        Assert.Null(ex);
+        // Assert.Null(ex);
     }
 }

@@ -13,7 +13,7 @@ public class AlarmFlowTests
         // arrange
         using var service = new TbTestService();
         var       api     = service.GetRequiredService<ITbAlarmClient>();
-        var       device  = await service.GetDeviceByNameAsync("Test Device A1");
+        var       device  = await service.GetDeviceByNameAsync("Test Device A1") ?? throw new Exception("Device not found");
 
         // act
         var newAlarm = new TbAlarm

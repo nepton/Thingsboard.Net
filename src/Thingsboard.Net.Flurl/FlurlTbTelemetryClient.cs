@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 using Thingsboard.Net.Flurl.Utilities.Implements;
@@ -46,11 +47,12 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         var policy = _builder.GetPolicyBuilder(CustomOptions)
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{deviceId}/{scope}")
                 .PostJsonAsync(value, cancel);
         });
@@ -76,9 +78,9 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{deviceId}/{scope}")
                 .SetQueryParam("keys", keys.JoinWith(","))
                 .DeleteAsync(cancel);
@@ -116,11 +118,12 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         var policy = _builder.GetPolicyBuilder(CustomOptions)
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/attributes/{scope}")
                 .PostJsonAsync(value, cancel);
         });
@@ -147,9 +150,9 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/{scope}")
                 .SetQueryParam("keys", keys.JoinWith(","))
                 .DeleteAsync(cancel);
@@ -260,9 +263,9 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY")
                 .PostJsonAsync(telemetry, cancel);
         });
@@ -294,9 +297,9 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            return _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY/{ttl}")
                 .PostJsonAsync(telemetry, cancel);
         });
@@ -334,17 +337,16 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/delete")
                 .SetQueryParam("keys",                   keys.JoinWith(","))
                 .SetQueryParam("deleteAllDataForKeys",   deleteAllDataForKeys)
                 .SetQueryParam("startTs",                startTs?.ToJavaScriptTicks())
                 .SetQueryParam("endTs",                  endTs?.ToJavaScriptTicks())
-                .SetQueryParam("rewriteLatestIfDeleted", rewriteLatestIfDeleted);
-
-            return request.DeleteAsync(cancel);
+                .SetQueryParam("rewriteLatestIfDeleted", rewriteLatestIfDeleted)
+                .DeleteAsync(cancel);
         });
     }
 

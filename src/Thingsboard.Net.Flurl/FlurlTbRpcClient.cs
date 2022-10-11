@@ -35,7 +35,7 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/oneway/{deviceId}")
                 .PostJsonAsync(request, cancel);
         });
@@ -76,11 +76,12 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         var policy = _builder.GetPolicyBuilder(CustomOptions)
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, ()=> throw new TbEntityNotFoundException(TbEntityType.RPC, rpcId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/persistent/{rpcId}")
                 .DeleteAsync(cancel);
         });
@@ -151,7 +152,7 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(CustomOptions)
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/twoway/{deviceId}")
                 .PostJsonAsync(request, cancel);
         });

@@ -117,30 +117,13 @@ public class FlurlRequestBuilder : IRequestBuilder
                     if (string.IsNullOrEmpty(text))
                         throw new TbHttpException($"StatusCode is {statusCode}, no response body", statusCode, DateTime.Now, -1);
 
-                    try
-                    {
-                        var error = JsonConvert.DeserializeObject<TbErrorResponse>(text);
+                    var error = text.TryDeserializeObject<TbErrorResponse>();
+                    if (error != null)
                         throw new TbHttpException(error.Message ?? "", (HttpStatusCode) error.Status, error.Timestamp, error.ErrorCode);
-                    }
-                    catch
-                    {
-                        // BE CAREFUL, sometimes (like 400 of saveEntityAttributes) the response body is not a json string
-                        throw new TbHttpException(text, statusCode, DateTime.Now, -1);
-                    }
+
+                    // BE CAREFUL, sometimes (like 400 of saveEntityAttributes) the response body is not a json string
+                    throw new TbHttpException(text, statusCode, DateTime.Now, -1);
                 }
-            })
-            .OnError(async call =>
-            {
-                _logger.LogWarning(call.Exception,
-                    "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}\n" +
-                    "request body {RequestBody}\n" +
-                    "response body {ResponseBody}",
-                    call.Request.Verb,
-                    call.Request.Url,
-                    call.Response.StatusCode,
-                    call.Duration?.TotalMilliseconds,
-                    call.RequestBody,
-                    await call.Response.GetStringAsync());
             });
 
         return flurl;

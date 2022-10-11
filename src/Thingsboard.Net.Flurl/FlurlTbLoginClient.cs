@@ -21,7 +21,7 @@ public class FlurlTbLoginClient : FlurlTbClient<ITbLoginClient>, ITbLoginClient
 
     public async Task<TbLoginToken> LoginAsync(TbLoginUser loginRequest, CancellationToken cancel = default)
     {
-        var policy = _requestBuilder.GetPolicyBuilder(CustomOptions)
+        var policy = _requestBuilder.GetPolicyBuilder<TbLoginToken>(CustomOptions)
             .RetryOnHttpTimeout()
             .Build();
 

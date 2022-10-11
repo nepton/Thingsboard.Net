@@ -3,13 +3,17 @@ using Newtonsoft.Json;
 
 namespace Thingsboard.Net.Flurl.Utilities.Implements;
 
-public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime>
+/// <summary>
+/// Convert a long value from 1970 to a DateTime value
+/// NOTE, Must handling DateTime?
+/// </summary>
+public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime?>
 {
     /// <summary>Writes the JSON representation of the object.</summary>
     /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
     /// <param name="value">The value.</param>
     /// <param name="serializer">The calling serializer.</param>
-    public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
     {
         writer.WriteValue(value.ToJavaScriptTicks());
     }
@@ -21,7 +25,7 @@ public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime>
     /// <param name="hasExistingValue">The existing value has a value.</param>
     /// <param name="serializer">The calling serializer.</param>
     /// <returns>The object value.</returns>
-    public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override DateTime? ReadJson(JsonReader reader, Type objectType, DateTime? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         try
         {
