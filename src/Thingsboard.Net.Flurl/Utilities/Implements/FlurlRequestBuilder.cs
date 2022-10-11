@@ -63,7 +63,7 @@ public class FlurlRequestBuilder : IRequestBuilder
         options = _defaultOptions.MergeWith(options);
 
         var flurl = GetUrl(options)
-            .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? _defaultOptions.TimeoutInSec ?? 10))
+            .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? 10))
             .ConfigureRequest(action =>
             {
                 // Setup for newtonsoft json

@@ -30,7 +30,7 @@ public class RequestPolicyBuilder<TResult>
 
     public RequestPolicyBuilder<TResult> RetryOnHttpTimeout()
     {
-        return RetryOnHttpTimeout(_options.TimeoutRetryTimes ?? 3, _options.TimeoutRetryWaitInSec ?? 1);
+        return RetryOnHttpTimeout(_options.RetryTimes ?? 3, _options.RetryIntervalInSec ?? 1);
     }
 
     public RequestPolicyBuilder<TResult> RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)
@@ -95,7 +95,7 @@ public class RequestPolicyBuilder
 
     public RequestPolicyBuilder RetryOnHttpTimeout()
     {
-        return RetryOnHttpTimeout(_options.TimeoutRetryTimes ?? 3, _options.TimeoutRetryWaitInSec ?? 1);
+        return RetryOnHttpTimeout(_options.RetryTimes ?? 3, _options.RetryIntervalInSec ?? 1);
     }
 
     public RequestPolicyBuilder RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)

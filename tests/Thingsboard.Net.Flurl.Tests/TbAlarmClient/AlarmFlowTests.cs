@@ -37,7 +37,8 @@ public class AlarmFlowTests
             PropagateToTenant      = false,
             PropagateRelationTypes = null,
         };
-        await api.SaveAlarmAsync(newAlarm);
+        await api
+            .SaveAlarmAsync(newAlarm);
 
         // assert
         Assert.True(true);
