@@ -272,7 +272,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
         int?                   interval           = null,
         int?                   limit              = null,
         TbTimeSeriesAggregate? agg                = null,
-        TbSortOrderDirection?  orderBy            = null,
+        TbSortOrder?  orderBy            = null,
         bool?                  useStrictDataTypes = null,
         CancellationToken      cancel             = default);
 

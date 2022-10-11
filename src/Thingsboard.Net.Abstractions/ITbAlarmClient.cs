@@ -22,7 +22,7 @@ public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
         TbAlarmStatus?        status       = null,
         string?               textSearch   = null,
         TbAlarmSortProperty?  sortProperty = null,
-        TbSortOrderDirection? sortOrder    = null,
+        TbSortOrder? sortOrder    = null,
         DateTime?             startTime    = null,
         DateTime?             endTime      = null,
         CancellationToken     cancel       = default);

@@ -1,6 +1,6 @@
 ﻿namespace Thingsboard.Net;
 
-public enum TbSortOrderDirection
+public enum TbSortOrder
 {
     ASC,
     DESC

@@ -11,7 +11,7 @@ namespace Thingsboard.Net
 
         public int PageSize { get; set; }
 
-        public TbSortOrder? SortOrder { get; set; }
+        public TbEntityQuerySortOrder? SortOrder { get; set; }
 
         public string? TextSearch { get; set; }
     }

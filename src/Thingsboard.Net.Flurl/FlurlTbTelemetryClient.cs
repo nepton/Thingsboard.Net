@@ -384,7 +384,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         int?                   interval           = null,
         int?                   limit              = null,
         TbTimeSeriesAggregate? agg                = null,
-        TbSortOrderDirection?  orderBy            = null,
+        TbSortOrder?  orderBy            = null,
         bool?                  useStrictDataTypes = null,
         CancellationToken      cancel             = default)
     {

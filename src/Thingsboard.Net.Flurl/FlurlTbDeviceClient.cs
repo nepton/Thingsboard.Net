@@ -69,7 +69,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         Guid?                      deviceProfileId,
         string?                    textSearch,
         TbDeviceSearchSortProperty sortProperty,
-        TbSortOrderDirection       sortOrder,
+        TbSortOrder       sortOrder,
         CancellationToken          cancel = default)
     {
         var policy = _builder.GetDefaultPolicy<TbPage<TbDevice>>().RetryOnUnauthorized().Build();
@@ -111,7 +111,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         string?                    type,
         string?                    textSearch,
         TbDeviceSearchSortProperty sortProperty,
-        TbSortOrderDirection       sortOrder,
+        TbSortOrder       sortOrder,
         CancellationToken          cancel = default)
     {
         var policy = _builder.GetDefaultPolicy<TbPage<TbDevice>>().RetryOnUnauthorized().Build();
@@ -200,7 +200,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         string?               type         = null,
         string?               textSearch   = null,
         string?               sortProperty = null,
-        TbSortOrderDirection? sortOrder    = null,
+        TbSortOrder? sortOrder    = null,
         int                   page         = 0,
         int                   pageSize     = 20,
         CancellationToken     cancel       = default)
@@ -384,7 +384,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         Guid?                       deviceProfileId = null,
         string?                     textSearch      = null,
         TbDeviceSearchSortProperty? sortProperty    = null,
-        TbSortOrderDirection?       sortOrder       = null,
+        TbSortOrder?       sortOrder       = null,
         CancellationToken           cancel          = default)
     {
         var policy = _builder.GetDefaultPolicy<TbPage<TbDeviceInfo>>()
@@ -451,7 +451,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         string?                     type         = null,
         string?                     textSearch   = null,
         TbDeviceSearchSortProperty? sortProperty = null,
-        TbSortOrderDirection?       sortOrder    = null,
+        TbSortOrder?       sortOrder    = null,
         CancellationToken           cancel       = default)
     {
         var policy = _builder.GetDefaultPolicy<TbPage<TbDevice>>()
