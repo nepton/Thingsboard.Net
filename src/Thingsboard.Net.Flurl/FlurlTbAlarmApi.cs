@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -17,30 +18,58 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     }
 
     /// <summary>
-    /// Returns a page of alarms for the selected entity. Specifying both parameters 'searchStatus' and 'status' at the same time will cause an error. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
+    /// Creates or Updates the Alarm. When creating alarm, platform generates Alarm Id as time-based UUID. The newly created Alarm id will be present in the response. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error.
     /// </summary>
+    /// <param name="alarm"></param>
+    /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAlarm>> GetAlarmsAsync(
-        TbEntityType          entityType,
-        Guid                  entityId,
-        int                   pageSize,
-        int                   page,
-        TbAlarmSearchStatus?  searchStatus = null,
-        TbAlarmStatus?        status       = null,
-        string?               textSearch   = null,
-        TbAlarmSortProperty?  sortProperty = null,
-        TbSortOrder? sortOrder    = null,
-        DateTime?             startTime    = null,
-        DateTime?             endTime      = null,
-        CancellationToken     cancel       = default)
+    public Task<TbAlarm> SaveAlarmAsync(TbAlarm alarm, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbPage<TbAlarm>>()
+        if (alarm == null) throw new ArgumentNullException(nameof(alarm));
+
+        var policy = _builder.GetPolicyBuilder<TbAlarm>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder.CreateRequest(GetCustomOptions())
+            var response = await _builder.CreateRequest(CustomOptions)
+                .AppendPathSegment("api/alarm")
+                .PostJsonAsync(alarm, cancel)
+                .ReceiveJson<TbAlarm>();
+
+            return response;
+        });
+    }
+
+    /// <summary>
+    /// Returns a page of alarms for the selected entity. Specifying both parameters 'searchStatus' and 'status' at the same time will cause an error. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
+    /// </summary>
+    /// <returns></returns>
+    public Task<TbPage<TbAlarm>> GetAlarmsAsync(
+        TbEntityType         entityType,
+        Guid                 entityId,
+        int                  pageSize,
+        int                  page,
+        TbAlarmSearchStatus? searchStatus = null,
+        TbAlarmStatus?       status       = null,
+        string?              textSearch   = null,
+        TbAlarmSortProperty? sortProperty = null,
+        TbSortOrder?         sortOrder    = null,
+        DateTime?            startTime    = null,
+        DateTime?            endTime      = null,
+        CancellationToken    cancel       = default)
+    {
+        var policy = _builder.GetPolicyBuilder<TbPage<TbAlarm>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAlarm>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/alarm/{entityType}/{entityId}")
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
@@ -50,10 +79,9 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
                 .SetQueryParam("sortProperty", sortProperty)
                 .SetQueryParam("sortOrder",    sortOrder)
                 .SetQueryParam("startTime",    startTime)
-                .SetQueryParam("endTime",      endTime)
-                .GetJsonAsync<TbPage<TbAlarm>>(cancel);
+                .SetQueryParam("endTime",      endTime);
 
-            return result;
+            return await request.GetJsonAsync<TbPage<TbAlarm>>(cancel);
         });
     }
 
@@ -65,14 +93,15 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task<TbAlarm?> GetAlarmByIdAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbAlarm?>()
+        var policy = _builder.GetPolicyBuilder<TbAlarm?>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackToValueOnNotFound(null)
+            .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder.CreateRequest(GetCustomOptions())
+            var result = await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/alarm/{alarmId}")
                 .GetJsonAsync<TbAlarm?>(cancel);
 
@@ -88,13 +117,14 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task AcknowledgeAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(GetCustomOptions())
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/ack")
                 .PostJsonAsync(null, cancel);
         });
@@ -108,35 +138,16 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task ClearAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(GetCustomOptions())
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/clear")
                 .PostJsonAsync(null, cancel);
-        });
-    }
-
-    /// <summary>
-    /// Creates or Updates the Alarm. When creating alarm, platform generates Alarm Id as time-based UUID. The newly created Alarm id will be present in the response. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error.
-    /// </summary>
-    /// <param name="alarm"></param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public Task SaveAlarmAsync(TbAlarm alarm, CancellationToken cancel = default)
-    {
-        var policy = _builder.GetDefaultPolicy()
-            .RetryOnUnauthorized()
-            .Build();
-
-        return policy.ExecuteAsync(async () =>
-        {
-            await _builder.CreateRequest(GetCustomOptions())
-                .AppendPathSegment("api/alarm")
-                .PostJsonAsync(alarm, cancel);
         });
     }
 
@@ -148,13 +159,14 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(GetCustomOptions())
+            await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/alarm/{alarmId}")
                 .DeleteAsync(cancel);
         });

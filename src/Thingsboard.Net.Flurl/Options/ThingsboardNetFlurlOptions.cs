@@ -25,7 +25,9 @@ public sealed class ThingsboardNetFlurlOptions
     /// </summary>
     public int? DynamicTokenExpiresInSec { get; set; }
 
-    public int? TimeoutInSec { get; set; }
+    public int? TimeoutInSec          { get; set; }
+    public int? TimeoutRetryTimes     { get; set; }
+    public int? TimeoutRetryWaitInSec { get; set; }
 
     /// <summary>
     /// Merge default options with custom options
@@ -41,7 +43,7 @@ public sealed class ThingsboardNetFlurlOptions
         {
             Username                 = customOptions.Username ?? Username,
             Password                 = customOptions.Password ?? Password,
-            BaseUrl                      = customOptions.BaseUrl ?? BaseUrl,
+            BaseUrl                  = customOptions.BaseUrl ?? BaseUrl,
             DynamicTokenExpiresInSec = customOptions.DynamicTokenExpiresInSec ?? DynamicTokenExpiresInSec,
             TimeoutInSec             = customOptions.TimeoutInSec ?? TimeoutInSec
         };

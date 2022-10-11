@@ -1,9 +1,9 @@
 ﻿namespace Thingsboard.Net;
 
-public class TbLoginResponse
+public class TbLoginToken
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbLoginResponse(string? token, string? refreshToken)
+    public TbLoginToken(string? token, string? refreshToken)
     {
         Token        = token;
         RefreshToken = refreshToken;

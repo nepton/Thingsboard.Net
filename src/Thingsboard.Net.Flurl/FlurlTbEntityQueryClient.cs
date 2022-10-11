@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Thingsboard.Net.Flurl.Utilities;
@@ -23,13 +24,15 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <returns></returns>
     public async Task<TbPage<TbEntity>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder<TbPage<TbEntity>>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbEntity>.Empty)
             .Build();
 
         return await policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(GetCustomOptions())
+            var response = await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment("/api/entitiesQuery/find")
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<TbPage<TbEntity>>();
@@ -46,13 +49,15 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <returns></returns>
     public Task<int> CountEntityDataByQueryAsync(TbCountEntityDataRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder<int>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, 0)
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(GetCustomOptions())
+            var response = await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment("/api/entitiesQuery/count")
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<int>();

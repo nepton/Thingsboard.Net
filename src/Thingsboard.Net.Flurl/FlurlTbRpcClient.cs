@@ -27,15 +27,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID. In case of lightweight RPC, the result of this call is either 200 OK if the message was sent to device, or 504 Gateway Timeout if device is offline.</returns>
     public Task SendOneWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder
-            .GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.GatewayTimeout, () => throw new TbDeviceRpcException(TbDeviceRpcErrorCode.Timeout))
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(GetCustomOptions())
+            return await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/oneway/{deviceId}")
                 .PostJsonAsync(request, cancel);
         });
@@ -50,15 +50,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns></returns>
     public Task<TbRpc?> GetPersistentRpcAsync(Guid rpcId, CancellationToken cancel = default)
     {
-        var policy = _builder
-            .GetDefaultPolicy<TbRpc?>()
+        var policy = _builder.GetPolicyBuilder<TbRpc?>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackToValueOn(HttpStatusCode.NotFound, null)
+            .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(GetCustomOptions())
+            return await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/persistent/{rpcId}")
                 .GetJsonAsync<TbRpc>(cancel);
         });
@@ -73,14 +73,14 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns></returns>
     public Task DeletePersistentRpcAsync(Guid rpcId, CancellationToken cancel = default)
     {
-        var policy = _builder
-            .GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(GetCustomOptions())
+            return await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/persistent/{rpcId}")
                 .DeleteAsync(cancel);
         });
@@ -107,14 +107,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         TbSortOrder?            sortOrder    = null,
         CancellationToken       cancel       = default)
     {
-        var policy = _builder
-            .GetDefaultPolicy<TbPage<TbRpc>>()
+        var policy = _builder.GetPolicyBuilder<TbPage<TbRpc>>(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbRpc>.Empty)
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/persistent/{deviceId}")
                 .SetQueryParam("pageSize", pageSize)
                 .SetQueryParam("page",     page);
@@ -142,15 +143,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID. In case of lightweight RPC, the result of this call is the response from device, or 504 Gateway Timeout if device is offline.</returns>
     public Task SendTwoWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder
-            .GetDefaultPolicy()
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.GatewayTimeout, () => throw new TbDeviceRpcException(TbDeviceRpcErrorCode.Timeout))
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            return await _builder.CreateRequest(GetCustomOptions())
+            return await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/rpc/twoway/{deviceId}")
                 .PostJsonAsync(request, cancel);
         });

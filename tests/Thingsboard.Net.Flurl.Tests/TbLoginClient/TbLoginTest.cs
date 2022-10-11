@@ -19,7 +19,7 @@ public class TbLoginTests
         var       loginApi = service.GetRequiredService<ITbLoginClient>();
 
         // act
-        var loginRequest  = new TbLoginRequest(options.Username!, options.Password!);
+        var loginRequest  = new TbLoginUser(options.Username!, options.Password!);
         var loginResponse = await loginApi.LoginAsync(loginRequest);
 
         // assert
@@ -37,7 +37,7 @@ public class TbLoginTests
         var       loginApi = service.GetRequiredService<ITbLoginClient>();
 
         // act
-        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await loginApi.LoginAsync(new TbLoginRequest("wrongUsername", options.Password!)));
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await loginApi.LoginAsync(new TbLoginUser("wrongUsername", options.Password!)));
 
         // assert
         Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);

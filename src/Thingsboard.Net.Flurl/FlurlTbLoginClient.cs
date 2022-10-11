@@ -19,17 +19,19 @@ public class FlurlTbLoginClient : FlurlTbClient<ITbLoginClient>, ITbLoginClient
         _requestBuilder = requestBuilder;
     }
 
-    public async Task<TbLoginResponse> LoginAsync(TbLoginRequest loginRequest, CancellationToken cancel = default)
+    public async Task<TbLoginToken> LoginAsync(TbLoginUser loginRequest, CancellationToken cancel = default)
     {
-        var policy = _requestBuilder.GetDefaultPolicy().Build();
+        var policy = _requestBuilder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .Build();
 
         return await policy.ExecuteAsync(async () =>
         {
             var response = await _requestBuilder
-                .CreateRequest(GetCustomOptions(), false)
+                .CreateRequest(CustomOptions, false)
                 .AppendPathSegment("api/auth/login")
                 .PostJsonAsync(loginRequest, cancel)
-                .ReceiveJson<TbLoginResponse>();
+                .ReceiveJson<TbLoginToken>();
 
             return response;
         });

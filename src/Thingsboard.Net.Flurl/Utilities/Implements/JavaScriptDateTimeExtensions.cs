@@ -5,7 +5,7 @@ namespace Thingsboard.Net.Flurl.Utilities.Implements
     /// <summary>
     /// 一个把 javascript 时间戳转换为 DateTime 的工具类
     /// </summary>
-    public static class DateTimeJavaScriptExtensions
+    public static class JavaScriptDateTimeExtensions
     {
         private static readonly long InitialJavaScriptDateTicks = 621355968000000000;
 

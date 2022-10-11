@@ -16,5 +16,5 @@ public interface ITbLoginClient : ITbClient<ITbLoginClient>
     /// <param name="request"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbLoginResponse> LoginAsync(TbLoginRequest request, CancellationToken cancel = default);
+    Task<TbLoginToken> LoginAsync(TbLoginUser request, CancellationToken cancel = default);
 }

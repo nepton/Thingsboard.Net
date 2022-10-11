@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -41,32 +42,24 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                      actionType,
         CancellationToken            cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbPage<TbAudit>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment("/api/audit/logs")
-                .SetQueryParam("pageSize", pageSize)
-                .SetQueryParam("page",     page);
-
-            if (!string.IsNullOrEmpty(textSearch))
-                request = request.SetQueryParam("textSearch", textSearch);
-
-            if (sortProperty.HasValue)
-                request = request.SetQueryParam("sortProperty", sortProperty);
-
-            if (sortOrder.HasValue)
-                request = request.SetQueryParam("sortOrder", sortOrder);
-
-            if (startTime.HasValue)
-                request = request.SetQueryParam("startTime", startTime.ToJavaScriptTicks());
-
-            if (endTime.HasValue)
-                request = request.SetQueryParam("endTime", endTime.ToJavaScriptTicks());
-
-            if (!string.IsNullOrEmpty(actionType))
-                request = request.SetQueryParam("actionType", actionType);
+                .SetQueryParam("pageSize",     pageSize)
+                .SetQueryParam("page",         page)
+                .SetQueryParam("textSearch",   textSearch)
+                .SetQueryParam("sortProperty", sortProperty)
+                .SetQueryParam("sortOrder",    sortOrder)
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks())
+                .SetQueryParam("actionType",   actionType);
 
             return await request.GetJsonAsync<TbPage<TbAudit>>(cancel);
         });
@@ -99,32 +92,24 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                      actionType,
         CancellationToken            cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbPage<TbAudit>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/audit/logs/customer/{customerId}")
-                .SetQueryParam("pageSize", pageSize)
-                .SetQueryParam("page",     page);
-
-            if (!string.IsNullOrEmpty(textSearch))
-                request = request.SetQueryParam("textSearch", textSearch);
-
-            if (sortProperty.HasValue)
-                request = request.SetQueryParam("sortProperty", sortProperty);
-
-            if (sortOrder.HasValue)
-                request = request.SetQueryParam("sortOrder", sortOrder);
-
-            if (startTime.HasValue)
-                request = request.SetQueryParam("startTime", startTime.ToJavaScriptTicks());
-
-            if (endTime.HasValue)
-                request = request.SetQueryParam("endTime", endTime.ToJavaScriptTicks());
-
-            if (!string.IsNullOrEmpty(actionType))
-                request = request.SetQueryParam("actionType", actionType);
+                .SetQueryParam("pageSize",     pageSize)
+                .SetQueryParam("page",         page)
+                .SetQueryParam("textSearch",   textSearch)
+                .SetQueryParam("sortProperty", sortProperty)
+                .SetQueryParam("sortOrder",    sortOrder)
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks())
+                .SetQueryParam("actionType",   actionType);
 
             return await request.GetJsonAsync<TbPage<TbAudit>>(cancel);
         });
@@ -159,32 +144,24 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                      actionType,
         CancellationToken            cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbPage<TbAudit>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/audit/logs/entity/{entityType}/{entityId}")
-                .SetQueryParam("pageSize", pageSize)
-                .SetQueryParam("page",     page);
-
-            if (!string.IsNullOrEmpty(textSearch))
-                request = request.SetQueryParam("textSearch", textSearch);
-
-            if (sortProperty.HasValue)
-                request = request.SetQueryParam("sortProperty", sortProperty);
-
-            if (sortOrder.HasValue)
-                request = request.SetQueryParam("sortOrder", sortOrder);
-
-            if (startTime.HasValue)
-                request = request.SetQueryParam("startTime", startTime.ToJavaScriptTicks());
-
-            if (endTime.HasValue)
-                request = request.SetQueryParam("endTime", endTime.ToJavaScriptTicks());
-
-            if (!string.IsNullOrEmpty(actionType))
-                request = request.SetQueryParam("actionType", actionType);
+                .SetQueryParam("pageSize",     pageSize)
+                .SetQueryParam("page",         page)
+                .SetQueryParam("textSearch",   textSearch)
+                .SetQueryParam("sortProperty", sortProperty)
+                .SetQueryParam("sortOrder",    sortOrder)
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks())
+                .SetQueryParam("actionType",   actionType);
 
             return await request.GetJsonAsync<TbPage<TbAudit>>(cancel);
         });
@@ -217,32 +194,24 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                      actionType,
         CancellationToken            cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbPage<TbAudit>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/audit/logs/user/{userId}")
-                .SetQueryParam("pageSize", pageSize)
-                .SetQueryParam("page",     page);
-
-            if (!string.IsNullOrEmpty(textSearch))
-                request = request.SetQueryParam("textSearch", textSearch);
-
-            if (sortProperty.HasValue)
-                request = request.SetQueryParam("sortProperty", sortProperty);
-
-            if (sortOrder.HasValue)
-                request = request.SetQueryParam("sortOrder", sortOrder);
-
-            if (startTime.HasValue)
-                request = request.SetQueryParam("startTime", startTime.ToJavaScriptTicks());
-
-            if (endTime.HasValue)
-                request = request.SetQueryParam("endTime", endTime.ToJavaScriptTicks());
-
-            if (!string.IsNullOrEmpty(actionType))
-                request = request.SetQueryParam("actionType", actionType);
+                .SetQueryParam("pageSize",     pageSize)
+                .SetQueryParam("page",         page)
+                .SetQueryParam("textSearch",   textSearch)
+                .SetQueryParam("sortProperty", sortProperty)
+                .SetQueryParam("sortOrder",    sortOrder)
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks())
+                .SetQueryParam("actionType",   actionType);
 
             return await request.GetJsonAsync<TbPage<TbAudit>>(cancel);
         });

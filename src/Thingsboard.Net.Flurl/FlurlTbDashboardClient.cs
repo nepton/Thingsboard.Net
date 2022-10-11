@@ -24,11 +24,14 @@ public class FlurlTbDashboardClient : FlurlTbClient<ITbDashboardClient>, ITbDash
     /// <returns></returns>
     public Task<DateTime> GetServerTimeAsync(CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<DateTime>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<DateTime>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(GetCustomOptions())
+            var response = await _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment("/api/dashboard/serverTime")
                 .GetStringAsync(cancel);
 

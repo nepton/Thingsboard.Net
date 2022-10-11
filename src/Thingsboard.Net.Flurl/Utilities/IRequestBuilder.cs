@@ -1,6 +1,4 @@
-﻿using System;
-using Flurl.Http;
-using Thingsboard.Net.Exceptions;
+﻿using Flurl.Http;
 using Thingsboard.Net.Flurl.Options;
 
 namespace Thingsboard.Net.Flurl.Utilities;
@@ -16,18 +14,18 @@ public interface IRequestBuilder
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TbException"></exception>
     /// <exception cref="TbHttpException"></exception>
-    IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions customOptions, bool requireAuthorization = true);
+    IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions? customOptions, bool requireAuthorization = true);
 
     /// <summary>
     /// Create a new FlurlRequest with a retry policy
     /// </summary>
     /// <returns></returns>
-    RequestPolicyBuilder GetDefaultPolicy();
+    RequestPolicyBuilder GetPolicyBuilder(ThingsboardNetFlurlOptions? customOptions);
 
     /// <summary>
     /// Create a new FlurlRequest with a retry policy
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
-    RequestPolicyBuilder<TResult> GetDefaultPolicy<TResult>();
+    RequestPolicyBuilder<TResult> GetPolicyBuilder<TResult>(ThingsboardNetFlurlOptions? customOptions);
 }

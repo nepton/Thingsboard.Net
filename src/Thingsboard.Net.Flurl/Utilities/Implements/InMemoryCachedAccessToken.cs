@@ -59,7 +59,7 @@ public class InMemoryCachedAccessToken : IAccessToken
             }
         }
 
-        var response = await _auth.LoginAsync(new TbLoginRequest(credentials.Username, credentials.Password), cancel);
+        var response = await _auth.LoginAsync(new TbLoginUser(credentials.Username, credentials.Password), cancel);
         if (response.Token is not {Length: > 0})
             throw new TbException("Failed to get access token");
 

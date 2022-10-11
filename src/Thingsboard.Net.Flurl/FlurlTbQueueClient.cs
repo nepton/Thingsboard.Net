@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -37,11 +38,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
         TbSortOrder?              sortOrder    = null,
         CancellationToken         cancel       = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbPage<TbQueue>>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbPage<TbQueue>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbQueue>.Empty)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/queues")
                 .SetQueryParam("serviceType", serviceType)
                 .SetQueryParam("pageSize",    pageSize)
@@ -71,11 +76,14 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancellationToken = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbQueue>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbQueue>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/queues")
                 .SetQueryParam("serviceType", serviceType);
 
@@ -92,11 +100,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByIdAsync(Guid queueId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbQueue?>().RetryOnUnauthorized().FallbackToValueOnNotFound(null).Build();
+        var policy = _builder.GetPolicyBuilder<TbQueue?>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, null)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/queues/{queueId}");
 
             return await request.GetJsonAsync<TbQueue?>(cancel);
@@ -112,11 +124,14 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task DeleteQueueAsync(Guid queueId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/queues/{queueId}");
 
             await request.DeleteAsync(cancel);
@@ -132,11 +147,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByNameAsync(string queueName, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<TbQueue?>().RetryOnUnauthorized().FallbackToValueOnNotFound(null).Build();
+        var policy = _builder.GetPolicyBuilder<TbQueue?>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, null)
+            .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"/api/queues/name/{queueName}");
 
             return await request.GetJsonAsync<TbQueue>(cancel);

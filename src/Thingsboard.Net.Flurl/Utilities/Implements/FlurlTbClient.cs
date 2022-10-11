@@ -7,10 +7,7 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient> where TClient 
 {
     private readonly ThingsboardNetFlurlOptions _options = new();
 
-    protected ThingsboardNetFlurlOptions GetCustomOptions()
-    {
-        return _options;
-    }
+    protected ThingsboardNetFlurlOptions? CustomOptions => _options;
 
     public TClient WithCredentials(string username, string? password)
     {

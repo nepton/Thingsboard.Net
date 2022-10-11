@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 using Thingsboard.Net.Flurl.Utilities.Implements;
 
@@ -41,11 +43,14 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task SaveDeviceAttributesAsync(Guid deviceId, TbAttributeScope scope, object value, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{deviceId}/{scope}")
                 .PostJsonAsync(value, cancel);
         });
@@ -62,13 +67,20 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task DeleteDeviceAttributesAsync(Guid deviceId, TbAttributeScope scope, string[] keys, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        if (keys == null) throw new ArgumentNullException(nameof(keys));
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
+
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{deviceId}/{scope}")
-                .SetQueryParam("keys", string.Join(",", keys))
+                .SetQueryParam("keys", keys.JoinWith(","))
                 .DeleteAsync(cancel);
         });
     }
@@ -101,11 +113,14 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task SaveEntityAttributesAsync(TbEntityType entityType, Guid entityId, TbAttributeScope scope, object value, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/attributes/{scope}")
                 .PostJsonAsync(value, cancel);
         });
@@ -124,14 +139,19 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     public Task DeleteEntityAttributesAsync(TbEntityType entityType, Guid entityId, TbAttributeScope scope, string[] keys, CancellationToken cancel = default)
     {
         if (keys == null) throw new ArgumentNullException(nameof(keys));
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
 
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/{scope}")
-                .SetQueryParam("keys", string.Join(",", keys))
+                .SetQueryParam("keys", keys.JoinWith(","))
                 .DeleteAsync(cancel);
         });
     }
@@ -149,11 +169,15 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task<string[]> GetAttributeKeysAsync(TbEntityType entityType, Guid entityId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<string[]>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<string[]>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/keys/attributes")
                 .GetJsonAsync<string[]>(cancel);
         });
@@ -173,11 +197,15 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task<string[]> GetAttributeKeysByScopeAsync(TbEntityType entityType, Guid entityId, TbAttributeScope scope, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<string[]>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<string[]>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/keys/attributes/{scope}")
                 .GetJsonAsync<string[]>(cancel);
         });
@@ -193,11 +221,15 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task<string[]> GetTimeSeriesKeysAsync(TbEntityType entityType, Guid entityId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetDefaultPolicy<string[]>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<string[]>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/keys/timeseries")
                 .GetJsonAsync<string[]>(cancel);
         });
@@ -222,11 +254,15 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     {
         if (telemetry == null) throw new ArgumentNullException(nameof(telemetry));
 
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY")
                 .PostJsonAsync(telemetry, cancel);
         });
@@ -252,11 +288,15 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     {
         if (telemetry == null) throw new ArgumentNullException(nameof(telemetry));
 
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY/{ttl}")
                 .PostJsonAsync(telemetry, cancel);
         });
@@ -286,25 +326,23 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         CancellationToken cancel                 = default)
     {
         if (keys == null) throw new ArgumentNullException(nameof(keys));
-        var policy = _builder.GetDefaultPolicy().RetryOnUnauthorized().Build();
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
+
+        var policy = _builder.GetPolicyBuilder(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/delete")
-                .SetQueryParam("keys", string.Join(",", keys));
-
-            if (deleteAllDataForKeys.HasValue)
-                request = request.SetQueryParam("deleteAllDataForKeys", deleteAllDataForKeys.Value);
-
-            if (startTs.HasValue)
-                request = request.SetQueryParam("startTs", startTs.ToJavaScriptTicks());
-
-            if (endTs.HasValue)
-                request = request.SetQueryParam("endTs", endTs.ToJavaScriptTicks());
-
-            if (rewriteLatestIfDeleted.HasValue)
-                request = request.SetQueryParam("rewriteLatestIfDeleted", rewriteLatestIfDeleted.Value);
+                .SetQueryParam("keys",                   keys.JoinWith(","))
+                .SetQueryParam("deleteAllDataForKeys",   deleteAllDataForKeys)
+                .SetQueryParam("startTs",                startTs?.ToJavaScriptTicks())
+                .SetQueryParam("endTs",                  endTs?.ToJavaScriptTicks())
+                .SetQueryParam("rewriteLatestIfDeleted", rewriteLatestIfDeleted);
 
             return request.DeleteAsync(cancel);
         });
@@ -322,14 +360,19 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     public Task<TbEntityValue[]> GetAttributesAsync(TbEntityType entityType, Guid entityId, string[] keys, CancellationToken cancel = default)
     {
         if (keys == null) throw new ArgumentNullException(nameof(keys));
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
 
-        var policy = _builder.GetDefaultPolicy<TbEntityValue[]>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbEntityValue[]>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/attributes")
-                .SetQueryParam("keys", string.Join(",", keys))
+                .SetQueryParam("keys", keys.JoinWith(","))
                 .GetJsonAsync<TbEntityValue[]>(cancel);
         });
     }
@@ -347,14 +390,19 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     public Task<TbEntityValue[]> GetAttributesByScopeAsync(TbEntityType entityType, Guid entityId, TbAttributeScope scope, string[] keys, CancellationToken cancel = default)
     {
         if (keys == null) throw new ArgumentNullException(nameof(keys));
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
 
-        var policy = _builder.GetDefaultPolicy<TbEntityValue[]>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<TbEntityValue[]>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            return _builder.CreateRequest(GetCustomOptions())
+            return _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/attributes/{scope}")
-                .SetQueryParam("keys", string.Join(",", keys))
+                .SetQueryParam("keys", keys.JoinWith(","))
                 .GetJsonAsync<TbEntityValue[]>(cancel);
         });
     }
@@ -384,36 +432,31 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         int?                   interval           = null,
         int?                   limit              = null,
         TbTimeSeriesAggregate? agg                = null,
-        TbSortOrder?  orderBy            = null,
+        TbSortOrder?           orderBy            = null,
         bool?                  useStrictDataTypes = null,
         CancellationToken      cancel             = default)
     {
         if (keys == null) throw new ArgumentNullException(nameof(keys));
+        if (keys.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(keys));
 
-        var policy = _builder.GetDefaultPolicy<Dictionary<string, TbTimeSeriesValue[]>>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<Dictionary<string, TbTimeSeriesValue[]>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
+            var request = _builder.CreateRequest(CustomOptions)
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/timeseries")
-                .SetQueryParam("keys",    string.Join(",", keys))
-                .SetQueryParam("startTs", startTs.ToJavaScriptTicks())
-                .SetQueryParam("endTs",   endTs.ToJavaScriptTicks());
-
-            if (interval.HasValue)
-                request = request.SetQueryParam("interval", interval.Value);
-
-            if (limit.HasValue)
-                request = request.SetQueryParam("limit", limit.Value);
-
-            if (agg.HasValue)
-                request = request.SetQueryParam("agg", agg.Value);
-
-            if (orderBy.HasValue)
-                request = request.SetQueryParam("orderBy", orderBy.Value);
-
-            if (useStrictDataTypes.HasValue)
-                request = request.SetQueryParam("useStrictDataTypes", useStrictDataTypes.Value);
+                .SetQueryParam("keys",               keys.JoinWith(","))
+                .SetQueryParam("startTs",            startTs.ToJavaScriptTicks())
+                .SetQueryParam("endTs",              endTs.ToJavaScriptTicks())
+                .SetQueryParam("interval",           interval)
+                .SetQueryParam("limit",              limit)
+                .SetQueryParam("agg",                agg)
+                .SetQueryParam("orderBy",            orderBy)
+                .SetQueryParam("useStrictDataTypes", useStrictDataTypes);
 
             return request.GetJsonAsync<Dictionary<string, TbTimeSeriesValue[]>>(cancel);
         });
@@ -435,18 +478,18 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         bool?             useStrictDataTypes = null,
         CancellationToken cancel             = default)
     {
-        var policy = _builder.GetDefaultPolicy<Dictionary<string, TbTimeSeriesValue[]>>().RetryOnUnauthorized().Build();
+        var policy = _builder.GetPolicyBuilder<Dictionary<string, TbTimeSeriesValue[]>>(CustomOptions)
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
+            .Build();
 
         return policy.ExecuteAsync(() =>
         {
-            var request = _builder.CreateRequest(GetCustomOptions())
-                .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/timeseries");
-
-            if (keys != null)
-                request = request.SetQueryParam("keys", string.Join(",", keys));
-
-            if (useStrictDataTypes.HasValue)
-                request = request.SetQueryParam("useStrictDataTypes", useStrictDataTypes.Value);
+            var request = _builder.CreateRequest(CustomOptions)
+                .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/timeseries")
+                .SetQueryParam("keys",               keys?.JoinWith(","))
+                .SetQueryParam("useStrictDataTypes", useStrictDataTypes);
 
             return request.GetJsonAsync<Dictionary<string, TbTimeSeriesValue[]>>(cancel);
         });

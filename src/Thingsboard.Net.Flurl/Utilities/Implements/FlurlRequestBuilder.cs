@@ -57,7 +57,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TbException"></exception>
     /// <exception cref="TbHttpException"></exception>
-    public IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions options, bool useAccessToken)
+    public IFlurlRequest CreateRequest(ThingsboardNetFlurlOptions? options, bool useAccessToken)
     {
         // 参数选项
         options = _defaultOptions.MergeWith(options);
@@ -150,9 +150,14 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// Create a new FlurlRequest with a retry policy
     /// </summary>
     /// <returns></returns>
-    public RequestPolicyBuilder GetDefaultPolicy()
+    public RequestPolicyBuilder GetPolicyBuilder(ThingsboardNetFlurlOptions? customOptions)
     {
-        return new RequestPolicyBuilder().RetryOnTimeout(3, 1);
+        if (customOptions == null) throw new ArgumentNullException(nameof(customOptions));
+
+        // Merge parameter options
+        customOptions = _defaultOptions.MergeWith(customOptions);
+
+        return new RequestPolicyBuilder(customOptions);
     }
 
     /// <summary>
@@ -160,9 +165,14 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
-    public RequestPolicyBuilder<TResult> GetDefaultPolicy<TResult>()
+    public RequestPolicyBuilder<TResult> GetPolicyBuilder<TResult>(ThingsboardNetFlurlOptions? customOptions)
     {
-        return new RequestPolicyBuilder<TResult>().RetryOnTimeout(3, 1);
+        if (customOptions == null) throw new ArgumentNullException(nameof(customOptions));
+
+        // Merge parameter options
+        customOptions = _defaultOptions.MergeWith(customOptions);
+
+        return new RequestPolicyBuilder<TResult>(customOptions);
     }
 
     /// <summary>
