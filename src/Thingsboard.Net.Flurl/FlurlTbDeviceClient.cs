@@ -234,7 +234,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     public Task<TbDevice?> GetDeviceByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
         var policy = _builder.GetDefaultPolicy<TbDevice?>()
-            .FallbackOnNotFound(null)
+            .FallbackToValueOnNotFound(null)
             .RetryOnUnauthorized()
             .Build();
 
@@ -280,7 +280,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     {
         var policy = _builder.GetDefaultPolicy<TbDeviceInfo?>()
             .RetryOnUnauthorized()
-            .FallbackOnNotFound(null)
+            .FallbackToValueOnNotFound(null)
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -304,7 +304,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     {
         var policy = _builder.GetDefaultPolicy<TbDeviceCredential?>()
             .RetryOnUnauthorized()
-            .FallbackOnNotFound(null)
+            .FallbackToValueOnNotFound(null)
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -419,7 +419,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     {
         var policy = _builder.GetDefaultPolicy<TbDevice?>()
             .RetryOnUnauthorized()
-            .FallbackOnNotFound(null)
+            .FallbackToValueOnNotFound(null)
             .Build();
 
         return policy.ExecuteAsync(async () =>

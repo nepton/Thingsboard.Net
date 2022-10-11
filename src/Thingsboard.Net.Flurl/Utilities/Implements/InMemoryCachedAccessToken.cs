@@ -13,13 +13,17 @@ namespace Thingsboard.Net.Flurl.Utilities.Implements;
 
 public class InMemoryCachedAccessToken : IAccessToken
 {
-    private readonly        ThingsboardNetFlurlOptions                          _options;
-    private readonly        ITbLoginClient                                    _auth;
+    private readonly ThingsboardNetFlurlOptions _options;
+    private readonly ITbLoginClient             _auth;
+
+    /// <summary>
+    /// Token cache
+    /// </summary>
     private static readonly ConcurrentDictionary<string, AccessTokenModel> _tokens = new();
 
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public InMemoryCachedAccessToken(ITbLoginClient auth,
-        IOptionsSnapshot<ThingsboardNetFlurlOptions>  options)
+    public InMemoryCachedAccessToken(ITbLoginClient  auth,
+        IOptionsSnapshot<ThingsboardNetFlurlOptions> options)
     {
         _auth    = auth;
         _options = options.Value;

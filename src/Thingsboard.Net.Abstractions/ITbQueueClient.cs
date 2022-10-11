@@ -16,16 +16,16 @@ public interface ITbQueueClient : ITbClient<ITbQueueClient>
     /// <param name="textSearch">The case insensitive 'substring' filter based on the queue name.</param>
     /// <param name="sortProperty">Property of entity to sort by</param>
     /// <param name="sortOrder">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbPage<TbQueue>> GetTenantQueuesByServiceTypeAsync(
         TbQueueServiceType        serviceType,
         int                       pageSize,
         int                       page,
-        string?                   textSearch        = null,
-        TbQueueQuerySortProperty? sortProperty      = null,
-        TbSortOrder?              sortOrder         = null,
-        CancellationToken         cancellationToken = default);
+        string?                   textSearch   = null,
+        TbQueueQuerySortProperty? sortProperty = null,
+        TbSortOrder?              sortOrder    = null,
+        CancellationToken         cancel       = default);  
 
     /// <summary>
     /// Create or update the Queue. When creating queue, platform generates Queue Id as time-based UUID. Specify existing Queue id to update the queue. Referencing non-existing Queue Id will cause 'Not Found' error.
@@ -34,9 +34,9 @@ public interface ITbQueueClient : ITbClient<ITbQueueClient>
     /// </summary>
     /// <param name="serviceType">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="queue"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancellationToken = default);
+    Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancel = default);
 
     /// <summary>
     /// Fetch the Queue object based on the provided Queue Id.

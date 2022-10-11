@@ -31,6 +31,12 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQueryClient>();
         services.AddTransient<ITbLoginClient, FlurlTbLoginClient>();
         services.AddTransient<ITbTelemetryClient, FlurlTbTelemetryClient>();
+        services.AddTransient<ITbRpcClient, FlurlTbRpcClient>();
+        services.AddTransient<ITbAssetClient, FlurlTbAssetClient>();
+        services.AddTransient<ITbCustomerClient, FlurlTbCustomerClient>();
+        services.AddTransient<ITbDashboardClient, FlurlTbDashboardClient>();
+        services.AddTransient<ITbAuditLogClient, FlurlTbAuditLogClient>();
+        services.AddTransient<ITbQueueClient, FlurlTbQueueClient>();
 
         return services;
     }

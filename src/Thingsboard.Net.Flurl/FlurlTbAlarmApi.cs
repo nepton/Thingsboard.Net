@@ -67,7 +67,7 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     {
         var policy = _builder.GetDefaultPolicy<TbAlarm?>()
             .RetryOnUnauthorized()
-            .FallbackOnNotFound(null)
+            .FallbackToValueOnNotFound(null)
             .Build();
 
         return policy.ExecuteAsync(async () =>

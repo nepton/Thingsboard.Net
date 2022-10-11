@@ -30,12 +30,23 @@ public class RequestPolicyBuilder
         return this;
     }
 
-    public RequestPolicyBuilder FallbackOnNotFound()
+    public RequestPolicyBuilder FallbackDefaultOnNotFound()
     {
         var policy = Policy.Handle<TbHttpException>(x => x.StatusCode == HttpStatusCode.NotFound)
             .FallbackAsync(_ => Task.CompletedTask);
 
         _policies.Add(policy);
+        return this;
+    }
+
+    public RequestPolicyBuilder FallbackOn(HttpStatusCode statusCode, Func<Task> fallbackAsync)
+    {
+        if (fallbackAsync == null) throw new ArgumentNullException(nameof(fallbackAsync));
+        var policy = Policy.Handle<TbHttpException>(x => x.StatusCode == statusCode)
+            .FallbackAsync(_ => fallbackAsync());
+
+        _policies.Add(policy);
+
         return this;
     }
 
@@ -73,12 +84,28 @@ public class RequestPolicyBuilder<TResult>
         return this;
     }
 
-    public RequestPolicyBuilder<TResult> FallbackOnNotFound(TResult fallbackValue)
+    public RequestPolicyBuilder<TResult> FallbackToValueOnNotFound(TResult fallbackValue)
     {
-        var policy = Policy<TResult>.Handle<TbHttpException>(x => x.StatusCode == HttpStatusCode.NotFound)
+        return FallbackToValueOn(HttpStatusCode.NotFound, fallbackValue);
+    }
+
+    public RequestPolicyBuilder<TResult> FallbackToValueOn(HttpStatusCode statusCode, TResult fallbackValue)
+    {
+        var policy = Policy<TResult>.Handle<TbHttpException>(x => x.StatusCode == statusCode)
             .FallbackAsync(fallbackValue);
 
         _policies.Add(policy);
+        return this;
+    }
+
+    public RequestPolicyBuilder<TResult> FallbackOn(HttpStatusCode statusCode, Func<Task<TResult>> fallbackAsync)
+    {
+        if (fallbackAsync == null) throw new ArgumentNullException(nameof(fallbackAsync));
+        var policy = Policy<TResult>.Handle<TbHttpException>(x => x.StatusCode == statusCode)
+            .FallbackAsync(_ => fallbackAsync());
+
+        _policies.Add(policy);
+
         return this;
     }
 
