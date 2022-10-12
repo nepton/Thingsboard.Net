@@ -2,8 +2,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Quibble.Xunit;
+using Thingsboard.Net;
 
-namespace Thingsboard.Net.Tests.TbEntityQueryClient;
+namespace UnitTest.Thingsboard.Net.Flurl.TbEntityQueryClient;
 
 public class TbEntityQueryJsonGenerationTest
 {

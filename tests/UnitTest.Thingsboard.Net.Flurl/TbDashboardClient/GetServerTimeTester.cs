@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net.Tests.TbDashboardClient;
+﻿using Thingsboard.Net;
+
+namespace UnitTest.Thingsboard.Net.Flurl.TbDashboardClient;
 
 public class GetServerTimeTester
 {
@@ -6,8 +8,7 @@ public class GetServerTimeTester
     public async Task TestGetServerTimeAsync()
     {
         // arrange
-        var service = new TbTestService();
-        var api     = service.GetRequiredService<ITbDashboardClient>();
+        var api = TbTestFactory.Instance.CreateDashboardClient();
 
         // act
         var now = await api.GetServerTimeAsync();

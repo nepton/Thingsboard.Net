@@ -45,4 +45,6 @@ public class FlurlTbClientFactory
     public ITbRpcClient CreateRpcClient() => new FlurlTbRpcClient(CreateRequestBuilder());
 
     public ITbTelemetryClient CreateTelemetryClient() => new FlurlTbTelemetryClient(CreateRequestBuilder());
+
+    public ITbAuthClient CreateAuthClient() => new FlurlTbAuthClient(CreateRequestBuilder());
 }

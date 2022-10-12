@@ -3,15 +3,15 @@
 /// <summary>
 /// The properties of the ENTITY object contain all types of FIELD properties, including native fields, properties, and telemetry fields
 /// </summary>
-public class TbEntityField
+public record TbEntityField(string Key, TbEntityFieldType Type)
 {
-    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbEntityField(string key, TbEntityFieldType type)
-    {
-        Key  = key;
-        Type = type;
-    }
+    /// <summary>
+    /// The key of the field
+    /// </summary>
+    public string Key { get; } = Key;
 
-    public string            Key  { get; }
-    public TbEntityFieldType Type { get; }
+    /// <summary>
+    /// The type of the field
+    /// </summary>
+    public TbEntityFieldType Type { get; } = Type;
 }

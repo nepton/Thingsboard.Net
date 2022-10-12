@@ -1,9 +1,10 @@
 using System.Net;
 using Microsoft.Extensions.Options;
+using Thingsboard.Net;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Options;
 
-namespace Thingsboard.Net.Tests.TbLoginClient;
+namespace UnitTest.Thingsboard.Net.Flurl.TbLoginClient;
 
 public class TbLoginTests
 {
@@ -14,9 +15,8 @@ public class TbLoginTests
     public async Task TestLoginApi()
     {
         // arrange
-        using var service  = new TbTestService();
-        var       options  = service.GetRequiredService<IOptions<ThingsboardNetFlurlOptions>>().Value;
-        var       loginApi = service.GetRequiredService<ITbLoginClient>();
+        var options  = TbTestFactory.Instance.Options;
+        var loginApi = TbTestFactory.Instance.CreateLoginClient();
 
         // act
         var loginRequest  = new TbLoginUser(options.Username!, options.Password!);
@@ -32,12 +32,10 @@ public class TbLoginTests
     public async Task TestIfUsernameIncorrect()
     {
         // arrange
-        using var service  = new TbTestService();
-        var       options  = service.GetRequiredService<IOptions<ThingsboardNetFlurlOptions>>().Value;
-        var       loginApi = service.GetRequiredService<ITbLoginClient>();
+        var loginApi = TbTestFactory.Instance.CreateLoginClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await loginApi.LoginAsync(new TbLoginUser("wrongUsername", options.Password!)));
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await loginApi.LoginAsync(new TbLoginUser("wrongUsername", "wrongPassword")));
 
         // assert
         Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);

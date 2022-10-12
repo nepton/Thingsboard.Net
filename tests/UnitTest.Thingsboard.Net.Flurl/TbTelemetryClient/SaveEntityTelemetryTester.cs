@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net.Tests.TbTelemetryClient;
+﻿using Thingsboard.Net;
+
+namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 
 public class SaveEntityTelemetryTester
 {
@@ -6,9 +8,8 @@ public class SaveEntityTelemetryTester
     public async Task TestSaveEntityTelemetry()
     {
         // arrange
-        using var service  = new TbTestService();
-        var       api      = service.GetRequiredService<ITbTelemetryClient>();
-        var       deviceId = service.GetTestDeviceId();
+        var api      = TbTestFactory.Instance.CreateTelemetryClient();
+        var deviceId = TbTestData.TestDeviceId;
 
         // act
         await api.SaveEntityTelemetryAsync(TbEntityType.DEVICE, deviceId, new {temperature = 42});

@@ -3,9 +3,15 @@ using Thingsboard.Net.Flurl.Options;
 
 namespace Thingsboard.Net.Flurl.Utilities;
 
-public abstract class FlurlTbClient<TClient> : ITbClient<TClient> where TClient : ITbClient<TClient>
+public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOptionsReader where TClient : ITbClient<TClient>
 {
     protected ThingsboardNetFlurlOptions? CustomOptions { get; private set; }
+
+    /// <summary>
+    /// This method is used to do unit test
+    /// </summary>
+    /// <returns></returns>
+    ThingsboardNetFlurlOptions? IUnitTestOptionsReader.GetOptions() => CustomOptions;
 
     public TClient WithCredentials(string username, string? password)
     {

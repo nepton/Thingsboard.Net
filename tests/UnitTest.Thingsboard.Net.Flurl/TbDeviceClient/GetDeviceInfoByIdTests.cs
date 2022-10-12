@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Quibble.Xunit;
+using Thingsboard.Net;
 
-namespace Thingsboard.Net.Tests.TbDeviceClient;
+namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
 public class GetDeviceInfoByIdTests
 {
@@ -9,8 +10,7 @@ public class GetDeviceInfoByIdTests
     public async Task TestGetDeviceInfoById()
     {
         // arrange
-        using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbDeviceClient>();
+        var api = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
         var deviceId   = Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
@@ -28,8 +28,7 @@ public class GetDeviceInfoByIdTests
     public async Task TestWhenDeviceNotFound()
     {
         // arrange
-        using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbDeviceClient>();
+        var api = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
         var deviceId   = Guid.Empty;

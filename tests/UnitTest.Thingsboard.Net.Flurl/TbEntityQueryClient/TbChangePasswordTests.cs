@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net.Tests.TbEntityQueryClient;
+﻿using Thingsboard.Net;
+
+namespace UnitTest.Thingsboard.Net.Flurl.TbEntityQueryClient;
 
 /// <summary>
 /// This class is used to test change password functionality
@@ -8,8 +10,7 @@ public class FindEntityDataByQueryTests
     [Fact]
     public async Task TestFindEntityDataByQuery()
     {
-        using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbEntityQueryClient>();
+        var api = TbTestFactory.Instance.CreateEntityQueryClient();
 
         var result = await api.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
         {

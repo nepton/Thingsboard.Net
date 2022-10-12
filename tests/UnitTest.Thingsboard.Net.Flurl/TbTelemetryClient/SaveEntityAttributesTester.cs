@@ -1,6 +1,7 @@
-﻿using Thingsboard.Net.Exceptions;
+﻿using Thingsboard.Net;
+using Thingsboard.Net.Exceptions;
 
-namespace Thingsboard.Net.Tests.TbTelemetryClient;
+namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 
 public class SaveEntityAttributesTester
 {
@@ -8,9 +9,8 @@ public class SaveEntityAttributesTester
     public async Task TestSaveEntityAttributes()
     {
         // arrange
-        using var service  = new TbTestService();
-        var       api      = service.GetRequiredService<ITbTelemetryClient>();
-        var       deviceId = service.GetTestDeviceId();
+        var api      = TbTestFactory.Instance.CreateTelemetryClient();
+        var deviceId = TbTestData.TestDeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>

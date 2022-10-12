@@ -9,11 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D89EE3E4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Abstractions", "src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj", "{7CF5805B-5722-4199-959C-ECF96C48A52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl.Tests", "tests\Thingsboard.Net.Flurl.Tests\Thingsboard.Net.Flurl.Tests.csproj", "{FE8F6FBD-4F8A-4072-A2DA-425B8A643B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.Thingsboard.Net.Flurl", "tests\UnitTest.Thingsboard.Net.Flurl\UnitTest.Thingsboard.Net.Flurl.csproj", "{FE8F6FBD-4F8A-4072-A2DA-425B8A643B40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl", "src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj", "{7B26DD47-4F56-4838-AB66-32C383F82C0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thingsboard.Net.Flurl.DependencyInjection", "src\Thingsboard.Net.Flurl.DependencyInjection\Thingsboard.Net.Flurl.DependencyInjection.csproj", "{884E9061-7A67-4783-88FA-6115C48E0D54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.Thingsboard.Net.Flurl.DependencyInjection", "tests\UnitTest.Thingsboard.Net.Flurl.DependencyInjection\UnitTest.Thingsboard.Net.Flurl.DependencyInjection.csproj", "{BAAAA9C5-6567-4AE4-9860-6E944BF04356}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.Thingsboard.Net.Abstractions", "tests\UnitTest.Thingsboard.Net.Abstractions\UnitTest.Thingsboard.Net.Abstractions.csproj", "{A847A604-D615-470B-A4F4-34C37EC47E98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,14 @@ Global
 		{884E9061-7A67-4783-88FA-6115C48E0D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{884E9061-7A67-4783-88FA-6115C48E0D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{884E9061-7A67-4783-88FA-6115C48E0D54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAAAA9C5-6567-4AE4-9860-6E944BF04356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAAAA9C5-6567-4AE4-9860-6E944BF04356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAAAA9C5-6567-4AE4-9860-6E944BF04356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAAAA9C5-6567-4AE4-9860-6E944BF04356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A847A604-D615-470B-A4F4-34C37EC47E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A847A604-D615-470B-A4F4-34C37EC47E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A847A604-D615-470B-A4F4-34C37EC47E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A847A604-D615-470B-A4F4-34C37EC47E98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{FE8F6FBD-4F8A-4072-A2DA-425B8A643B40} = {D89EE3E4-AABD-439A-A3CB-8EDA27EA32B0}
 		{7B26DD47-4F56-4838-AB66-32C383F82C0B} = {5309EC62-08D3-4CB5-B295-0D389CFBDDA1}
 		{884E9061-7A67-4783-88FA-6115C48E0D54} = {5309EC62-08D3-4CB5-B295-0D389CFBDDA1}
+		{BAAAA9C5-6567-4AE4-9860-6E944BF04356} = {D89EE3E4-AABD-439A-A3CB-8EDA27EA32B0}
+		{A847A604-D615-470B-A4F4-34C37EC47E98} = {D89EE3E4-AABD-439A-A3CB-8EDA27EA32B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CA6DE1A-C1A0-4BE1-B7BF-D3052CD20581}

@@ -3,7 +3,7 @@
 namespace Thingsboard.Net;
 
 /// <summary>
-/// 返回的实体属性值
+/// The returned entity attribute value
 /// </summary>
 public class TbEntityValue
 {

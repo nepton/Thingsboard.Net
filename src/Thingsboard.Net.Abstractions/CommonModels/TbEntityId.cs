@@ -6,30 +6,17 @@ namespace Thingsboard.Net;
 /// Entity object Id
 /// The object is equal with json object {entityType:entityType, id:id}
 /// </summary>
-public class TbEntityId
+public record TbEntityId(TbEntityType EntityType, Guid Id)
 {
     public static readonly TbEntityId Empty = new(0, Guid.Empty);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+    /// The Id of the entity
     /// </summary>
-    /// <remarks>
-    /// see TbUserInfo
-    /// </remarks>
-    public TbEntityId(TbEntityType entityType, Guid id)
-    {
-        EntityType = entityType;
-        Id         = id;
-    }
+    public Guid Id { get; } = Id;
 
-    public Guid Id { get; }
-
-    public TbEntityType EntityType { get; }
-
-    /// <summary>Returns a string that represents the current object.</summary>
-    /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return $"{nameof(Id)}: {Id}, {nameof(EntityType)}: {EntityType}";
-    }
+    /// <summary>
+    /// The type of the entity
+    /// </summary>
+    public TbEntityType EntityType { get; } = EntityType;
 }

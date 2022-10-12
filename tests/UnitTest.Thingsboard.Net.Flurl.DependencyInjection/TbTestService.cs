@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Thingsboard.Net;
 using Thingsboard.Net.Flurl.DependencyInjection;
 using Thingsboard.Net.Flurl.Options;
 
-namespace Thingsboard.Net.Tests;
+namespace UnitTest.Thingsboard.Net.Flurl.DependencyInjection;
 
 /// <summary>
 /// The class for testing the Thingsboard client.
