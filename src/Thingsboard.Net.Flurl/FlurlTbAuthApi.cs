@@ -24,14 +24,17 @@ public class FlurlTbAuthApi : FlurlTbClient<ITbAuthClient>, ITbAuthClient
     /// <returns></returns>
     public async Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return await policy.ExecuteAsync(async () =>
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment("/api/auth/user")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbUserInfo>(cancel));
     }
 
@@ -45,14 +48,17 @@ public class FlurlTbAuthApi : FlurlTbClient<ITbAuthClient>, ITbAuthClient
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
 
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment("/api/auth/changePassword")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(request, cancel));
     }
 }

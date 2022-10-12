@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +31,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> AssignDeviceToCustomerAsync(Guid customerId, Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDevice?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -40,8 +41,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"api/customer/{customerId}/device/{deviceId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(null, cancel)
                 .ReceiveJson<TbDevice>();
 
@@ -74,7 +76,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder                sortOrder,
         CancellationToken          cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbDevice>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDevice>.Empty)
@@ -82,8 +86,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"api/customer/{customerId}/deviceInfos")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",        pageSize)
                 .SetQueryParam("page",            page)
                 .SetQueryParam("type",            type)
@@ -120,7 +125,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder                sortOrder,
         CancellationToken          cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbDevice>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDevice>.Empty)
@@ -128,8 +135,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"api/customer/{customerId}/devices")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
                 .SetQueryParam("type",         type)
@@ -151,15 +159,18 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> UnassignDeviceFromCustomerAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDevice?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"api/customer/device/{deviceId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel)
                 .ReceiveJson<TbDevice>();
 
@@ -182,15 +193,18 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice> SaveDeviceAsync(TbDevice device, string? accessToken, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDevice>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("api/device")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("accessToken", accessToken)
                 .PostJsonAsync(device, cancel)
                 .ReceiveJson<TbDevice>();
@@ -219,7 +233,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         int               pageSize     = 20,
         CancellationToken cancel       = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbDevice>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDevice>.Empty)
@@ -227,8 +243,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder.CreateRequest(CustomOptions)
+            var result = await builder.CreateRequest()
                 .AppendPathSegment("api/tenant/devices")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("type",         type)
                 .SetQueryParam("textSearch",   textSearch)
                 .SetQueryParam("sortProperty", sortProperty)
@@ -249,7 +266,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns>Returns the device object, or null if it does not exist</returns>
     public Task<TbDevice?> GetDeviceByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDevice?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .RetryOnUnauthorized()
@@ -257,8 +276,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/device/{deviceId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbDevice>(cancel);
 
             return response;
@@ -274,15 +294,18 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment($"api/device/{deviceId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel);
         });
     }
@@ -296,7 +319,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceInfo?> GetDeviceInfoByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDeviceInfo?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDeviceInfo?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -304,8 +329,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/device/info/{deviceId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbDeviceInfo>(cancel);
 
             return response;
@@ -321,7 +347,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceCredential?> GetDeviceCredentialsAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDeviceCredential?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDeviceCredential?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -329,8 +357,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/device/{deviceId}/credentials")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbDeviceCredential>(cancel);
 
             return response;
@@ -346,15 +375,18 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceCredential> UpdateDeviceCredentialsAsync(TbDeviceCredential credential, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDeviceCredential>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDeviceCredential>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/device/{credential.DeviceId}/credentials")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(credential, cancel)
                 .ReceiveJson<TbDeviceCredential>();
 
@@ -374,7 +406,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         if (deviceIds == null) throw new ArgumentNullException(nameof(deviceIds));
         if (deviceIds.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(deviceIds));
 
-        var policy = _builder.GetPolicyBuilder<TbDevice[]>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice[]>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, Array.Empty<TbDevice>())
@@ -382,8 +416,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/devices")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("deviceIds", deviceIds.JoinWith(","))
                 .GetJsonAsync<TbDevice[]>(cancel);
 
@@ -413,7 +448,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder       = null,
         CancellationToken           cancel          = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbDeviceInfo>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbDeviceInfo>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDeviceInfo>.Empty)
@@ -421,8 +458,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/tenant/deviceInfos")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",        pageSize)
                 .SetQueryParam("page",            page)
                 .SetQueryParam("type",            type)
@@ -445,7 +483,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> GetTenantDeviceByNameAsync(string deviceName, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbDevice?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -453,8 +493,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/tenant/devices")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("deviceName", deviceName)
                 .GetJsonAsync<TbDevice>(cancel);
 
@@ -483,7 +524,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder    = null,
         CancellationToken           cancel       = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbDevice>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDevice>.Empty)
@@ -491,8 +534,9 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/tenant/devices")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
                 .SetQueryParam("type",         type)

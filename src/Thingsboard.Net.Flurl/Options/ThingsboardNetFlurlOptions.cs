@@ -20,11 +20,6 @@ public sealed class ThingsboardNetFlurlOptions
     /// </summary>
     public string? Password { get; set; }
 
-    /// <summary>
-    /// The validity period of the default token is not provided to us by the TB system, so we need to solve this problem by ourselves
-    /// </summary>
-    public int? DynamicTokenExpiresInSec { get; set; }
-
     public int? TimeoutInSec { get; set; }
 
     /// <summary>
@@ -49,13 +44,12 @@ public sealed class ThingsboardNetFlurlOptions
 
         return new ThingsboardNetFlurlOptions
         {
-            Username                 = customOptions.Username ?? Username,
-            Password                 = customOptions.Password ?? Password,
-            BaseUrl                  = customOptions.BaseUrl ?? BaseUrl,
-            DynamicTokenExpiresInSec = customOptions.DynamicTokenExpiresInSec ?? DynamicTokenExpiresInSec,
-            TimeoutInSec             = customOptions.TimeoutInSec ?? TimeoutInSec,
-            RetryTimes               = customOptions.RetryTimes ?? RetryTimes,
-            RetryIntervalInSec       = customOptions.RetryIntervalInSec ?? RetryIntervalInSec
+            Username           = customOptions.Username ?? Username,
+            Password           = customOptions.Password ?? Password,
+            BaseUrl            = customOptions.BaseUrl ?? BaseUrl,
+            TimeoutInSec       = customOptions.TimeoutInSec ?? TimeoutInSec,
+            RetryTimes         = customOptions.RetryTimes ?? RetryTimes,
+            RetryIntervalInSec = customOptions.RetryIntervalInSec ?? RetryIntervalInSec
         };
     }
 

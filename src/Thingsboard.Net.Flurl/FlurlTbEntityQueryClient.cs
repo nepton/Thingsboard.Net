@@ -24,7 +24,9 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <returns></returns>
     public async Task<TbPage<TbEntity>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbEntity>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbEntity>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbEntity>.Empty)
@@ -32,8 +34,9 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
 
         return await policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/entitiesQuery/find")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<TbPage<TbEntity>>();
 
@@ -49,7 +52,9 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <returns></returns>
     public Task<int> CountEntityDataByQueryAsync(TbCountEntityDataRequest request, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<int>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<int>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, 0)
@@ -57,8 +62,9 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/entitiesQuery/count")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(request, cancel)
                 .ReceiveJson<int>();
 

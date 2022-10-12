@@ -38,7 +38,9 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
         TbSortOrder?              sortOrder    = null,
         CancellationToken         cancel       = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbQueue>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbQueue>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbQueue>.Empty)
@@ -46,8 +48,9 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
+            var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/queues")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("serviceType", serviceType)
                 .SetQueryParam("pageSize",    pageSize)
                 .SetQueryParam("page",        page);
@@ -76,15 +79,18 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancellationToken = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbQueue>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbQueue>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
+            var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/queues")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("serviceType", serviceType);
 
             return await request.PostJsonAsync(queue, cancellationToken).ReceiveJson<TbQueue>();
@@ -100,7 +106,9 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByIdAsync(Guid queueId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbQueue?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbQueue?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -108,10 +116,10 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
-                .AppendPathSegment($"/api/queues/{queueId}");
-
-            return await request.GetJsonAsync<TbQueue?>(cancel);
+            return await builder.CreateRequest()
+                .AppendPathSegment($"/api/queues/{queueId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .GetJsonAsync<TbQueue?>(cancel);
         });
     }
 
@@ -124,15 +132,18 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task DeleteQueueAsync(Guid queueId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
-                .AppendPathSegment($"/api/queues/{queueId}");
+            var request = builder.CreateRequest()
+                .AppendPathSegment($"/api/queues/{queueId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync());
 
             await request.DeleteAsync(cancel);
         });
@@ -147,7 +158,9 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByNameAsync(string queueName, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbQueue?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbQueue?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -155,8 +168,9 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
-                .AppendPathSegment($"/api/queues/name/{queueName}");
+            var request = builder.CreateRequest()
+                .AppendPathSegment($"/api/queues/name/{queueName}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync());
 
             return await request.GetJsonAsync<TbQueue>(cancel);
         });

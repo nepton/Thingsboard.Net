@@ -8,11 +8,11 @@ using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
-public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
+public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
 {
     private readonly IRequestBuilder _builder;
 
-    public FlurlTbAlarmApi(IRequestBuilder builder)
+    public FlurlTbAlarmClient(IRequestBuilder builder)
     {
         _builder = builder;
     }
@@ -27,15 +27,18 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     {
         if (alarm == null) throw new ArgumentNullException(nameof(alarm));
 
-        var policy = _builder.GetPolicyBuilder<TbAlarm>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbAlarm>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            var response = await _builder.CreateRequest(CustomOptions)
+            var response = await builder.CreateRequest()
                 .AppendPathSegment("api/alarm")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(alarm, cancel)
                 .ReceiveJson<TbAlarm>();
 
@@ -61,7 +64,9 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         DateTime?            endTime      = null,
         CancellationToken    cancel       = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbPage<TbAlarm>>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbPage<TbAlarm>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAlarm>.Empty)
@@ -69,8 +74,9 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var request = _builder.CreateRequest(CustomOptions)
+            var request = builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{entityType}/{entityId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
                 .SetQueryParam("searchStatus", searchStatus)
@@ -93,7 +99,9 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task<TbAlarm?> GetAlarmByIdAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder<TbAlarm?>(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbAlarm?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
@@ -101,8 +109,9 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
 
         return policy.ExecuteAsync(async () =>
         {
-            var result = await _builder.CreateRequest(CustomOptions)
+            var result = await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{alarmId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbAlarm?>(cancel);
 
             return result;
@@ -117,15 +126,18 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task AcknowledgeAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/ack")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(null, cancel);
         });
     }
@@ -138,15 +150,18 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task ClearAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/clear")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(null, cancel);
         });
     }
@@ -159,15 +174,18 @@ public class FlurlTbAlarmApi : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var policy = _builder.GetPolicyBuilder(CustomOptions)
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>
         {
-            await _builder.CreateRequest(CustomOptions)
+            await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{alarmId}")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel);
         });
     }

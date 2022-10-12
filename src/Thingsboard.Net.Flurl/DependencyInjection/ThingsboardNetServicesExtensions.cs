@@ -23,9 +23,9 @@ public static class ThingsboardNetServicesExtensions
 
         services.Configure(configureOptions);
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
-        services.AddTransient<IAccessToken, InMemoryCachedAccessToken>();
+        services.AddTransient<IAccessTokenRepository, InMemoryAccessTokenRepository>();
 
-        services.AddTransient<ITbAlarmClient, FlurlTbAlarmApi>();
+        services.AddTransient<ITbAlarmClient, FlurlTbAlarmClient>();
         services.AddTransient<ITbAuthClient, FlurlTbAuthApi>();
         services.AddTransient<ITbDeviceClient, FlurlTbDeviceClient>();
         services.AddTransient<ITbEntityQueryClient, FlurlTbEntityQueryClient>();
