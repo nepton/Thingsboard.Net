@@ -22,18 +22,18 @@ public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
     /// </summary>
     /// <returns></returns>
     Task<TbPage<TbAlarm>> GetAlarmsAsync(
-        TbEntityType          entityType,
-        Guid                  entityId,
-        int                   pageSize,
-        int                   page,
-        TbAlarmSearchStatus?  searchStatus = null,
-        TbAlarmStatus?        status       = null,
-        string?               textSearch   = null,
-        TbAlarmSortProperty?  sortProperty = null,
-        TbSortOrder? sortOrder    = null,
-        DateTime?             startTime    = null,
-        DateTime?             endTime      = null,
-        CancellationToken     cancel       = default);
+        TbEntityType         entityType,
+        Guid                 entityId,
+        int                  pageSize,
+        int                  page,
+        TbAlarmSearchStatus? searchStatus = null,
+        TbAlarmStatus?       status       = null,
+        string?              textSearch   = null,
+        TbAlarmSortProperty? sortProperty = null,
+        TbSortOrder?         sortOrder    = null,
+        DateTime?            startTime    = null,
+        DateTime?            endTime      = null,
+        CancellationToken    cancel       = default);
 
     /// <summary>
     /// Fetch the Alarm object based on the provided Alarm Id. If the user has the authority of 'Tenant Administrator', the server checks that the originator of alarm is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the originator of alarm belongs to the customer.

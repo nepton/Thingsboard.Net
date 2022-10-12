@@ -26,7 +26,7 @@ public class TbGetCurrentUserTests
         // arrange
         using var service = new TbTestService(options =>
         {
-            options.BaseUrl      = "http://localhost:8080";
+            options.BaseUrl  = "http://localhost:8080";
             options.Username = "incorrect";
         });
         var authApi = service.GetRequiredService<ITbAuthClient>();

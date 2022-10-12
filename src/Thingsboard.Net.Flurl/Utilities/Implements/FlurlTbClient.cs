@@ -31,8 +31,8 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient> where TClient 
         if (retryTimes < 0) throw new ArgumentOutOfRangeException(nameof(retryTimes));
         if (retryIntervalInSec < 0) throw new ArgumentOutOfRangeException(nameof(retryIntervalInSec));
 
-        CustomOptions                           ??= new();
-        CustomOptions.TimeoutInSec              =   timeoutInSec;
+        CustomOptions                    ??= new();
+        CustomOptions.TimeoutInSec       =   timeoutInSec;
         CustomOptions.RetryTimes         =   retryTimes;
         CustomOptions.RetryIntervalInSec =   retryIntervalInSec;
 

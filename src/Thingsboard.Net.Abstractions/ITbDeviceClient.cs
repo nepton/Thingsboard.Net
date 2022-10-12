@@ -41,7 +41,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
         Guid?                      deviceProfileId,
         string?                    textSearch,
         TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder       sortOrder,
+        TbSortOrder                sortOrder,
         CancellationToken          cancel = default);
 
     /// <summary>
@@ -64,7 +64,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
         string?                    type,
         string?                    textSearch,
         TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder       sortOrder,
+        TbSortOrder                sortOrder,
         CancellationToken          cancel = default);
 
     /// <summary>
@@ -163,7 +163,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
         Guid?                       deviceProfileId = null,
         string?                     textSearch      = null,
         TbDeviceSearchSortProperty? sortProperty    = null,
-        TbSortOrder?       sortOrder       = null,
+        TbSortOrder?                sortOrder       = null,
         CancellationToken           cancel          = default);
 
     /// <summary>
@@ -192,6 +192,6 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
         string?                     type         = null,
         string?                     textSearch   = null,
         TbDeviceSearchSortProperty? sortProperty = null,
-        TbSortOrder?       sortOrder    = null,
+        TbSortOrder?                sortOrder    = null,
         CancellationToken           cancel       = default);
 }

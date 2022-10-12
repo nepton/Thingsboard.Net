@@ -14,5 +14,5 @@ public interface ITbDashboardClient : ITbClient<ITbDashboardClient>
     /// </summary>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<DateTime> GetServerTimeAsync(CancellationToken cancel=default);
+    Task<DateTime> GetServerTimeAsync(CancellationToken cancel =default);
 }

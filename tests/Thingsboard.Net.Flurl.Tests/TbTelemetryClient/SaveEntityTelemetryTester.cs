@@ -1,6 +1,4 @@
-﻿using Thingsboard.Net.Exceptions;
-
-namespace Thingsboard.Net.Tests.TbTelemetryClient;
+﻿namespace Thingsboard.Net.Tests.TbTelemetryClient;
 
 public class SaveEntityTelemetryTester
 {
