@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements;
+namespace Thingsboard.Net.Flurl.Utilities;
 
 public class TbErrorResponse
 {

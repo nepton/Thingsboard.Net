@@ -1,7 +1,7 @@
 ﻿using System;
 using Thingsboard.Net.Flurl.Options;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements;
+namespace Thingsboard.Net.Flurl.Utilities;
 
 public abstract class FlurlTbClient<TClient> : ITbClient<TClient> where TClient : ITbClient<TClient>
 {

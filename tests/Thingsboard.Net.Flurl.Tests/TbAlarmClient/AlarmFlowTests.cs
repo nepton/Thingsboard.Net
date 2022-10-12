@@ -1,4 +1,7 @@
-﻿namespace Thingsboard.Net.Tests.TbAlarmClient;
+﻿using Thingsboard.Net.Flurl;
+using Thingsboard.Net.Flurl.Options;
+
+namespace Thingsboard.Net.Tests.TbAlarmClient;
 
 public class AlarmFlowTests
 {
@@ -10,10 +13,22 @@ public class AlarmFlowTests
 
     private async Task<TbAlarm> CreateAlarmAsync()
     {
+        FlurlTbClientFactory.Instance.Options = new ThingsboardNetFlurlOptions
+        {
+            BaseUrl            = "http://localhost:8080",
+            Username           = "tenant@thingsboard.org",
+            Password           = "tenant",
+            TimeoutInSec       = 10,
+            RetryTimes         = 3,
+            RetryIntervalInSec = 1,
+        };
+
         // arrange
+        var api = FlurlTbClientFactory.Instance.CreateAlarmClient();
+
         using var service = new TbTestService();
-        var       api     = service.GetRequiredService<ITbAlarmClient>();
-        var       device  = await service.GetDeviceByNameAsync("Test Device A1") ?? throw new Exception("Device not found");
+        // var       api     = service.GetRequiredService<ITbAlarmClient>();
+        var device = await service.GetDeviceByNameAsync("Test Device A1") ?? throw new Exception("Device not found");
 
         // act
         var newAlarm = new TbAlarm

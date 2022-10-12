@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Thingsboard.Net.Flurl.Options;
 using Thingsboard.Net.Flurl.Utilities;
-using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl.DependencyInjection;
 
@@ -24,6 +23,7 @@ public static class ThingsboardNetServicesExtensions
         services.Configure(configureOptions);
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
         services.AddTransient<IAccessTokenRepository, InMemoryAccessTokenRepository>();
+        services.AddTransient<IOptionsReader, OptionsSnapshotReader>();
 
         services.AddTransient<ITbAlarmClient, FlurlTbAlarmClient>();
         services.AddTransient<ITbAuthClient, FlurlTbAuthClient>();

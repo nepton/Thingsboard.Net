@@ -1,52 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Options;
+using Thingsboard.Net.Flurl.Utilities.Implements;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements;
+namespace Thingsboard.Net.Flurl.Utilities;
 
 public class FlurlRequestBuilder : IRequestBuilder
 {
     private static NewtonsoftJsonSerializer? _cached;
 
-    private readonly ThingsboardNetFlurlOptions _defaultOptions;
-    private readonly ITbClientLogger?           _logger;
-    private readonly IAccessTokenRepository     _tokenRepository;
+    private readonly ILoggerFactory               _loggerFactory;
+    private readonly ILogger<FlurlRequestBuilder> _logger;
+    private readonly IOptionsReader               _optionsReader;
+    private readonly IAccessTokenRepository       _tokenRepository;
 
     public FlurlRequestBuilder(
-        ThingsboardNetFlurlOptions options,
-        IAccessTokenRepository     tokenRepository,
-        ITbClientLogger?           logger = null)
+        IOptionsReader         optionsReader,
+        IAccessTokenRepository tokenRepository,
+        ILoggerFactory         loggerFactory)
     {
+        _optionsReader   = optionsReader;
         _tokenRepository = tokenRepository;
-        _logger          = logger;
-        _defaultOptions  = options;
-    }
-
-    public FlurlRequestBuilder(
-        IOptionsSnapshot<ThingsboardNetFlurlOptions> options,
-        IAccessTokenRepository                       tokenRepository,
-        ITbClientLogger?                             logger = null)
-    {
-        _tokenRepository = tokenRepository;
-        _logger          = logger;
-        _defaultOptions  = options.Value;
+        _loggerFactory   = loggerFactory;
+        _logger          = loggerFactory.CreateLogger<FlurlRequestBuilder>();
     }
 
     public IRequestBuilder MergeCustomOptions(ThingsboardNetFlurlOptions? customOptions)
     {
-        var options = _defaultOptions.MergeWith(customOptions);
-        return new FlurlRequestBuilder(options, _tokenRepository, _logger);
+        var options = _optionsReader.GetOptions().MergeWith(customOptions);
+        return new FlurlRequestBuilder(
+            new OptionsReader(options),
+            _tokenRepository,
+            _loggerFactory);
     }
 
     private NewtonsoftJsonSerializer GetCachedNewtonsoftJsonSerializer()
@@ -70,7 +65,8 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <returns></returns>
     public RequestPolicyBuilder GetPolicyBuilder()
     {
-        return new RequestPolicyBuilder(_defaultOptions);
+        var logger = _loggerFactory.CreateLogger<RequestPolicyBuilder>();
+        return new RequestPolicyBuilder(_optionsReader.GetOptions(), logger);
     }
 
     /// <summary>
@@ -80,17 +76,22 @@ public class FlurlRequestBuilder : IRequestBuilder
     /// <returns></returns>
     public RequestPolicyBuilder<TResult> GetPolicyBuilder<TResult>()
     {
-        return new RequestPolicyBuilder<TResult>(_defaultOptions);
+        var logger = _loggerFactory.CreateLogger<RequestPolicyBuilder<TResult>>();
+        return new RequestPolicyBuilder<TResult>(_optionsReader.GetOptions(), logger);
     }
 
     public async Task<string> GetAccessTokenAsync()
     {
-        var options = _defaultOptions;
+        var options = _optionsReader.GetOptions();
 
         var credentials = options.GetCredentials();
         var loginClient = new FlurlTbLoginClient(this);
         var accessToken = await _tokenRepository.GetOrAddTokenAsync(credentials,
-            async cancel => await loginClient.LoginAsync(new TbLoginUser(credentials), cancel));
+            async cancel =>
+            {
+                _logger.LogDebug("Getting access token from Thingsboard");
+                return await loginClient.LoginAsync(new TbLoginUser(credentials), cancel);
+            });
 
         return accessToken;
     }
@@ -105,7 +106,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     public IFlurlRequest CreateRequest()
     {
         // 参数选项
-        var options = _defaultOptions;
+        var options = _optionsReader.GetOptions();
 
         var flurl = GetBaseUrl(options)
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? 10))
@@ -118,7 +119,10 @@ public class FlurlRequestBuilder : IRequestBuilder
             {
                 // Clear the access token if the request got 401
                 if (call.Response.StatusCode == 401 && call.Request.Headers.Contains("Authorization"))
+                {
+                    _logger.LogDebug("Access token is invalid, clearing it");
                     await _tokenRepository.RemoveExpiredTokenAsync(options.GetCredentials());
+                }
 
                 // Log the request
                 await LogCalledAsync(call);
@@ -151,25 +155,27 @@ public class FlurlRequestBuilder : IRequestBuilder
 
     private async Task LogCalledAsync(FlurlCall call)
     {
-        if (_logger is not {IsEnabled: true} logger)
+        var level = call.Response.StatusCode >= 400 ? LogLevel.Warning : LogLevel.Information;
+
+        if (!_logger.IsEnabled(level))
             return;
 
-        var tbClientCall = new TbClientCall
+        var responseBody = await call.Response.GetStringAsync();
+        using var _ = _logger.BeginScope(new Dictionary<string, object>
         {
-            RequestMethod      = call.Request.Verb.Method,
-            RequestUrl         = call.Request.Url,
-            RequestQuery       = null,
-            RequestHeader      = call.Request.Headers.ToDictionary(x => x.Name, x => x.Value),
-            RequestBody        = call.RequestBody,
-            ResponseStatusCode = call.HttpResponseMessage.StatusCode,
-            ResponseHeader     = call.Response.Headers.ToDictionary(x => x.Name, x => x.Value),
-            ResponseBody       = await call.Response.GetStringAsync(),
-            Time               = DateTime.Now,
-            Elapsed            = call.Duration,
-            Exception          = call.Exception
-        };
+            ["RequestBody"]     = call.RequestBody,
+            ["ResponseBody"]    = responseBody,
+            ["RequestHeaders"]  = call.Request.Headers,
+            ["ResponseHeaders"] = call.Response.Headers,
+        });
 
-        logger.OnLogging(tbClientCall);
+        _logger.Log(level,
+            call.Exception,
+            "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
+            call.Request.Verb,
+            call.Request.Url,
+            call.Response.StatusCode,
+            call.Duration?.TotalMilliseconds);
     }
 
     /// <summary>

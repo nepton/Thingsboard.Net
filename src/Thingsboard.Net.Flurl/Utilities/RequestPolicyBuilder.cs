@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Options;
@@ -11,18 +12,25 @@ namespace Thingsboard.Net.Flurl.Utilities;
 
 public class RequestPolicyBuilder<TResult>
 {
-    private readonly ThingsboardNetFlurlOptions  _options;
+    private readonly ThingsboardNetFlurlOptions             _options;
+    private readonly ILogger<RequestPolicyBuilder<TResult>> _logger;
+
     private readonly List<IAsyncPolicy<TResult>> _policies = new();
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options)
+    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options, ILogger<RequestPolicyBuilder<TResult>> logger)
     {
         _options = options;
+        _logger  = logger;
     }
 
     public RequestPolicyBuilder<TResult> RetryOnUnauthorized()
     {
         var policy = Policy<TResult>.Handle<TbHttpException>(x => x.StatusCode == HttpStatusCode.Unauthorized)
-            .RetryAsync(1);
+            .RetryAsync(1,
+                (_, retryCount, _) =>
+                {
+                    _logger.LogWarning("Unauthorized request. Retrying {RetryCount} time", retryCount);
+                });
 
         _policies.Add(policy);
         return this;
@@ -36,7 +44,12 @@ public class RequestPolicyBuilder<TResult>
     public RequestPolicyBuilder<TResult> RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)
     {
         var policy = Policy<TResult>.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(retryTimes, _ => TimeSpan.FromSeconds(retryWaitInSec));
+            .WaitAndRetryAsync(retryTimes,
+                _ => TimeSpan.FromSeconds(retryWaitInSec),
+                (_, retryCount, _) =>
+                {
+                    _logger.LogWarning("Request timeout. Retrying {RetryCount} time", retryCount);
+                });
 
         _policies.Add(policy);
         return this;
@@ -76,18 +89,24 @@ public class RequestPolicyBuilder<TResult>
 
 public class RequestPolicyBuilder
 {
-    private readonly ThingsboardNetFlurlOptions _options;
-    private readonly List<IAsyncPolicy>         _policies = new();
+    private readonly ThingsboardNetFlurlOptions    _options;
+    private readonly ILogger<RequestPolicyBuilder> _logger;
+    private readonly List<IAsyncPolicy>            _policies = new();
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options)
+    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options, ILogger<RequestPolicyBuilder> logger)
     {
         _options = options;
+        _logger  = logger;
     }
 
     public RequestPolicyBuilder RetryOnUnauthorized()
     {
         var policy = Policy.Handle<TbHttpException>(x => x.StatusCode == HttpStatusCode.Unauthorized)
-            .RetryAsync(1);
+            .RetryAsync(1,
+                (_, retryCount) =>
+                {
+                    _logger.LogWarning("Unauthorized request. Retrying {RetryCount} time", retryCount);
+                });
 
         _policies.Add(policy);
         return this;
@@ -101,7 +120,12 @@ public class RequestPolicyBuilder
     public RequestPolicyBuilder RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)
     {
         var policy = Policy.Handle<FlurlHttpTimeoutException>()
-            .WaitAndRetryAsync(retryTimes, _ => TimeSpan.FromSeconds(retryWaitInSec));
+            .WaitAndRetryAsync(retryTimes,
+                _ => TimeSpan.FromSeconds(retryWaitInSec),
+                (_, retryCount) =>
+                {
+                    _logger.LogWarning("Request timeout. Retrying {RetryCount} time", retryCount);
+                });
 
         _policies.Add(policy);
         return this;
