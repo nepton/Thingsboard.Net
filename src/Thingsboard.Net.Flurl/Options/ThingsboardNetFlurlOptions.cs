@@ -1,4 +1,5 @@
 ﻿using System;
+using Flurl;
 
 namespace Thingsboard.Net.Flurl.Options;
 
@@ -59,5 +60,36 @@ public sealed class ThingsboardNetFlurlOptions
             Username ?? throw new InvalidOperationException("Username does not set"),
             Password ?? ""
         );
+    }
+
+    /// <summary>
+    /// 获取 URL
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public string GetBaseUrl()
+    {
+        CheckBaseUrl(BaseUrl);
+        return BaseUrl!;
+    }
+
+    public void SetBaseUrl(string baseUrl)
+    {
+        CheckBaseUrl(baseUrl);
+        BaseUrl = baseUrl;
+    }
+
+    public void CheckBaseUrl(string? baseUrl)
+    {
+        if (string.IsNullOrEmpty(baseUrl))
+            throw new ArgumentNullException(nameof(Url), "Thingsboard URL is not set");
+
+        var url = new Url(baseUrl);
+
+        if (url.Scheme != "http" && url.Scheme != "https")
+            throw new ArgumentException("Thingsboard URL must be http or https", nameof(Url));
+
+        if (url.Host == null)
+            throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
     }
 }

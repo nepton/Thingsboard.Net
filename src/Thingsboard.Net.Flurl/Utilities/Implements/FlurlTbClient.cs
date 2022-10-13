@@ -1,4 +1,5 @@
 ﻿using System;
+using Flurl;
 using Thingsboard.Net.Flurl.Options;
 
 namespace Thingsboard.Net.Flurl.Utilities;
@@ -52,10 +53,19 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOpti
     /// <returns></returns>
     public TClient WithBaseUrl(string baseUrl)
     {
-        if (baseUrl == null) throw new ArgumentNullException(nameof(baseUrl));
+        if (string.IsNullOrEmpty(baseUrl))
+            throw new ArgumentNullException(nameof(baseUrl), "Thingsboard URL is not set");
 
-        CustomOptions         ??= new();
-        CustomOptions.BaseUrl =   baseUrl;
+        var url = new Url(baseUrl);
+
+        if (url.Scheme != "http" && url.Scheme != "https")
+            throw new ArgumentException("Thingsboard URL must be http or https", nameof(Url));
+
+        if (url.Host == null)
+            throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
+
+        CustomOptions ??= new();
+        CustomOptions.SetBaseUrl(baseUrl);
 
         return (TClient) (object) this;
     }

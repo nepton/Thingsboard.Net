@@ -7,12 +7,15 @@ namespace Thingsboard.Net.Exceptions;
 /// </summary>
 public class TbEntityNotFoundException : Exception
 {
-    public TbEntityType EntityType { get; }
-    public Guid         EntityId   { get; }
+    public TbEntityId EntityId { get; }
 
     public TbEntityNotFoundException(TbEntityType entityType, Guid entityId)
     {
-        EntityType = entityType;
-        EntityId   = entityId;
+        EntityId = new(entityType, entityId);
+    }
+
+    public TbEntityNotFoundException(TbEntityId entityId)
+    {
+        EntityId = entityId;
     }
 }

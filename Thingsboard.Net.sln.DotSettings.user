@@ -12,31 +12,19 @@
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\quibble.xunit\0.2.51\lib\netstandard2.0\Quibble.Xunit.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Nepton\AppData\Local\JetBrains\Rider2022.2\resharper-host\temp\Rider\vAny\CoverageData\_Thingsboard.Net.-248613318\Snapshot\snapshot.utdcvr</s:String>
 	
 	
 	
 	
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0eb8b015_002Ddeb9_002D4d09_002D88de_002Dd4106dda10ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" Name="TestEntityFilter #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="D:\Project\Doulex\Thingsboard.Net\tests\Thingsboard.Net.Flurl.Tests" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;Thingsboard.Net.Flurl.Tests&amp;gt;" /&gt;&#xD;
+	
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4235c12a_002D87c7_002D484a_002Db5e9_002D5677ef2c96f1/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsActive="True" Name="TestCompletedFlow" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="D:\Project\Doulex\Thingsboard.Net" Presentation="&amp;lt;tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4235c12a_002D87c7_002D484a_002Db5e9_002D5677ef2c96f1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestCompletedFlow" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::UnitTest.Thingsboard.Net.Flurl.TbAlarmClient.AlarmFlowTests.TestCompletedFlow&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A847A604-D615-470B-A4F4-34C37EC47E98::net6.0::UnitTest.Thingsboard.Net.Abstractions.Models.TbEntityIdTester&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A847A604-D615-470B-A4F4-34C37EC47E98::net6.0::UnitTest.Thingsboard.Net.Abstractions.Models.TbEntityFieldTester&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::FE8F6FBD-4F8A-4072-A2DA-425B8A643B40::net6.0::UnitTest.Thingsboard.Net.Flurl.CustomOptions.CustomOptionsTester.TestWithCredentials&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51b9b0ac_002D0aaf_002D46f4_002D85b7_002D6c8e751b106e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;tests&amp;gt;\&amp;lt;UnitTest.Thingsboard.Net.Flurl&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;Project Location="D:\Project\Doulex\Thingsboard.Net\tests\UnitTest.Thingsboard.Net.Flurl" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;UnitTest.Thingsboard.Net.Flurl&amp;gt;" /&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::A847A604-D615-470B-A4F4-34C37EC47E98::net6.0::UnitTest.Thingsboard.Net.Abstractions.Models.TbEntityIdTester&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=src_002FDoulex_002EPinyin_002FPinyinResource/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Aliyun/@EntryIndexedValue">True</s:Boolean>

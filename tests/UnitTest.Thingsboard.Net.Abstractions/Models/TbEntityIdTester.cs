@@ -69,6 +69,23 @@ public class TbEntityIdTester
     }
 
     /// <summary>
+    /// Test default ctor function and init value
+    /// </summary>
+    [Fact]
+    public void TestInitData()
+    {
+        var newGuid = Guid.NewGuid();
+        var id = new TbEntityId
+        {
+            Id         = newGuid,
+            EntityType = TbEntityType.RPC,
+        };
+
+        Assert.Equal(TbEntityType.RPC, id.EntityType);
+        Assert.Equal(newGuid,          id.Id);
+    }
+
+    /// <summary>
     /// Test Read and Write JSON.
     /// </summary>
     [Fact]
@@ -105,13 +122,13 @@ public class TbEntityIdTester
         var json2 = JsonConvert.SerializeObject(id2);
         var json3 = JsonConvert.SerializeObject(id3);
 
-        var expected1 = $$"""{"id": "{{id1.Id}}", "entityType": "{{id1.EntityType}}"}""";
+        var expected1 = JsonConvert.SerializeObject(new {id = id1.Id, entityType = id1.EntityType});
         JsonAssert.Equal(expected1, json1);
 
-        var expected2 = $$"""{"id": "{{id2.Id}}", "entityType": "{{id2.EntityType}}"}""";
+        var expected2 = JsonConvert.SerializeObject(new {id = id2.Id, entityType = id2.EntityType});
         JsonAssert.Equal(expected2, json2);
 
-        var expected3 = $$"""{"id": "{{id3.Id}}", "entityType": "{{id3.EntityType}}"}""";
+        var expected3 = JsonConvert.SerializeObject(new {id = id3.Id, entityType = id3.EntityType});
         JsonAssert.Equal(expected3, json3);
     }
 }

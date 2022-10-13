@@ -13,13 +13,20 @@ public class TbTestService : IDisposable
 {
     private readonly ServiceProvider _service;
 
+    public ThingsboardNetFlurlOptions DefaultOptions { get; } = new()
+    {
+        BaseUrl  = "http://localhost:8080",
+        Username = "tenant@thingsboard.org",
+        Password = "tenant",
+    };
+
     public TbTestService()
     {
         _service = BuildServiceProvider(options =>
         {
-            options.BaseUrl  = "http://localhost:8080";
-            options.Username = "tenant@thingsboard.org";
-            options.Password = "tenant";
+            options.BaseUrl  = DefaultOptions.BaseUrl;
+            options.Username = DefaultOptions.Username;
+            options.Password = DefaultOptions.Password;
         });
     }
 
@@ -57,10 +64,5 @@ public class TbTestService : IDisposable
     public void Dispose()
     {
         _service.Dispose();
-    }
-
-    public Guid GetTestDeviceId()
-    {
-        return Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
     }
 }

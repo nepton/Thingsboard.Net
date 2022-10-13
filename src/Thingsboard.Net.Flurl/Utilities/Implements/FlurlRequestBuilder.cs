@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Microsoft.Extensions.Logging;
@@ -108,7 +107,7 @@ public class FlurlRequestBuilder : IRequestBuilder
         // 参数选项
         var options = _optionsReader.GetOptions();
 
-        var flurl = GetBaseUrl(options)
+        var flurl = options.GetBaseUrl()
             .WithTimeout(TimeSpan.FromSeconds(options.TimeoutInSec ?? 10))
             .ConfigureRequest(action =>
             {
@@ -176,28 +175,5 @@ public class FlurlRequestBuilder : IRequestBuilder
             call.Request.Url,
             call.Response.StatusCode,
             call.Duration?.TotalMilliseconds);
-    }
-
-    /// <summary>
-    /// 获取 URL
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    private Url GetBaseUrl(ThingsboardNetFlurlOptions options)
-    {
-        if (options == null) throw new ArgumentNullException(nameof(options));
-
-        if (string.IsNullOrEmpty(options.BaseUrl))
-            throw new ArgumentNullException(nameof(Url), "Thingsboard URL is not set");
-
-        var url = new Url(options.BaseUrl);
-
-        if (url.Scheme != "http" && url.Scheme != "https")
-            throw new ArgumentException("Thingsboard URL must be http or https", nameof(Url));
-
-        if (url.Host == null)
-            throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
-
-        return url;
     }
 }

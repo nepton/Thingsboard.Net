@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
 namespace Thingsboard.Net.Flurl;
@@ -31,6 +32,7 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         var policy = builder.GetPolicyBuilder<TbAlarm>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, (() => throw new TbEntityNotFoundException(alarm.Id ?? TbEntityId.Empty)))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -130,6 +132,7 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, tbAlarmId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -154,6 +157,7 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, tbAlarmId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -178,6 +182,7 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, alarmId))
             .Build();
 
         return policy.ExecuteAsync(async () =>

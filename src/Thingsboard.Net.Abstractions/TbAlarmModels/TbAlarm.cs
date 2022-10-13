@@ -54,7 +54,7 @@ public class TbAlarm
     /// <summary>
     /// The start time
     /// </summary>
-    public DateTime StartTs { get; set; }
+    public DateTime? StartTs { get; set; }
 
     /// <summary>
     /// End time (this time is the time when the alarm information was last received)
@@ -74,7 +74,7 @@ public class TbAlarm
     /// <summary>
     /// Details of the alarm information
     /// </summary>
-    public Dictionary<string, object> Details { get; set; } = new();
+    public Dictionary<string, object?> Details { get; set; } = new();
 
     public bool      Propagate              { get; set; }
     public bool      PropagateToOwner       { get; set; }
