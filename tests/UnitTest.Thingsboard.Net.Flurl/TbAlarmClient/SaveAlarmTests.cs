@@ -25,7 +25,7 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm    = AlarmUtility.GenerateAlarmEntity();
+        var alarm    = AlarmUtility.GenerateEntity();
         var newAlarm = await client.SaveAlarmAsync(alarm);
 
         // assert
@@ -52,7 +52,7 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm = AlarmUtility.GenerateAlarmEntity();
+        var alarm = AlarmUtility.GenerateEntity();
         alarm.Originator = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(alarm));
 
@@ -72,7 +72,7 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm = AlarmUtility.GenerateAlarmEntity();
+        var alarm = AlarmUtility.GenerateEntity();
         alarm.Originator = null;
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAlarmAsync(null!));
 
@@ -109,7 +109,7 @@ public class SaveAlarmTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
-        var alarm  = AlarmUtility.GenerateAlarmEntity();
+        var alarm  = AlarmUtility.GenerateEntity();
         alarm.Id = new TbEntityId(TbEntityType.ALARM, Guid.NewGuid());
 
         // act
@@ -118,5 +118,39 @@ public class SaveAlarmTests
         // assert
         Assert.NotNull(ex);
         Assert.Equal(alarm.Id, ex.EntityId);
+    }
+
+    [Fact]
+    public async Task TestInvalidUsername()
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateAlarmClient();
+
+        // act
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
+        {
+            await client
+                .WithCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                .SaveAlarmAsync(AlarmUtility.GenerateEntity());
+        });
+
+        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestInvalidBaseUrl()
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateAlarmClient();
+
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
+        {
+            await client
+                .WithBaseUrl("http://localhost:123")
+                .WithHttpTimeout(1, 0, 0)
+                .SaveAlarmAsync(AlarmUtility.GenerateEntity());
+        });
+
+        Assert.Equal(false, ex.Completed);
     }
 }

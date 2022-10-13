@@ -34,15 +34,15 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbPage<TbDevice>> GetCustomerDeviceInfosAsync(
-        Guid                       customerId,
-        int                        pageSize,
-        int                        page,
-        string?                    type,
-        Guid?                      deviceProfileId,
-        string?                    textSearch,
-        TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder                sortOrder,
-        CancellationToken          cancel = default);
+        Guid                        customerId,
+        int                         pageSize,
+        int                         page,
+        string?                     type            = null,
+        Guid?                       deviceProfileId = null,
+        string?                     textSearch      = null,
+        TbDeviceSearchSortProperty? sortProperty    = null,
+        TbSortOrder?                sortOrder       = null,
+        CancellationToken           cancel          = default);
 
     /// <summary>
     /// Returns a page of devices objects assigned to customer. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
@@ -58,14 +58,14 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbPage<TbDevice>> GetCustomerDevicesAsync(
-        Guid                       customerId,
-        int                        pageSize,
-        int                        page,
-        string?                    type,
-        string?                    textSearch,
-        TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder                sortOrder,
-        CancellationToken          cancel = default);
+        Guid                        customerId,
+        int                         pageSize,
+        int                         page,
+        string?                     type         = null,
+        string?                     textSearch   = null,
+        TbDeviceSearchSortProperty? sortProperty = null,
+        TbSortOrder?                sortOrder    = null,
+        CancellationToken           cancel       = default);
 
     /// <summary>
     /// Clears assignment of the device to customer. Customer will not be able to query device afterwards.
@@ -89,7 +89,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     ///</remarks>
     /// <returns></returns>
-    Task<TbDevice> SaveDeviceAsync(TbDevice device, string? deviceAccessToken, CancellationToken cancel = default);
+    Task<TbDevice> SaveDeviceAsync(TbDevice device, string? deviceAccessToken = null, CancellationToken cancel = default);
 
     /// <summary>
     /// Gets the specified device by Id. If the device does not exist, null is returned
@@ -142,7 +142,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
     /// <param name="deviceIds">A list of devices ids</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbDevice[]> GetDevicesByIds(Guid[] deviceIds, CancellationToken cancel = default);
+    Task<TbDevice[]> GetDevicesByIdsAsync(Guid[] deviceIds, CancellationToken cancel = default);
 
     /// <summary>
     /// Obtaining the Device List

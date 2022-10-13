@@ -1,6 +1,4 @@
-﻿using Thingsboard.Net;
-
-namespace UnitTest.Thingsboard.Net.Flurl.TbDashboardClient;
+﻿namespace UnitTest.Thingsboard.Net.Flurl.TbDashboardClient;
 
 public class GetServerTimeTester
 {

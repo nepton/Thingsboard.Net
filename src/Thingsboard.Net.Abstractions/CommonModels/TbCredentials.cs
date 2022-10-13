@@ -6,7 +6,7 @@
 public class TbCredentials
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbCredentials(string username, string password)
+    public TbCredentials(string username, string? password)
     {
         Username = username;
         Password = password;
@@ -20,5 +20,5 @@ public class TbCredentials
     /// <summary>
     /// The password of the user.
     /// </summary>
-    public string Password { get; }
+    public string? Password { get; }
 }

@@ -3,7 +3,7 @@
 /// <summary>
 /// The global default options for all <see cref="ITbClient{TClient}"/> instances.
 /// </summary>
-public interface IOptionsReader
+public interface IOptionsReaderFactory
 {
-    ThingsboardNetFlurlOptions GetOptions();
+    ThingsboardNetFlurlOptionsReader GetOptionsReader();
 }

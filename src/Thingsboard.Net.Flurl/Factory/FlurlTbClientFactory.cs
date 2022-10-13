@@ -16,10 +16,10 @@ public class FlurlTbClientFactory
 
     public ILoggerFactory? LoggerFactory { get; set; }
 
-    private IRequestBuilder CreateRequestBuilder()
+    public IRequestBuilder CreateRequestBuilder()
     {
         return new FlurlRequestBuilder(
-            new OptionsReader(Options),
+            new DefaultOptionsReaderFactory(new ThingsboardNetFlurlOptionsReader(Options)),
             new InMemoryAccessTokenRepository(),
             LoggerFactory ?? NullLoggerFactory.Instance);
     }

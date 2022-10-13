@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
 namespace Thingsboard.Net.Flurl;
@@ -65,15 +66,15 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <param name="cancel"></param>
     /// <returns></returns>
     public Task<TbPage<TbDevice>> GetCustomerDeviceInfosAsync(
-        Guid                       customerId,
-        int                        pageSize,
-        int                        page,
-        string?                    type,
-        Guid?                      deviceProfileId,
-        string?                    textSearch,
-        TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder                sortOrder,
-        CancellationToken          cancel = default)
+        Guid                        customerId,
+        int                         pageSize,
+        int                         page,
+        string?                     type            = null,
+        Guid?                       deviceProfileId = null,
+        string?                     textSearch      = null,
+        TbDeviceSearchSortProperty? sortProperty    = null,
+        TbSortOrder?                sortOrder       = null,
+        CancellationToken           cancel          = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -115,14 +116,14 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <param name="cancel"></param>
     /// <returns></returns>
     public Task<TbPage<TbDevice>> GetCustomerDevicesAsync(
-        Guid                       customerId,
-        int                        pageSize,
-        int                        page,
-        string?                    type,
-        string?                    textSearch,
-        TbDeviceSearchSortProperty sortProperty,
-        TbSortOrder                sortOrder,
-        CancellationToken          cancel = default)
+        Guid                        customerId,
+        int                         pageSize,
+        int                         page,
+        string?                     type         = null,
+        string?                     textSearch   = null,
+        TbDeviceSearchSortProperty? sortProperty = null,
+        TbSortOrder?                sortOrder    = null,
+        CancellationToken           cancel       = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -190,8 +191,10 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     ///</remarks>
     /// <returns></returns>
-    public Task<TbDevice> SaveDeviceAsync(TbDevice device, string? accessToken, CancellationToken cancel = default)
+    public Task<TbDevice> SaveDeviceAsync(TbDevice device, string? accessToken = null, CancellationToken cancel = default)
     {
+        if (device == null) throw new ArgumentNullException(nameof(device));
+
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
         var policy = builder.GetPolicyBuilder<TbDevice>()
@@ -209,51 +212,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
                 .ReceiveJson<TbDevice>();
 
             return response;
-        });
-    }
-
-    /// <summary>
-    /// Obtaining the Device List
-    /// </summary>
-    /// <param name="type">Type of device</param>
-    /// <param name="textSearch">The search criteria</param>
-    /// <param name="sortProperty">Sort properties</param>
-    /// <param name="sortOrder">Sort direction</param>
-    /// <param name="page">Indicate which page will be query</param>
-    /// <param name="pageSize">The number of records read</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public Task<TbPage<TbDevice>> GetTenantDevicesAsync(
-        string?           type         = null,
-        string?           textSearch   = null,
-        string?           sortProperty = null,
-        TbSortOrder?      sortOrder    = null,
-        int               page         = 0,
-        int               pageSize     = 20,
-        CancellationToken cancel       = default)
-    {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbDevice>>()
-            .RetryOnHttpTimeout()
-            .RetryOnUnauthorized()
-            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbDevice>.Empty)
-            .Build();
-
-        return policy.ExecuteAsync(async () =>
-        {
-            var result = await builder.CreateRequest()
-                .AppendPathSegment("api/tenant/devices")
-                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("type",         type)
-                .SetQueryParam("textSearch",   textSearch)
-                .SetQueryParam("sortProperty", sortProperty)
-                .SetQueryParam("sortOrder",    sortOrder)
-                .SetQueryParam("page",         page)
-                .SetQueryParam("pageSize",     pageSize)
-                .GetJsonAsync<TbPage<TbDevice>>(cancel);
-
-            return result;
         });
     }
 
@@ -298,6 +256,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -400,7 +359,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <param name="deviceIds">A list of devices ids</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbDevice[]> GetDevicesByIds(Guid[] deviceIds, CancellationToken cancel = default)
+    public Task<TbDevice[]> GetDevicesByIdsAsync(Guid[] deviceIds, CancellationToken cancel = default)
     {
         if (deviceIds == null) throw new ArgumentNullException(nameof(deviceIds));
         if (deviceIds.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(deviceIds));

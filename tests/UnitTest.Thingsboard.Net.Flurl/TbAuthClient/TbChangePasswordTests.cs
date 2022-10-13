@@ -28,4 +28,35 @@ public class TbChangePasswordTests
         Assert.Equal(HttpStatusCode.BadRequest,         ex.StatusCode);
         Assert.Equal("Current password doesn't match!", ex.Message);
     }
+
+    [Fact]
+    public async Task TestInvalidLoginUser()
+    {
+        var authApi = TbTestFactory.Instance.CreateAuthClient();
+
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
+            await authApi
+                .WithCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                .ChangePasswordAsync(new TbChangePasswordRequest("WrongCurrentPassword", "tenant"))
+        );
+
+        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestInvalidBaseUrl()
+    {
+        var authApi = TbTestFactory.Instance
+            .CreateAuthClient()
+            .WithBaseUrl("http://localhost:123")
+            .WithHttpTimeout(1, 0, 0);
+
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
+            await authApi
+                .WithCredentials("tenant", "tenant")
+                .ChangePasswordAsync(new TbChangePasswordRequest("WrongCurrentPassword", "tenant"))
+        );
+
+        Assert.Equal(false, ex.Completed);
+    }
 }

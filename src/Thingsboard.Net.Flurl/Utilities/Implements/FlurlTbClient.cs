@@ -64,8 +64,8 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOpti
         if (url.Host == null)
             throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
 
-        CustomOptions ??= new();
-        CustomOptions.SetBaseUrl(baseUrl);
+        CustomOptions         ??= new();
+        CustomOptions.BaseUrl =   baseUrl;
 
         return (TClient) (object) this;
     }

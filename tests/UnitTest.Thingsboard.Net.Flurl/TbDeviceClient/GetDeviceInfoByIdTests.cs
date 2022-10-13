@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Quibble.Xunit;
 using Thingsboard.Net;
+using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
@@ -10,11 +11,11 @@ public class GetDeviceInfoByIdTests
     public async Task TestGetDeviceInfoById()
     {
         // arrange
-        var api = TbTestFactory.Instance.CreateDeviceClient();
+        var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
         var deviceId   = Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
-        var deviceInfo = await api.GetDeviceInfoByIdAsync(deviceId);
+        var deviceInfo = await client.GetDeviceInfoByIdAsync(deviceId);
 
         Assert.NotNull(deviceInfo);
 
@@ -28,12 +29,32 @@ public class GetDeviceInfoByIdTests
     public async Task TestWhenDeviceNotFound()
     {
         // arrange
-        var api = TbTestFactory.Instance.CreateDeviceClient();
+        var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
         var deviceId   = Guid.Empty;
-        var deviceInfo = await api.GetDeviceInfoByIdAsync(deviceId);
+        var deviceInfo = await client.GetDeviceInfoByIdAsync(deviceId);
 
         Assert.Null(deviceInfo);
+    }
+
+    [Fact]
+    public async Task TestIncorrectUsername()
+    {
+        await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
+            async client =>
+            {
+                var deviceInfo = await client.GetDeviceInfoByIdAsync(Guid.NewGuid());
+            });
+    }
+
+    [Fact]
+    public async Task TestIncorrectBaseUrl()
+    {
+        await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
+            async client =>
+            {
+                var deviceInfo = await client.GetDeviceInfoByIdAsync(Guid.NewGuid());
+            });
     }
 }

@@ -23,7 +23,7 @@ public static class ThingsboardNetServicesExtensions
         services.Configure(configureOptions);
         services.AddTransient<IRequestBuilder, FlurlRequestBuilder>();
         services.AddTransient<IAccessTokenRepository, InMemoryAccessTokenRepository>();
-        services.AddTransient<IOptionsReader, OptionsSnapshotReader>();
+        services.AddTransient<IOptionsReaderFactory, OptionsSnapshotReader>();
 
         services.AddTransient<ITbAlarmClient, FlurlTbAlarmClient>();
         services.AddTransient<ITbAuthClient, FlurlTbAuthClient>();

@@ -12,12 +12,12 @@ namespace Thingsboard.Net.Flurl.Utilities;
 
 public class RequestPolicyBuilder<TResult>
 {
-    private readonly ThingsboardNetFlurlOptions             _options;
+    private readonly ThingsboardNetFlurlOptionsReader       _options;
     private readonly ILogger<RequestPolicyBuilder<TResult>> _logger;
 
     private readonly List<IAsyncPolicy<TResult>> _policies = new();
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options, ILogger<RequestPolicyBuilder<TResult>> logger)
+    public RequestPolicyBuilder(ThingsboardNetFlurlOptionsReader options, ILogger<RequestPolicyBuilder<TResult>> logger)
     {
         _options = options;
         _logger  = logger;
@@ -38,7 +38,7 @@ public class RequestPolicyBuilder<TResult>
 
     public RequestPolicyBuilder<TResult> RetryOnHttpTimeout()
     {
-        return RetryOnHttpTimeout(_options.RetryTimes ?? 3, _options.RetryIntervalInSec ?? 1);
+        return RetryOnHttpTimeout(_options.RetryTimes, _options.RetryIntervalInSec);
     }
 
     public RequestPolicyBuilder<TResult> RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)
@@ -89,11 +89,11 @@ public class RequestPolicyBuilder<TResult>
 
 public class RequestPolicyBuilder
 {
-    private readonly ThingsboardNetFlurlOptions    _options;
-    private readonly ILogger<RequestPolicyBuilder> _logger;
-    private readonly List<IAsyncPolicy>            _policies = new();
+    private readonly ThingsboardNetFlurlOptionsReader _options;
+    private readonly ILogger<RequestPolicyBuilder>    _logger;
+    private readonly List<IAsyncPolicy>               _policies = new();
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptions options, ILogger<RequestPolicyBuilder> logger)
+    public RequestPolicyBuilder(ThingsboardNetFlurlOptionsReader options, ILogger<RequestPolicyBuilder> logger)
     {
         _options = options;
         _logger  = logger;
@@ -114,7 +114,7 @@ public class RequestPolicyBuilder
 
     public RequestPolicyBuilder RetryOnHttpTimeout()
     {
-        return RetryOnHttpTimeout(_options.RetryTimes ?? 3, _options.RetryIntervalInSec ?? 1);
+        return RetryOnHttpTimeout(_options.RetryTimes, _options.RetryIntervalInSec);
     }
 
     public RequestPolicyBuilder RetryOnHttpTimeout(int retryTimes, int retryWaitInSec)

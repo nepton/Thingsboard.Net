@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements;
+namespace Thingsboard.Net.Flurl.Utilities;
 
 public static class StringExtensions
 {
@@ -22,5 +22,10 @@ public static class StringExtensions
         }
 
         return null;
+    }
+
+    public static string MakeSureNotNull(this string? value)
+    {
+        return value ?? throw new ArgumentNullException(nameof(value));
     }
 }

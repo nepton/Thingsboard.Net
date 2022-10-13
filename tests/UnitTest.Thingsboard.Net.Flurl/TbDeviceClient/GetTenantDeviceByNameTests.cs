@@ -4,16 +4,16 @@ using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
-public class GetDeviceByIdTests
+public class GetTenantDeviceByNameTests
 {
     [Fact]
-    public async Task TestGetDeviceById()
+    public async Task TestGetTenantDeviceByName()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual = await client.GetDeviceByIdAsync(TbTestData.TestDeviceId);
+        var actual = await client.GetTenantDeviceByNameAsync(TbTestData.TestDeviceName);
 
         Assert.NotNull(actual);
 
@@ -31,7 +31,7 @@ public class GetDeviceByIdTests
 
         // act
         var deviceId = Guid.Empty;
-        var actual   = await client.GetDeviceByIdAsync(deviceId);
+        var actual   = await client.GetTenantDeviceByNameAsync(string.Empty);
 
         Assert.Null(actual);
     }
@@ -42,7 +42,7 @@ public class GetDeviceByIdTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceByIdAsync(Guid.NewGuid());
+                var actual = await client.GetTenantDeviceByNameAsync(string.Empty);
             });
     }
 
@@ -52,7 +52,7 @@ public class GetDeviceByIdTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceByIdAsync(Guid.NewGuid());
+                var actual = await client.GetTenantDeviceByNameAsync(string.Empty);
             });
     }
 }

@@ -3,7 +3,7 @@ using Thingsboard.Net.Flurl.Options;
 
 namespace Thingsboard.Net.Flurl.DependencyInjection;
 
-public class OptionsSnapshotReader : IOptionsReader
+public class OptionsSnapshotReader : IOptionsReaderFactory
 {
     private readonly ThingsboardNetFlurlOptions _options;
 
@@ -12,8 +12,8 @@ public class OptionsSnapshotReader : IOptionsReader
         _options = options.Value;
     }
 
-    public ThingsboardNetFlurlOptions GetOptions()
+    public ThingsboardNetFlurlOptionsReader GetOptionsReader()
     {
-        return _options;
+        return new ThingsboardNetFlurlOptionsReader(_options);
     }
 }

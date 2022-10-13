@@ -8,13 +8,13 @@ public class AlarmUtility
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
-        var alarm  = GenerateAlarmEntity();
+        var alarm  = GenerateEntity();
 
         // act
         return await client.SaveAlarmAsync(alarm);
     }
 
-    public static TbAlarm GenerateAlarmEntity()
+    public static TbAlarm GenerateEntity()
     {
         var alarm = new TbAlarm
         {

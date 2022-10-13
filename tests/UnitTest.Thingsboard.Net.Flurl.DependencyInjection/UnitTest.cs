@@ -17,7 +17,7 @@ public class UnitTest
         Assert.IsType<FlurlRequestBuilder>(services.GetRequiredService<IRequestBuilder>());
 
         Assert.IsType<InMemoryAccessTokenRepository>(services.GetRequiredService<IAccessTokenRepository>());
-        Assert.IsType<OptionsSnapshotReader>(services.GetRequiredService<IOptionsReader>());
+        Assert.IsType<OptionsSnapshotReader>(services.GetRequiredService<IOptionsReaderFactory>());
 
         Assert.IsType<FlurlTbAlarmClient>(services.GetRequiredService<ITbAlarmClient>());
         Assert.IsType<FlurlTbAuthClient>(services.GetRequiredService<ITbAuthClient>());
@@ -41,6 +41,6 @@ public class UnitTest
 
         var options = services.GetRequiredService<IOptionsSnapshot<ThingsboardNetFlurlOptions>>();
 
-        Assert.StrictEqual(expected, options.Value);
+        Assert.Equal(expected, options.Value);
     }
 }
