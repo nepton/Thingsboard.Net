@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
 namespace Thingsboard.Net.Flurl;
@@ -88,6 +89,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ASSET, assetId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -234,7 +236,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         return policy.ExecuteAsync(async () =>
         {
             var response = await builder.CreateRequest()
-                .AppendPathSegment($"/api/asset/{assetId}/assignToCustomer/{customerId}")
+                .AppendPathSegment($"/api/customer/{customerId}/asset/{assetId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(null, cancel)
                 .ReceiveJson<TbAsset>();
@@ -415,7 +417,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetName">A string value representing the Asset name.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAsset?> GetTenantAssetAsync(string assetName, CancellationToken cancel = default)
+    public Task<TbAsset?> GetTenantAssetByNameAsync(string assetName, CancellationToken cancel = default)
     {
         if (string.IsNullOrEmpty(assetName)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetName));
 
@@ -430,8 +432,9 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         return policy.ExecuteAsync(async () =>
         {
             var response = await builder.CreateRequest()
-                .AppendPathSegment($"/api/tenant/assets/{assetName}")
+                .AppendPathSegment($"/api/tenant/assets")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .SetQueryParam("assetName", assetName)
                 .GetJsonAsync<TbAsset>(cancel);
 
             return response;

@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 public class TbRpcRequest
 {
@@ -33,7 +35,7 @@ public class TbRpcRequest
     /// <summary>
     /// expirationTime - optional, value of the epoch time (in milliseconds, UTC timezone). Overrides timeout if present.
     /// </summary>
-    public int? ExpirationTime { get; set; }
+    public DateTime? ExpirationTime { get; set; }
 
     /// <summary>
     /// persistent - optional, indicates persistent RPC. The default value is "false".

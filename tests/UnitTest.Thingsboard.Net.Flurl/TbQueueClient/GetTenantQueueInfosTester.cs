@@ -12,7 +12,7 @@ public class GetTenantQueueInfosTester
         var client = TbTestFactory.Instance.CreateQueueClient();
 
         // act
-        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_CORE, 20, 0);
+        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_RULE_ENGINE, 20, 0);
 
         // assert
         Assert.NotNull(queues);

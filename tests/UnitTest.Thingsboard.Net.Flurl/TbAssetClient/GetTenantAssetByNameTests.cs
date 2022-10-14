@@ -15,7 +15,7 @@ public class GetTenantAssetByNameTests
         Assert.NotNull(expected);
 
         // act
-        var actual = await client.GetTenantAssetAsync(expected.Name);
+        var actual = await client.GetTenantAssetByNameAsync(expected.Name);
 
         // assert
         Assert.NotNull(actual);
@@ -32,9 +32,28 @@ public class GetTenantAssetByNameTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetTenantAssetAsync(string.Empty);
+        var actual = await client.GetTenantAssetByNameAsync("test");
 
         Assert.Null(actual);
+    }
+    
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public async Task TestWhenInvalidArgument(string? assetName)
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateAssetClient();
+
+        // act
+        var ex = await Record.ExceptionAsync(async () =>
+        {
+            await client.GetTenantAssetByNameAsync(assetName);
+        });
+        
+        // assert
+        Assert.NotNull(ex);
+        Assert.IsType<ArgumentException>(ex);
     }
 
     [Fact]
@@ -43,7 +62,7 @@ public class GetTenantAssetByNameTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.GetTenantAssetAsync(string.Empty);
+                await client.GetTenantAssetByNameAsync("test");
             });
     }
 
@@ -53,7 +72,7 @@ public class GetTenantAssetByNameTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.GetTenantAssetAsync(string.Empty);
+                await client.GetTenantAssetByNameAsync("test");
             });
     }
 }

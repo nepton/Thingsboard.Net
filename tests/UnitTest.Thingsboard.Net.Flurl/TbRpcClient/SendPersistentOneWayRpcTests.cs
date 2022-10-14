@@ -60,7 +60,10 @@ public class SendPersistentOneWayRpcTests
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<TbEntityNotFoundException>(async () => await client.SendPersistentOneWayRpcAsync(Guid.NewGuid(), new TbRpcRequest("testMethod")));
+        var ex = await Assert.ThrowsAsync<TbEntityNotFoundException>(async () =>
+        {
+            await client.SendPersistentOneWayRpcAsync(Guid.NewGuid(), new TbRpcRequest("testMethod"));
+        });
 
         // assert
         Assert.NotNull(ex);

@@ -159,7 +159,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="assetName">A string value representing the Asset name.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAsset?> GetTenantAssetAsync(string assetName, CancellationToken cancel = default);
+    Task<TbAsset?> GetTenantAssetByNameAsync(string assetName, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of assets owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.

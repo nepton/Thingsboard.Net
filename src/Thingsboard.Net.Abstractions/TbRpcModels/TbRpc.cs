@@ -13,7 +13,7 @@ public class TbRpc
 
     public TbEntityId? DeviceId { get; set; }
 
-    public int? ExpirationTime { get; set; }
+    public DateTime? ExpirationTime { get; set; }
 
     public Dictionary<string, object>? Request { get; set; }
 

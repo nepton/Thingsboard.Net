@@ -12,7 +12,7 @@ public class GetQueueByIdTests
         var client = TbTestFactory.Instance.CreateQueueClient();
 
         // act
-        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_CORE, 20, 0);
+        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_RULE_ENGINE, 20, 0);
         Assert.NotNull(queues);
         Assert.NotEmpty(queues.Data);
         var actual = await client.GetQueueByIdAsync(queues.Data[0].Id.Id);

@@ -4,7 +4,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 
 public class AssetUtility
 {
-    public static TbAsset GenerateEntity()
+    public static TbAsset GenerateAsset()
     {
         var entity = new TbAsset
         {
@@ -19,7 +19,7 @@ public class AssetUtility
     public static async Task<TbAsset> CreateAssetAsync()
     {
         var client = TbTestFactory.Instance.CreateAssetClient();
-        var entity = GenerateEntity();
+        var entity = GenerateAsset();
         return await client.SaveAssetAsync(entity);
     }
 

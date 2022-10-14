@@ -26,5 +26,6 @@ public enum TbEntityType
     TENANT_PROFILE  = 16,
     USER            = 17,
     WIDGETS_BUNDLE  = 18,
-    WIDGET_TYPE     = 19
+    WIDGET_TYPE     = 19,
+    QUEUE
 }

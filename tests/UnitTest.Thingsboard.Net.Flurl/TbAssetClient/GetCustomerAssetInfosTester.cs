@@ -9,6 +9,8 @@ public class GetCustomerAssetInfosTester
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAssetClient();
+        var asset  = await AssetUtility.CreateAssetAsync();
+        await client.AssignAssetToCustomerAsync(TbTestData.TestCustomerId, asset.Id.Id);
 
         // act
         var actual = await client.GetCustomerAssetInfosAsync(TbTestData.TestCustomerId, 20, 0);
@@ -16,6 +18,9 @@ public class GetCustomerAssetInfosTester
         // assert
         Assert.NotNull(actual);
         Assert.NotEmpty(actual.Data);
+        
+        // cleanup
+        await AssetUtility.DeleteAssetAsync(asset.Id);
     }
 
     [Fact]

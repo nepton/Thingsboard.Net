@@ -12,7 +12,7 @@ public class GetTenantQueueByNameTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateQueueClient();
-        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_CORE, 20, 0);
+        var queues = await client.GetTenantQueuesByServiceTypeAsync(TbQueueServiceType.TB_RULE_ENGINE, 20, 0);
         Assert.NotNull(queues);
         Assert.NotEmpty(queues.Data);
 
@@ -30,7 +30,7 @@ public class GetTenantQueueByNameTests
         var client = TbTestFactory.Instance.CreateQueueClient();
 
         // act
-        var actual = await client.GetQueueByNameAsync(string.Empty);
+        var actual = await client.GetQueueByNameAsync(Guid.NewGuid().ToString());
 
         Assert.Null(actual);
     }

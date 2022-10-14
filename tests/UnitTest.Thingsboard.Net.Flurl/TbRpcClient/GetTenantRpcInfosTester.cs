@@ -9,9 +9,10 @@ public class GetPersistentRpcRequestsTester
     {
         // arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
 
         // act
+        await Task.Delay(1000);
         var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.TestDeviceId, 20, 0);
 
         // assert

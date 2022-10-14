@@ -54,7 +54,8 @@ public class FlurlRequestBuilder : IRequestBuilder
         return _cached ??= new NewtonsoftJsonSerializer(
             new JsonSerializerSettings()
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore, // persistent rpc call will fail if null values are sent 
+                ContractResolver  = new CamelCasePropertyNamesContractResolver(),
                 Converters = new List<JsonConverter>()
                 {
                     new StringEnumConverter(),

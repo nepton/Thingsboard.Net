@@ -27,12 +27,17 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     public Task<TbRpcId> SendPersistentOneWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default)
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
+
         request.Persistent = true;
+        if (request.ExpirationTime < DateTime.Now.AddSeconds(5))
+            throw new TbException("Expiration time must be greater than current time in persistent RPC call if exists");
+
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
         var policy = builder.GetPolicyBuilder<TbRpcId>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -158,7 +163,7 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         return policy.ExecuteAsync(async () =>
         {
             var request = builder.CreateRequest()
-                .AppendPathSegment($"/api/rpc/persistent/{deviceId}")
+                .AppendPathSegment($"/api/rpc/persistent/device/{deviceId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("pageSize",     pageSize)
                 .SetQueryParam("page",         page)
@@ -182,12 +187,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
         request.Persistent = true;
+        if (request.ExpirationTime < DateTime.Now.AddSeconds(5))
+            throw new TbException("Expiration time must be greater than current time in persistent RPC call if exists");
 
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
         var policy = builder.GetPolicyBuilder<TbRpcId>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
         return policy.ExecuteAsync(async () =>

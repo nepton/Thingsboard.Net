@@ -17,7 +17,7 @@ public class DeleteRpcTests
     {
         // Arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
 
         // Act
         var entityBeforeDelete = await client.GetPersistentRpcByIdAsync(newRpc.Id);

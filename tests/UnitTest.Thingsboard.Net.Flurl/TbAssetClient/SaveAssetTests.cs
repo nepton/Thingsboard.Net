@@ -26,7 +26,7 @@ public class SaveAssetTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var expected    = AssetUtility.GenerateEntity();
+        var expected    = AssetUtility.GenerateAsset();
         var actual = await client.SaveAssetAsync(expected);
 
         // assert
@@ -49,7 +49,7 @@ public class SaveAssetTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = AssetUtility.GenerateEntity();
+        var actual = AssetUtility.GenerateAsset();
         actual.Name = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAssetAsync(actual));
 
@@ -104,7 +104,7 @@ public class SaveAssetTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.SaveAssetAsync(AssetUtility.GenerateEntity());
+                await client.SaveAssetAsync(AssetUtility.GenerateAsset());
             });
     }
 
@@ -114,7 +114,7 @@ public class SaveAssetTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.SaveAssetAsync(AssetUtility.GenerateEntity());
+                await client.SaveAssetAsync(AssetUtility.GenerateAsset());
             });
     }
 }

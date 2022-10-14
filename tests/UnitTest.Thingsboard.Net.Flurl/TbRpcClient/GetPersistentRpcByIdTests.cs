@@ -9,7 +9,7 @@ public class GetPersistentRpcByIdTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
 
         // act
         var rpcInfo = await client.GetPersistentRpcByIdAsync(newRpc.Id);
