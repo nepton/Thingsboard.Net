@@ -11,7 +11,7 @@ public interface ITbEntityQueryClient : ITbClient<ITbEntityQueryClient>
     /// <param name="request"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbPage<TbEntity>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default);
+    Task<TbPage<TbFindEntityDataResponse>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default);
 
     /// <summary>
     /// Allows to run complex queries to search the count of platform entities (devices, assets, customers, etc) based on the combination of main entity filter and multiple key filters. Returns the number of entities that match the query definition.

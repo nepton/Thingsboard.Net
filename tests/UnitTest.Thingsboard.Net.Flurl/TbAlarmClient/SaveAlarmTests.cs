@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Thingsboard.Net;
 using Thingsboard.Net.Exceptions;
+using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 
@@ -25,21 +26,21 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm    = AlarmUtility.GenerateEntity();
-        var newAlarm = await client.SaveAlarmAsync(alarm);
+        var expected = AlarmUtility.GenerateEntity();
+        var actual   = await client.SaveAlarmAsync(expected);
 
         // assert
-        Assert.NotNull(newAlarm);
-        Assert.NotNull(newAlarm.Id);
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Id);
         // Assert.Equal(alarm.Name,       newAlarm.Name); This is the _bug from thingsboard v3.4.1. The type is assigned to the name  
-        Assert.Equal(alarm.Type,       newAlarm.Type);
-        Assert.Equal(alarm.Originator, newAlarm.Originator);
-        Assert.Equal(alarm.Severity,   newAlarm.Severity);
-        Assert.Equal(alarm.Status,     newAlarm.Status);
-        Assert.Equal(alarm.Details,    newAlarm.Details);
+        Assert.Equal(expected.Type,       actual.Type);
+        Assert.Equal(expected.Originator, actual.Originator);
+        Assert.Equal(expected.Severity,   actual.Severity);
+        Assert.Equal(expected.Status,     actual.Status);
+        Assert.Equal(expected.Details,    actual.Details);
 
         // cleanup
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(actual.Id!.Id);
     }
 
     /// <summary>
@@ -52,9 +53,29 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm = AlarmUtility.GenerateEntity();
-        alarm.Originator = null;
-        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(alarm));
+        var entity = AlarmUtility.GenerateEntity();
+        entity.Originator = null;
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
+
+        // assert
+        Assert.NotNull(ex);
+        Assert.Equal(HttpStatusCode.BadRequest,               ex.StatusCode);
+        Assert.Equal("Alarm originator should be specified!", ex.Message);
+    }
+
+    /// <summary>
+    /// Save new alarm with an invalid alarm object.
+    /// </summary>
+    [Fact]
+    public async Task TestSaveWhenDeviceIsNull()
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateAlarmClient();
+
+        // act
+        var entity = AlarmUtility.GenerateEntity();
+        entity.Originator = null;
+        var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
 
         // assert
         Assert.NotNull(ex);
@@ -72,8 +93,6 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarm = AlarmUtility.GenerateEntity();
-        alarm.Originator = null;
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAlarmAsync(null!));
 
         // assert
@@ -89,15 +108,15 @@ public class SaveAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateAlarmAsync();
+        var expected = await AlarmUtility.CreateAlarmAsync();
 
         // act
-        newAlarm.Propagate = !newAlarm.Propagate;
-        var updatedAlarm = await client.SaveAlarmAsync(newAlarm);
+        expected.Propagate = !expected.Propagate;
+        var actual = await client.SaveAlarmAsync(expected);
 
         // assert
-        Assert.NotNull(updatedAlarm);
-        Assert.Equal(newAlarm.Propagate, updatedAlarm.Propagate);
+        Assert.NotNull(actual);
+        Assert.Equal(expected.Propagate, actual.Propagate);
     }
 
     /// <summary>
@@ -109,48 +128,36 @@ public class SaveAlarmTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
-        var alarm  = AlarmUtility.GenerateEntity();
-        alarm.Id = new TbEntityId(TbEntityType.ALARM, Guid.NewGuid());
+        var entity = AlarmUtility.GenerateEntity();
+        entity.Id = new TbEntityId(TbEntityType.ALARM, Guid.NewGuid());
 
         // act
-        var ex = await Assert.ThrowsAsync<TbEntityNotFoundException>(async () => await client.SaveAlarmAsync(alarm));
+        var ex = await Assert.ThrowsAsync<TbEntityNotFoundException>(async () => await client.SaveAlarmAsync(entity));
 
         // assert
         Assert.NotNull(ex);
-        Assert.Equal(alarm.Id, ex.EntityId);
+        Assert.Equal(entity.Id, ex.EntityId);
     }
 
     [Fact]
-    public async Task TestInvalidUsername()
+    public async Task TestIncorrectUsername()
     {
-        // arrange
-        var client = TbTestFactory.Instance.CreateAlarmClient();
-
-        // act
-        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
-        {
-            await client
-                .WithCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                .SaveAlarmAsync(AlarmUtility.GenerateEntity());
-        });
-
-        Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
+        await new TbCommonTestHelper().TestIncorrectUsername(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                await client.SaveAlarmAsync(AlarmUtility.GenerateEntity());
+            });
     }
 
     [Fact]
-    public async Task TestInvalidBaseUrl()
+    public async Task TestIncorrectBaseUrl()
     {
-        // arrange
-        var client = TbTestFactory.Instance.CreateAlarmClient();
-
-        var ex = await Assert.ThrowsAsync<TbHttpException>(async () =>
-        {
-            await client
-                .WithBaseUrl("http://localhost:123")
-                .WithHttpTimeout(1, 0, 0)
-                .SaveAlarmAsync(AlarmUtility.GenerateEntity());
-        });
-
-        Assert.Equal(false, ex.Completed);
+        await new TbCommonTestHelper().TestIncorrectBaseUrl(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                await client.SaveAlarmAsync(AlarmUtility.GenerateEntity());
+            });
     }
 }

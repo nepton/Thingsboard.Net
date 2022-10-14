@@ -1,4 +1,5 @@
 ﻿using Thingsboard.Net.Exceptions;
+using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 
@@ -12,7 +13,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 public class DeleteAlarmTests
 {
     [Fact]
-    public async Task DeleteExistsAlarmTest()
+    public async Task TestDeleteExistsAlarm()
     {
         // Arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
@@ -30,15 +31,40 @@ public class DeleteAlarmTests
     }
 
     [Fact]
-    public async Task DeleteNotExistsAlarmTest()
+    public async Task TestDeleteNotExistsAlarm()
     {
         // Arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // Act
-        var ex = await Record.ExceptionAsync(async () => await client.DeleteAlarmAsync(Guid.NewGuid()));
+        var ex = await Record.ExceptionAsync(async () =>
+        {
+            await client.DeleteAlarmAsync(Guid.NewGuid());
+        });
 
         // Assert
         Assert.IsType<TbEntityNotFoundException>(ex);
+    }
+
+    [Fact]
+    public async Task TestIncorrectUsername()
+    {
+        await new TbCommonTestHelper().TestIncorrectUsername(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                await client.DeleteAlarmAsync(Guid.NewGuid());
+            });
+    }
+
+    [Fact]
+    public async Task TestIncorrectBaseUrl()
+    {
+        await new TbCommonTestHelper().TestIncorrectBaseUrl(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                await client.DeleteAlarmAsync(Guid.NewGuid());
+            });
     }
 }

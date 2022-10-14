@@ -43,6 +43,8 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task SaveDeviceAttributesAsync(Guid deviceId, TbAttributeScope scope, object value, CancellationToken cancel = default)
     {
+        if (value == null) throw new ArgumentNullException(nameof(value));
+
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
         var policy = builder.GetPolicyBuilder()
@@ -120,6 +122,8 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <returns></returns>
     public Task SaveEntityAttributesAsync(TbEntityType entityType, Guid entityId, TbAttributeScope scope, object value, CancellationToken cancel = default)
     {
+        if (value == null) throw new ArgumentNullException(nameof(value));
+
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
         var policy = builder.GetPolicyBuilder()
@@ -332,6 +336,45 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     }
 
     /// <summary>
+    /// Delete ALL time-series for selected entity based on entity id, entity type and keys. Use 'rewriteLatestIfDeleted' to rewrite latest value (stored in separate table for performance) after deletion of the time range.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="entityType">A string value representing the entity type. For example, 'DEVICE'</param>
+    /// <param name="entityId">A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="keys">A string list of telemetry keys. If keys are not selected, the result will return all latest timeseries. For example, 'temperature,humidity'.</param>
+    /// <param name="rewriteLatestIfDeleted">If the parameter is set to true, the latest telemetry will be rewritten in case that current latest value was removed, otherwise, in case that parameter is set to false the new latest value will not set.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteEntityTimeSeriesAsync(TbEntityType entityType, Guid entityId, string[] keys, bool? rewriteLatestIfDeleted = null, CancellationToken cancel = default)
+    {
+        return DeleteEntityTimeSeriesCoreAsync(entityType, entityId, keys, true, null, null, rewriteLatestIfDeleted, cancel);
+    }
+
+    /// <summary>
+    /// Delete time-series for selected entity based on entity id, entity type and keys. Use 'startTs' and 'endTs' to specify time-range instead. Use 'rewriteLatestIfDeleted' to rewrite latest value (stored in separate table for performance) after deletion of the time range.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="entityType">A string value representing the entity type. For example, 'DEVICE'</param>
+    /// <param name="entityId">A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="keys">A string list of telemetry keys. If keys are not selected, the result will return all latest timeseries. For example, 'temperature,humidity'.</param>
+    /// <param name="startTs">A datetime value representing the start timestamp of removal time range in milliseconds.</param>
+    /// <param name="endTs">A datetime value representing the end timestamp of removal time range in milliseconds.</param>
+    /// <param name="rewriteLatestIfDeleted">If the parameter is set to true, the latest telemetry will be rewritten in case that current latest value was removed, otherwise, in case that parameter is set to false the new latest value will not set.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteEntityTimeSeriesAsync(
+        TbEntityType      entityType,
+        Guid              entityId,
+        string[]          keys,
+        DateTime          startTs,
+        DateTime          endTs,
+        bool?             rewriteLatestIfDeleted = null,
+        CancellationToken cancel                 = default)
+    {
+        return DeleteEntityTimeSeriesCoreAsync(entityType, entityId, keys, false, startTs, endTs, rewriteLatestIfDeleted, cancel);
+    }
+
+    /// <summary>
     /// Delete time-series for selected entity based on entity id, entity type and keys. Use 'deleteAllDataForKeys' to delete all time-series data. Use 'startTs' and 'endTs' to specify time-range instead. Use 'rewriteLatestIfDeleted' to rewrite latest value (stored in separate table for performance) after deletion of the time range.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     /// </summary>
@@ -344,7 +387,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <param name="rewriteLatestIfDeleted">If the parameter is set to true, the latest telemetry will be rewritten in case that current latest value was removed, otherwise, in case that parameter is set to false the new latest value will not set.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task DeleteEntityTimeseriesAsync(
+    private Task DeleteEntityTimeSeriesCoreAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]          keys,
@@ -445,6 +488,67 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     }
 
     /// <summary>
+    /// Returns a range of time-series values for specified entity. Use aggregation function ('agg') and aggregation interval ('interval') to enable aggregation of the results on the database / server side. The aggregation is generally more efficient then fetching all records.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="entityType">A string value representing the entity type. For example, 'DEVICE'</param>
+    /// <param name="entityId">A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="keys">A string list of telemetry keys.</param>
+    /// <param name="startTs">A datetime value representing the start timestamp of the time range in milliseconds, UTC.</param>
+    /// <param name="endTs">A datetime value representing the end timestamp of the time range in milliseconds, UTC.</param>
+    /// <param name="interval">A long value representing the aggregation interval range in milliseconds.</param>
+    /// <param name="agg">A enum value representing the aggregation function. If the interval is not specified, 'agg' parameter will use 'NONE' value.</param>
+    /// <param name="orderBy">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
+    /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesAsync(
+        TbEntityType          entityType,
+        Guid                  entityId,
+        string[]              keys,
+        DateTime              startTs,
+        DateTime              endTs,
+        int                   interval,
+        TbTimeSeriesAggregate agg,
+        TbSortOrder?          orderBy            = null,
+        bool?                 useStrictDataTypes = null,
+        CancellationToken     cancel             = default)
+    {
+        if (agg == TbTimeSeriesAggregate.NONE)
+            throw new ArgumentException("Aggregation function can not be NONE if interval is specified.", nameof(agg));
+
+        return GetTimeSeriesCoreAsync(entityType, entityId, keys, startTs, endTs, interval, null, agg, orderBy, useStrictDataTypes, cancel);
+    }
+
+    /// <summary>
+    /// Returns a range of time-series values for specified entity. Returns not aggregated data by default.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="entityType">A string value representing the entity type. For example, 'DEVICE'</param>
+    /// <param name="entityId">A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="keys">A string list of telemetry keys.</param>
+    /// <param name="startTs">A datetime value representing the start timestamp of the time range in milliseconds, UTC.</param>
+    /// <param name="endTs">A datetime value representing the end timestamp of the time range in milliseconds, UTC.</param>
+    /// <param name="limit">An integer value that represents a max number of timeseries data points to fetch. This parameter is used only in the case if 'agg' parameter is set to 'NONE'.</param>
+    /// <param name="orderBy">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
+    /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesAsync(
+        TbEntityType      entityType,
+        Guid              entityId,
+        string[]          keys,
+        DateTime          startTs,
+        DateTime          endTs,
+        int?              limit              = null,
+        TbSortOrder?      orderBy            = null,
+        bool?             useStrictDataTypes = null,
+        CancellationToken cancel             = default)
+    {
+        return GetTimeSeriesCoreAsync(entityType, entityId, keys, startTs, endTs, null, limit, TbTimeSeriesAggregate.NONE, orderBy, useStrictDataTypes, cancel);
+    }
+
+    /// <summary>
     /// Returns a range of time-series values for specified entity. Returns not aggregated data by default. Use aggregation function ('agg') and aggregation interval ('interval') to enable aggregation of the results on the database / server side. The aggregation is generally more efficient then fetching all records.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     /// </summary>
@@ -460,7 +564,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesAsync(
+    public Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesCoreAsync(
         TbEntityType           entityType,
         Guid                   entityId,
         string[]               keys,
@@ -484,10 +588,11 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
             .Build();
 
-        return policy.ExecuteAsync(() =>
+        return policy.ExecuteAsync(async () =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/values/timeseries")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .SetQueryParam("keys",               keys.JoinWith(","))
                 .SetQueryParam("startTs",            startTs.ToJavaScriptTicks())
                 .SetQueryParam("endTs",              endTs.ToJavaScriptTicks())
@@ -497,7 +602,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
                 .SetQueryParam("orderBy",            orderBy)
                 .SetQueryParam("useStrictDataTypes", useStrictDataTypes);
 
-            return request.GetJsonAsync<Dictionary<string, TbTimeSeriesValue[]>>(cancel);
+            return await request.GetJsonAsync<Dictionary<string, TbTimeSeriesValue[]>>(cancel);
         });
     }
 

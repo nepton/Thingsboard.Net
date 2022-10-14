@@ -21,14 +21,14 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <param name="request"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public async Task<TbPage<TbEntity>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
+    public async Task<TbPage<TbFindEntityDataResponse>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbEntity>>()
+        var policy = builder.GetPolicyBuilder<TbPage<TbFindEntityDataResponse>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbEntity>.Empty)
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbFindEntityDataResponse>.Empty)
             .Build();
 
         return await policy.ExecuteAsync(async () =>
@@ -37,7 +37,7 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
                 .AppendPathSegment("/api/entitiesQuery/find")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(request, cancel)
-                .ReceiveJson<TbPage<TbEntity>>();
+                .ReceiveJson<TbPage<TbFindEntityDataResponse>>();
 
             return response;
         });

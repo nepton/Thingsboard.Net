@@ -13,10 +13,10 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
-public class SaveEntityTelemetryTester
+public class SaveEntityAttributeTester
 {
     [Fact]
-    public async Task TestSaveEntityTelemetry()
+    public async Task TestSaveEntityAttributes()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
@@ -25,7 +25,7 @@ public class SaveEntityTelemetryTester
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE, deviceId, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, deviceId, TbAttributeScope.SERVER_SCOPE, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // act
@@ -46,7 +46,7 @@ public class SaveEntityTelemetryTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryAsync(TbEntityType.ALARM, deviceId, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, deviceId, TbAttributeScope.CLIENT_SCOPE, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // act
@@ -67,7 +67,7 @@ public class SaveEntityTelemetryTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE, entityId, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, entityId, TbAttributeScope.SERVER_SCOPE, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // assert
@@ -88,7 +88,7 @@ public class SaveEntityTelemetryTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, null!);
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE, null!);
         });
 
         // assert
@@ -103,8 +103,9 @@ public class SaveEntityTelemetryTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE,
+                await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
                     TbTestData.TestDeviceId,
+                    TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }
@@ -116,8 +117,9 @@ public class SaveEntityTelemetryTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE,
+                await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
                     TbTestData.TestDeviceId,
+                    TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }

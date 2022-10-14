@@ -1,11 +1,12 @@
 ﻿using Thingsboard.Net;
+using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 
 /// <summary>
 /// This class is used to test the GetAlarms method of <see cref="TbAlarmClient"/> class.
 /// We will following scenarios:
-/// 1. Get all alarms with limit.
+/// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
 public class GetAlarmsTests
@@ -18,14 +19,14 @@ public class GetAlarmsTests
         var newAlarm = await AlarmUtility.CreateAlarmAsync();
 
         // act
-        var alarms = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: newAlarm.Name);
+        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: newAlarm.Name);
 
         // assert
-        Assert.NotNull(alarms);
-        Assert.NotEmpty(alarms.Data);
-        Assert.Equal(1, alarms.TotalElements);
-        Assert.Single(alarms.Data);
-        Assert.Equal(newAlarm.Name, alarms.Data[0].Name);
+        Assert.NotNull(entities);
+        Assert.NotEmpty(entities.Data);
+        Assert.Equal(1, entities.TotalElements);
+        Assert.Single(entities.Data);
+        Assert.Equal(newAlarm.Name, entities.Data[0].Name);
 
         // clean up
         await client.DeleteAlarmAsync(newAlarm.Id!.Id);
@@ -38,11 +39,35 @@ public class GetAlarmsTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var alarms = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
+        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
-        Assert.NotNull(alarms);
-        Assert.Empty(alarms.Data);
-        Assert.Equal(0, alarms.TotalElements);
+        Assert.NotNull(entities);
+        Assert.Empty(entities.Data);
+        Assert.Equal(0, entities.TotalElements);
     }
+    
+    
+    [Fact]
+    public async Task TestIncorrectUsername()
+    {
+        await new TbCommonTestHelper().TestIncorrectUsername(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
+            });
+    }
+
+    [Fact]
+    public async Task TestIncorrectBaseUrl()
+    {
+        await new TbCommonTestHelper().TestIncorrectBaseUrl(
+            TbTestFactory.Instance.CreateAlarmClient(),
+            async client =>
+            {
+                var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
+            });
+    }
+
 }
