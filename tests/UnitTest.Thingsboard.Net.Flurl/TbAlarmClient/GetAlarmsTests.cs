@@ -16,7 +16,7 @@ public class GetAlarmsTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
 
         // act
         var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 20, 0, textSearch: newAlarm.Name);

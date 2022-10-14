@@ -4,9 +4,9 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
 public class DeviceUtility
 {
-    public static TbDevice GenerateEntity()
+    public static TbNewDevice GenerateEntity()
     {
-        var device = new TbDevice
+        var device = new TbNewDevice
         {
             Name            = Guid.NewGuid().ToString(),
             Type            = "Test Device Type",

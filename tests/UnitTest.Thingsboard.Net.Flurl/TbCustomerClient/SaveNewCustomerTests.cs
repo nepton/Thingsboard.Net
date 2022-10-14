@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Thingsboard.Net;
 using Thingsboard.Net.Exceptions;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
@@ -7,7 +8,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbCustomerClient;
 /// <summary>
 /// This class is used to test the saveCustomer methods of the TbCustomerClient class.
 /// </summary>
-public class SaveCustomerTests
+public class SaveNewCustomerTests
 {
     /// <summary>
     /// Save new device with a valid device object.
@@ -19,7 +20,7 @@ public class SaveCustomerTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var expected    = CustomerUtility.GenerateEntity();
+        var expected    = CustomerUtility.GenerateNewCustomer();
         var newCustomer = await client.SaveCustomerAsync(expected);
 
         // assert
@@ -41,7 +42,7 @@ public class SaveCustomerTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var actual = CustomerUtility.GenerateEntity();
+        var actual = CustomerUtility.GenerateNewCustomer();
         actual.Email = "1234";
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveCustomerAsync(actual));
 
@@ -61,33 +62,10 @@ public class SaveCustomerTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveCustomerAsync(null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveCustomerAsync(default(TbNewCustomer)!));
 
         // assert
         Assert.NotNull(ex);
-    }
-
-    /// <summary>
-    /// Update an exists device with a valid device object.
-    /// </summary>
-    /// <returns></returns>
-    [Fact]
-    private async Task TestUpdateCustomerAsync()
-    {
-        // arrange
-        var client      = TbTestFactory.Instance.CreateCustomerClient();
-        var newCustomer = await CustomerUtility.CreateEntityAsync();
-
-        // act
-        newCustomer.Address = Guid.NewGuid().ToString();
-        var updatedCustomer = await client.SaveCustomerAsync(newCustomer);
-
-        // assert
-        Assert.NotNull(updatedCustomer);
-        Assert.Equal(newCustomer.Address, updatedCustomer.Address);
-
-        // cleanup
-        await client.DeleteCustomerAsync(updatedCustomer.Id!.Id);
     }
 
     [Fact]
@@ -96,7 +74,7 @@ public class SaveCustomerTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateCustomerClient(),
             async client =>
             {
-                await client.SaveCustomerAsync(CustomerUtility.GenerateEntity());
+                await client.SaveCustomerAsync(CustomerUtility.GenerateNewCustomer());
             });
     }
 
@@ -106,7 +84,7 @@ public class SaveCustomerTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateCustomerClient(),
             async client =>
             {
-                await client.SaveCustomerAsync(CustomerUtility.GenerateEntity());
+                await client.SaveCustomerAsync(CustomerUtility.GenerateNewCustomer());
             });
     }
 }

@@ -4,21 +4,20 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 
 public class AlarmUtility
 {
-    public static async Task<TbAlarm> CreateAlarmAsync()
+    public static async Task<TbAlarm> CreateNewAlarmAsync()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
-        var alarm  = GenerateEntity();
+        var alarm  = GenerateNewAlarm();
 
         // act
         return await client.SaveAlarmAsync(alarm);
     }
 
-    public static TbAlarm GenerateEntity()
+    public static TbNewAlarm GenerateNewAlarm()
     {
-        var alarm = new TbAlarm
+        var alarm = new TbNewAlarm
         {
-            CreatedTime       = DateTime.Now,
             Name              = Guid.NewGuid().ToString(),
             Type              = Guid.NewGuid().ToString(),
             Originator        = new TbEntityId(TbEntityType.DEVICE, TbTestData.TestDeviceId),

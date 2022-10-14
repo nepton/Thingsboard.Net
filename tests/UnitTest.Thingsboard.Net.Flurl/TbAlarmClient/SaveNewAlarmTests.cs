@@ -14,7 +14,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
-public class SaveAlarmTests
+public class SaveNewAlarmTests
 {
     /// <summary>
     /// Save new alarm with a valid alarm object.
@@ -26,7 +26,7 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var expected = AlarmUtility.GenerateEntity();
+        var expected = AlarmUtility.GenerateNewAlarm();
         var actual   = await client.SaveAlarmAsync(expected);
 
         // assert
@@ -40,7 +40,7 @@ public class SaveAlarmTests
         Assert.Equal(expected.Details,    actual.Details);
 
         // cleanup
-        await client.DeleteAlarmAsync(actual.Id!.Id);
+        await client.DeleteAlarmAsync(actual.Id.Id);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var entity = AlarmUtility.GenerateEntity();
+        var entity = AlarmUtility.GenerateNewAlarm();
         entity.Originator = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
 
@@ -67,13 +67,13 @@ public class SaveAlarmTests
     /// Save new alarm with an invalid alarm object.
     /// </summary>
     [Fact]
-    public async Task TestSaveWhenDeviceIsNull()
+    public async Task TestSaveWhenOriginatorIsNull()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var entity = AlarmUtility.GenerateEntity();
+        var entity = AlarmUtility.GenerateNewAlarm();
         entity.Originator = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
 
@@ -93,50 +93,10 @@ public class SaveAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAlarmAsync(null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAlarmAsync(default(TbNewAlarm)!));
 
         // assert
         Assert.NotNull(ex);
-    }
-
-    /// <summary>
-    /// Update an exists alarm with a valid alarm object.
-    /// </summary>
-    /// <returns></returns>
-    [Fact]
-    private async Task TestUpdateAlarmAsync()
-    {
-        // arrange
-        var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var expected = await AlarmUtility.CreateAlarmAsync();
-
-        // act
-        expected.Propagate = !expected.Propagate;
-        var actual = await client.SaveAlarmAsync(expected);
-
-        // assert
-        Assert.NotNull(actual);
-        Assert.Equal(expected.Propagate, actual.Propagate);
-    }
-
-    /// <summary>
-    /// Update an not exists alarm with a valid alarm object.
-    /// </summary>
-    /// <returns></returns>
-    [Fact]
-    private async Task TestUpdateNotExistsAlarmAsync()
-    {
-        // arrange
-        var client = TbTestFactory.Instance.CreateAlarmClient();
-        var entity = AlarmUtility.GenerateEntity();
-        entity.Id = new TbEntityId(TbEntityType.ALARM, Guid.NewGuid());
-
-        // act
-        var ex = await Assert.ThrowsAsync<TbEntityNotFoundException>(async () => await client.SaveAlarmAsync(entity));
-
-        // assert
-        Assert.NotNull(ex);
-        Assert.Equal(entity.Id, ex.EntityId);
     }
 
     [Fact]
@@ -146,7 +106,7 @@ public class SaveAlarmTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.SaveAlarmAsync(AlarmUtility.GenerateEntity());
+                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm());
             });
     }
 
@@ -157,7 +117,7 @@ public class SaveAlarmTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.SaveAlarmAsync(AlarmUtility.GenerateEntity());
+                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm());
             });
     }
 }

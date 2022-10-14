@@ -179,7 +179,7 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     }
 
     /// <summary>
-    /// Create or update the Device. When creating device, platform generates Device Id as time-based UUID. Device credentials are also generated if not provided in the 'accessToken' request parameter. The newly created device id will be present in the response. Specify existing Device id to update the device. Referencing non-existing device Id will cause 'Not Found' error.
+    /// Update the Device. Specify existing Device id to update the device. Referencing non-existing device Id will cause 'Not Found' error.
     /// </summary>
     /// <param name="device">New device info</param>
     /// <param name="accessToken">Optional value of the device credentials to be used during device creation. If omitted, access token will be auto-generated.</param>
@@ -192,6 +192,44 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     ///</remarks>
     /// <returns></returns>
     public Task<TbDevice> SaveDeviceAsync(TbDevice device, string? accessToken = null, CancellationToken cancel = default)
+    {
+        if (device == null) throw new ArgumentNullException(nameof(device));
+
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbDevice>()
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(device.Id))
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await builder.CreateRequest()
+                .AppendPathSegment("api/device")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .SetQueryParam("accessToken", accessToken)
+                .PostJsonAsync(device, cancel)
+                .ReceiveJson<TbDevice>();
+
+            return response;
+        });
+    }
+
+    /// <summary>
+    /// Create the Device. When creating device, platform generates Device Id as time-based UUID. Device credentials are also generated if not provided in the 'accessToken' request parameter. The newly created device id will be present in the response. 
+    /// </summary>
+    /// <param name="device">New device info</param>
+    /// <param name="accessToken">Optional value of the device credentials to be used during device creation. If omitted, access token will be auto-generated.</param>
+    /// <param name="cancel"></param>
+    /// <remarks>
+    /// Device name is unique in the scope of tenant. Use unique identifiers like MAC or IMEI for the device names and non-unique 'label' field for user-friendly visualization purposes.Remove 'id', 'tenantId' and optionally 'customerId' from the request body example (below) to create new Device entity.
+    /// </remarks>
+    /// <remarks>
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    ///</remarks>
+    /// <returns></returns>
+    public Task<TbDevice> SaveDeviceAsync(TbNewDevice device, string? accessToken = null, CancellationToken cancel = default)
     {
         if (device == null) throw new ArgumentNullException(nameof(device));
 

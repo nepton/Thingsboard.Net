@@ -10,12 +10,20 @@ namespace Thingsboard.Net;
 public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
 {
     /// <summary>
-    /// Creates or Updates the Alarm. When creating alarm, platform generates Alarm Id as time-based UUID. The newly created Alarm id will be present in the response. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error.
+    /// Updates the Alarm. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error.
     /// </summary>
     /// <param name="alarm"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbAlarm> SaveAlarmAsync(TbAlarm alarm, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Creates the Alarm. When creating alarm, platform generates Alarm Id as time-based UUID. The newly created Alarm id will be present in the response.
+    /// </summary>
+    /// <param name="alarm"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task<TbAlarm> SaveAlarmAsync(TbNewAlarm alarm, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of alarms for the selected entity. Specifying both parameters 'searchStatus' and 'status' at the same time will cause an error. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.

@@ -18,13 +18,44 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     }
 
     /// <summary>
-    /// Creates or Updates the Customer. When creating customer, platform generates Customer Id as time-based UUID. The newly created Customer Id will be present in the response. Specify existing Customer Id to update the Customer. Referencing non-existing Customer Id will cause 'Not Found' error.Remove 'id', 'tenantId' from the request body example (below) to create new Customer entity.
+    /// Updates the Customer. Specify existing Customer Id to update the Customer. Referencing non-existing Customer Id will cause 'Not Found' error.Remove 'id', 'tenantId' from the request body example (below) to create new Customer entity.
     /// Available for users with 'TENANT_ADMIN' authority.
     /// </summary>
     /// <param name="customer"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
     public Task<TbCustomer> SaveCustomerAsync(TbCustomer customer, CancellationToken cancel = default)
+    {
+        if (customer == null) throw new ArgumentNullException(nameof(customer));
+
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbCustomer>()
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(customer.Id))
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await builder.CreateRequest()
+                .AppendPathSegment("/api/customer")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .PostJsonAsync(customer, cancel)
+                .ReceiveJson<TbCustomer>();
+
+            return response;
+        });
+    }
+
+    /// <summary>
+    /// Creates the Customer. When creating customer, platform generates Customer Id as time-based UUID. The newly created Customer Id will be present in the response. 
+    /// Available for users with 'TENANT_ADMIN' authority.
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<TbCustomer> SaveCustomerAsync(TbNewCustomer customer, CancellationToken cancel = default)
     {
         if (customer == null) throw new ArgumentNullException(nameof(customer));
 

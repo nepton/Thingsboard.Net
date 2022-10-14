@@ -7,7 +7,7 @@ namespace Thingsboard.Net;
 public interface ITbCustomerClient : ITbClient<ITbCustomerClient>
 {
     /// <summary>
-    /// Creates or Updates the Customer. When creating customer, platform generates Customer Id as time-based UUID. The newly created Customer Id will be present in the response. Specify existing Customer Id to update the Customer. Referencing non-existing Customer Id will cause 'Not Found' error.Remove 'id', 'tenantId' from the request body example (below) to create new Customer entity.
+    /// Updates the Customer. Specify existing Customer Id to update the Customer. Referencing non-existing Customer Id will cause 'Not Found' error.Remove 'id', 'tenantId' from the request body example (below) to create new Customer entity.
     /// Available for users with 'TENANT_ADMIN' authority.
     /// </summary>
     /// <param name="customer"></param>
@@ -15,6 +15,15 @@ public interface ITbCustomerClient : ITbClient<ITbCustomerClient>
     /// <returns></returns>
     Task<TbCustomer> SaveCustomerAsync(TbCustomer customer, CancellationToken cancel = default);
 
+    /// <summary>
+    /// Creates the Customer. When creating customer, platform generates Customer Id as time-based UUID. The newly created Customer Id will be present in the response. 
+    /// Available for users with 'TENANT_ADMIN' authority.
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task<TbCustomer> SaveCustomerAsync(TbNewCustomer customer, CancellationToken cancel = default);
+    
     /// <summary>
     /// Get the Customer object based on the provided Customer Id. If the user has the authority of 'Tenant Administrator', the server checks that the customer is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the user belongs to the customer.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.

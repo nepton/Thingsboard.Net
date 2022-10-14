@@ -19,7 +19,7 @@ public class DeleteAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // Act
-        var newEntity          = await AlarmUtility.CreateAlarmAsync();
+        var newEntity          = await AlarmUtility.CreateNewAlarmAsync();
         var entityBeforeDelete = await client.GetAlarmByIdAsync(newEntity.Id!.Id);
         var exception          = await Record.ExceptionAsync(async () => await client.DeleteAlarmAsync(newEntity.Id!.Id));
         var entityAfterDelete  = await client.GetAlarmByIdAsync(newEntity.Id!.Id);

@@ -26,8 +26,8 @@ public class SaveAssetTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var expected    = AssetUtility.GenerateAsset();
-        var actual = await client.SaveAssetAsync(expected);
+        var expected = AssetUtility.GenerateNewAsset();
+        var actual   = await client.SaveAssetAsync(expected);
 
         // assert
         Assert.NotNull(actual);
@@ -49,13 +49,13 @@ public class SaveAssetTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = AssetUtility.GenerateAsset();
+        var actual = AssetUtility.GenerateNewAsset();
         actual.Name = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAssetAsync(actual));
 
         // assert
         Assert.NotNull(ex);
-        Assert.Equal(HttpStatusCode.BadRequest,          ex.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,         ex.StatusCode);
         Assert.Equal("Asset name should be specified!", ex.Message);
     }
 
@@ -69,33 +69,10 @@ public class SaveAssetTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAssetAsync(null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveAssetAsync(default(TbNewAsset)!));
 
         // assert
         Assert.NotNull(ex);
-    }
-
-    /// <summary>
-    /// Update an exists Asset with a valid Asset object.
-    /// </summary>
-    /// <returns></returns>
-    [Fact]
-    private async Task TestUpdateAssetAsync()
-    {
-        // arrange
-        var client    = TbTestFactory.Instance.CreateAssetClient();
-        var newAsset = await AssetUtility.CreateAssetAsync();
-
-        // act
-        newAsset.Label = Guid.NewGuid().ToString();
-        var updatedAsset = await client.SaveAssetAsync(newAsset);
-
-        // assert
-        Assert.NotNull(updatedAsset);
-        Assert.Equal(newAsset.Label, updatedAsset.Label);
-
-        // cleanup
-        await client.DeleteAssetAsync(updatedAsset.Id!.Id);
     }
 
     [Fact]
@@ -104,7 +81,7 @@ public class SaveAssetTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.SaveAssetAsync(AssetUtility.GenerateAsset());
+                await client.SaveAssetAsync(AssetUtility.GenerateNewAsset());
             });
     }
 
@@ -114,7 +91,7 @@ public class SaveAssetTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateAssetClient(),
             async client =>
             {
-                await client.SaveAssetAsync(AssetUtility.GenerateAsset());
+                await client.SaveAssetAsync(AssetUtility.GenerateNewAsset());
             });
     }
 }

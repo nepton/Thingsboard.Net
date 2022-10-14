@@ -33,6 +33,37 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         var policy = builder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(asset.Id))
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await builder.CreateRequest()
+                .AppendPathSegment("/api/asset")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .PostJsonAsync(asset, cancel)
+                .ReceiveJson<TbAsset>();
+
+            return response;
+        });
+    }
+
+    /// <summary>
+    /// Creates the Asset. When creating asset, platform generates Asset Id as time-based UUID. The newly created Asset id will be present in the response.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="asset"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<TbAsset> SaveAssetAsync(TbNewAsset asset, CancellationToken cancel = default)
+    {
+        if (asset == null) throw new ArgumentNullException(nameof(asset));
+
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbAsset>()
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
             .Build();
 
         return policy.ExecuteAsync(async () =>

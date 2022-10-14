@@ -3,15 +3,8 @@ using System.Collections.Generic;
 
 namespace Thingsboard.Net;
 
-public class TbCustomer
+public class TbNewCustomer
 {
-    public TbCustomer(TbEntityId id)
-    {
-        Id = id;
-    }
-
-    public TbEntityId                   Id             { get; }
-    public DateTime?                    CreatedTime    { get; set; }
     public string?                      Title          { get; set; }
     public string?                      Name           { get; set; }
     public TbEntityId?                  TenantId       { get; set; }

@@ -4,9 +4,9 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbCustomerClient;
 
 public class CustomerUtility
 {
-    public static TbCustomer GenerateEntity()
+    public static TbNewCustomer GenerateNewCustomer()
     {
-        var entity = new TbCustomer()
+        var entity = new TbNewCustomer()
         {
             Name     = Guid.NewGuid().ToString(),
             Title    = Guid.NewGuid().ToString(),
@@ -26,7 +26,7 @@ public class CustomerUtility
     public static async Task<TbCustomer> CreateEntityAsync()
     {
         var client = TbTestFactory.Instance.CreateCustomerClient();
-        var entity = GenerateEntity();
+        var entity = GenerateNewCustomer();
         return await client.SaveCustomerAsync(entity);
     }
 }

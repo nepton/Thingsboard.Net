@@ -22,7 +22,7 @@ public class AckAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
 
         // act
         await client.AcknowledgeAlarmAsync(newAlarm.Id!.Id);
@@ -46,7 +46,7 @@ public class AckAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
 
         // act
         await client.AcknowledgeAlarmAsync(newAlarm.Id!.Id);

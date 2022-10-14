@@ -18,33 +18,14 @@ public class GetAlarmByIdTests
     {
         //Arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
+        var alarm  = await AlarmUtility.CreateNewAlarmAsync();
 
         // Act
-        // 1. Create a new alarm
-        var alarm = await client.SaveAlarmAsync(new TbAlarm
-        {
-            Type = "TestAlarm",
-            Originator = new TbEntityId
-            {
-                Id         = TbTestData.TestDeviceId,
-                EntityType = TbEntityType.DEVICE
-            },
-            Severity = TbAlarmSeverity.CRITICAL,
-            Status   = TbAlarmStatus.ACTIVE_UNACK,
-            Details = new()
-            {
-                {"key1", "value1"},
-                {"key2", "value2"}
-            }
-        });
-        var newAlarm = await client.SaveAlarmAsync(alarm);
-        var alarmId  = newAlarm.Id;
-        Assert.NotNull(alarmId);
-        var result = await client.GetAlarmByIdAsync(alarmId!.Id);
+        var result = await client.GetAlarmByIdAsync(alarm.Id.Id);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(alarmId,          result!.Id);
+        Assert.Equal(alarm.Id,         result!.Id);
         Assert.Equal(alarm.Type,       result.Type);
         Assert.Equal(alarm.Originator, result.Originator);
         Assert.Equal(alarm.Severity,   result.Severity);
@@ -52,7 +33,7 @@ public class GetAlarmByIdTests
         Assert.Equal(alarm.Details,    result.Details);
 
         // 2. Delete the alarm
-        await client.DeleteAlarmAsync(alarmId.Id);
+        await client.DeleteAlarmAsync(alarm.Id.Id);
     }
 
     [Fact]

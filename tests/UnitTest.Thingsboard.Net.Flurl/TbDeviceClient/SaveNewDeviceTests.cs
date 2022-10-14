@@ -14,7 +14,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 /// 4. Update an exists device with a valid device object.
 /// 5. Update an not exists device with a valid device object.
 /// </summary>
-public class SaveDeviceTests
+public class SaveNewDeviceTests
 {
     /// <summary>
     /// Save new device with a valid device object.
@@ -69,33 +69,10 @@ public class SaveDeviceTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveDeviceAsync(null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SaveDeviceAsync(default(TbNewDevice)!));
 
         // assert
         Assert.NotNull(ex);
-    }
-
-    /// <summary>
-    /// Update an exists device with a valid device object.
-    /// </summary>
-    /// <returns></returns>
-    [Fact]
-    private async Task TestUpdateDeviceAsync()
-    {
-        // arrange
-        var client    = TbTestFactory.Instance.CreateDeviceClient();
-        var newDevice = await DeviceUtility.CreateDeviceAsync();
-
-        // act
-        newDevice.Label = Guid.NewGuid().ToString();
-        var updatedDevice = await client.SaveDeviceAsync(newDevice);
-
-        // assert
-        Assert.NotNull(updatedDevice);
-        Assert.Equal(newDevice.Label, updatedDevice.Label);
-
-        // cleanup
-        await client.DeleteDeviceAsync(updatedDevice.Id!.Id);
     }
 
     [Fact]

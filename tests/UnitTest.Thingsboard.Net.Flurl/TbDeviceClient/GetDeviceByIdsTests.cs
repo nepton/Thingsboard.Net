@@ -17,8 +17,8 @@ public class GetDevicesByIdsTests
 
         Assert.NotNull(actual);
         Assert.Equal(2, actual.Length);
-        Assert.True(actual.Any(d => d.Id?.Id == TbTestData.TestDeviceId));
-        Assert.True(actual.Any(d => d.Id?.Id == TbTestData.TestDeviceId2));
+        Assert.Contains(actual, d => d.Id.Id == TbTestData.TestDeviceId);
+        Assert.Contains(actual, d => d.Id.Id == TbTestData.TestDeviceId2);
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class GetDevicesByIdsTests
 
         // act
         var actual = await client.GetDevicesByIdsAsync(new[] {Guid.Empty, Guid.NewGuid()});
-        
+
         // assert
         Assert.NotNull(actual);
         Assert.Empty(actual);

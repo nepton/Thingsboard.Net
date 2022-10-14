@@ -5,23 +5,8 @@ namespace Thingsboard.Net;
 /// <summary>
 /// Device object
 /// </summary>
-public class TbDevice
+public class TbNewDevice
 {
-    public TbDevice(TbEntityId id)
-    {
-        Id = id;
-    }
-
-    /// <summary>
-    /// Device Id
-    /// </summary>
-    public TbEntityId Id { get; }
-
-    /// <summary>
-    /// Created time in js timestamp format.
-    /// </summary>
-    public DateTime CreatedTime { get; set; }
-
     public TbEntityId? TenantId { get; set; }
 
     public TbEntityId? CustomerId { get; set; }

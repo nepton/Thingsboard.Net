@@ -6,26 +6,11 @@ namespace Thingsboard.Net;
 /// <summary>
 /// Alarm information object of the TB system
 /// </summary>
-public class TbAlarm
+public class TbNewAlarm
 {
-    public TbAlarm(TbEntityId id)
-    {
-        Id = id;
-    }
-
-    /// <summary>
-    /// Alert Id
-    /// </summary>
-    public TbEntityId Id { get;  }
-
     public TbEntityId? TenantId { get; set; }
 
     public TbEntityId? CustomerId { get; set; }
-
-    /// <summary>
-    /// Creation time
-    /// </summary>
-    public DateTime CreatedTime { get; set; }
 
     public string Name { get; set; } = "";
 
@@ -45,16 +30,6 @@ public class TbAlarm
     public TbAlarmSeverity Severity { get; set; }
 
     public TbAlarmStatus Status { get; set; }
-
-    /// <summary>
-    /// It has been cleared
-    /// </summary>
-    public bool Cleared() => Status == TbAlarmStatus.CLEARED_ACK || Status == TbAlarmStatus.CLEARED_UNACK;
-
-    /// <summary>
-    /// Has been acknowledged
-    /// </summary>
-    public bool Acknowledged() => Status == TbAlarmStatus.ACTIVE_ACK || Status == TbAlarmStatus.CLEARED_ACK;
 
     /// <summary>
     /// The start time

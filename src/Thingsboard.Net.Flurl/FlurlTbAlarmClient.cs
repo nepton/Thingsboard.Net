@@ -48,6 +48,35 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     }
 
     /// <summary>
+    /// Creates the Alarm. When creating alarm, platform generates Alarm Id as time-based UUID. The newly created Alarm id will be present in the response.
+    /// </summary>
+    /// <param name="alarm"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task<TbAlarm> SaveAlarmAsync(TbNewAlarm alarm, CancellationToken cancel = default)
+    {
+        if (alarm == null) throw new ArgumentNullException(nameof(alarm));
+
+        var builder = _builder.MergeCustomOptions(CustomOptions);
+
+        var policy = builder.GetPolicyBuilder<TbAlarm>()
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .Build();
+
+        return policy.ExecuteAsync(async () =>
+        {
+            var response = await builder.CreateRequest()
+                .AppendPathSegment("api/alarm")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .PostJsonAsync(alarm, cancel)
+                .ReceiveJson<TbAlarm>();
+
+            return response;
+        });
+    }
+
+    /// <summary>
     /// Returns a page of alarms for the selected entity. Specifying both parameters 'searchStatus' and 'status' at the same time will cause an error. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
     /// </summary>
     /// <returns></returns>

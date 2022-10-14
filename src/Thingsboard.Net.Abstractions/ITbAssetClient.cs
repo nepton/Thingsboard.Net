@@ -10,13 +10,22 @@ namespace Thingsboard.Net;
 public interface ITbAssetClient : ITbClient<ITbAssetClient>
 {
     /// <summary>
-    /// Creates or Updates the Asset. When creating asset, platform generates Asset Id as time-based UUID. The newly created Asset id will be present in the response. Specify existing Asset id to update the asset. Referencing non-existing Asset Id will cause 'Not Found' error. Remove 'id', 'tenantId' and optionally 'customerId' from the request body example (below) to create new Asset entity.
+    /// Updates the Asset. Specify existing Asset id to update the asset. Referencing non-existing Asset Id will cause 'Not Found' error. Remove 'id', 'tenantId' and optionally 'customerId' from the request body example (below) to create new Asset entity.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     /// </summary>
     /// <param name="asset"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbAsset> SaveAssetAsync(TbAsset asset, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Creates the Asset. When creating asset, platform generates Asset Id as time-based UUID. The newly created Asset id will be present in the response.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="asset"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task<TbAsset> SaveAssetAsync(TbNewAsset asset, CancellationToken cancel = default);
 
     /// <summary>
     /// Fetch the Asset object based on the provided Asset Id. If the user has the authority of 'Tenant Administrator', the server checks that the asset is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the asset is assigned to the same customer.
