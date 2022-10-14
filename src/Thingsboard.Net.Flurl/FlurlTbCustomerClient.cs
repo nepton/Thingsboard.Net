@@ -10,11 +10,8 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustomerClient
 {
-    private readonly IRequestBuilder _builder;
-
-    public FlurlTbCustomerClient(IRequestBuilder builder)
+    public FlurlTbCustomerClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
     /// <summary>
@@ -28,15 +25,14 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     {
         if (customer == null) throw new ArgumentNullException(nameof(customer));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbCustomer>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbCustomer>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(customer.Id))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/customer")
@@ -59,14 +55,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     {
         if (customer == null) throw new ArgumentNullException(nameof(customer));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbCustomer>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbCustomer>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/customer")
@@ -87,15 +82,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     /// <returns></returns>
     public Task<TbCustomer?> GetCustomerByIdAsync(Guid customerId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbCustomer?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbCustomer?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}")
@@ -115,15 +108,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     /// <returns></returns>
     public Task DeleteCustomerAsync(Guid customerId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.CUSTOMER, customerId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}")
@@ -141,15 +132,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     /// <returns></returns>
     public Task<TbCustomerShortInfo?> GetCustomerShortInfoAsync(Guid customerId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbCustomerShortInfo?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbCustomerShortInfo?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}/shortInfo")
@@ -169,15 +158,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     /// <returns></returns>
     public Task<string?> GetCustomerTitleAsync(Guid customerId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<string?>()
+        var policy = RequestBuilder.GetPolicyBuilder<string?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}/title")
@@ -207,15 +194,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
         TbSortOrder?            sortOrder    = null,
         CancellationToken       cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbCustomer>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbCustomer>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbCustomer>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/customers")
@@ -239,15 +224,13 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
     /// <returns></returns>
     public Task<TbCustomer?> GetTenantCustomerAsync(string customerTitle, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbCustomer?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbCustomer?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/tenant/customers")

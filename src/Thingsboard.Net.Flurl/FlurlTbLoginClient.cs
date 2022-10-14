@@ -10,23 +10,18 @@ namespace Thingsboard.Net.Flurl;
 /// </summary>
 public class FlurlTbLoginClient : FlurlTbClient<ITbLoginClient>, ITbLoginClient
 {
-    private readonly IRequestBuilder _builder;
-
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public FlurlTbLoginClient(IRequestBuilder builder)
+    public FlurlTbLoginClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
-    public async Task<TbLoginToken> LoginAsync(TbLoginUser loginRequest, CancellationToken cancel = default)
+    public Task<TbLoginToken> LoginAsync(TbLoginUser loginRequest, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbLoginToken>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbLoginToken>()
             .RetryOnHttpTimeout()
             .Build();
 
-        return await policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/auth/login")

@@ -8,12 +8,9 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbAuthClient : FlurlTbClient<ITbAuthClient>, ITbAuthClient
 {
-    private readonly IRequestBuilder _builder;
-
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public FlurlTbAuthClient(IRequestBuilder builder)
+    public FlurlTbAuthClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
     /// <summary>
@@ -21,20 +18,20 @@ public class FlurlTbAuthClient : FlurlTbClient<ITbAuthClient>, ITbAuthClient
     /// </summary>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public async Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
+    public Task<TbUserInfo> GetCurrentUserAsync(CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder<TbUserInfo>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return await policy.ExecuteAsync(async () =>
-            await builder.CreateRequest()
+        return policy.ExecuteAsync(async builder =>
+        {
+            return await builder.CreateRequest()
                 .AppendPathSegment("/api/auth/user")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .GetJsonAsync<TbUserInfo>(cancel));
+                .GetJsonAsync<TbUserInfo>(cancel);
+        });
     }
 
     /// <summary>
@@ -47,14 +44,13 @@ public class FlurlTbAuthClient : FlurlTbClient<ITbAuthClient>, ITbAuthClient
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
             await builder.CreateRequest()
                 .AppendPathSegment("/api/auth/changePassword")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())

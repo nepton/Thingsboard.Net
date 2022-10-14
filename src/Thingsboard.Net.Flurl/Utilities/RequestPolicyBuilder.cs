@@ -16,11 +16,16 @@ public class RequestPolicyBuilder<TResult>
     private readonly ILogger<RequestPolicyBuilder<TResult>> _logger;
 
     private readonly List<IAsyncPolicy<TResult>> _policies = new();
+    private readonly IRequestBuilder             _requestBuilder;
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptionsReader options, ILogger<RequestPolicyBuilder<TResult>> logger)
+    public RequestPolicyBuilder(
+        ThingsboardNetFlurlOptionsReader       options,
+        ILogger<RequestPolicyBuilder<TResult>> logger,
+        IRequestBuilder                        requestBuilder)
     {
-        _options = options;
-        _logger  = logger;
+        _options        = options;
+        _logger         = logger;
+        _requestBuilder = requestBuilder;
     }
 
     public RequestPolicyBuilder<TResult> RetryOnUnauthorized()
@@ -75,15 +80,37 @@ public class RequestPolicyBuilder<TResult>
         return this;
     }
 
-    public IAsyncPolicy<TResult> Build()
+    public IAsyncRequestPolicy<TResult> Build()
     {
         if (_policies.Count == 0)
-            return Policy.NoOpAsync<TResult>();
+            return new AsyncRequestPolicy<TResult>(_requestBuilder, Policy.NoOpAsync<TResult>());
 
         if (_policies.Count == 1)
-            return _policies[0];
+            return new AsyncRequestPolicy<TResult>(_requestBuilder, _policies[0]);
 
-        return Policy.WrapAsync(_policies.ToArray());
+        return new AsyncRequestPolicy<TResult>(_requestBuilder, Policy.WrapAsync(_policies.ToArray()));
+    }
+}
+
+public interface IAsyncRequestPolicy<TResult>
+{
+    Task<TResult> ExecuteAsync(Func<IRequestBuilder, Task<TResult>> action);
+}
+
+public class AsyncRequestPolicy<TResult> : IAsyncRequestPolicy<TResult>
+{
+    private readonly IAsyncPolicy<TResult> _policy;
+    private readonly IRequestBuilder       _requestBuilder;
+
+    public AsyncRequestPolicy(IRequestBuilder requestBuilder, IAsyncPolicy<TResult> policy)
+    {
+        _policy         = policy;
+        _requestBuilder = requestBuilder;
+    }
+
+    public Task<TResult> ExecuteAsync(Func<IRequestBuilder, Task<TResult>> action)
+    {
+        return _policy.ExecuteAsync(() => action(_requestBuilder));
     }
 }
 
@@ -92,11 +119,13 @@ public class RequestPolicyBuilder
     private readonly ThingsboardNetFlurlOptionsReader _options;
     private readonly ILogger<RequestPolicyBuilder>    _logger;
     private readonly List<IAsyncPolicy>               _policies = new();
+    private readonly IRequestBuilder                  _requestBuilder;
 
-    public RequestPolicyBuilder(ThingsboardNetFlurlOptionsReader options, ILogger<RequestPolicyBuilder> logger)
+    public RequestPolicyBuilder(ThingsboardNetFlurlOptionsReader options, ILogger<RequestPolicyBuilder> logger, IRequestBuilder requestBuilder)
     {
-        _options = options;
-        _logger  = logger;
+        _options        = options;
+        _logger         = logger;
+        _requestBuilder = requestBuilder;
     }
 
     public RequestPolicyBuilder RetryOnUnauthorized()
@@ -142,14 +171,36 @@ public class RequestPolicyBuilder
         return this;
     }
 
-    public IAsyncPolicy Build()
+    public IAsyncRequestPolicy Build()
     {
         if (_policies.Count == 0)
-            return Policy.NoOpAsync();
+            return new AsyncRequestPolicy(_requestBuilder, Policy.NoOpAsync());
 
         if (_policies.Count == 1)
-            return _policies[0];
+            return new AsyncRequestPolicy(_requestBuilder, _policies[0]);
 
-        return Policy.WrapAsync(_policies.ToArray());
+        return new AsyncRequestPolicy(_requestBuilder, Policy.WrapAsync(_policies.ToArray()));
+    }
+}
+
+public interface IAsyncRequestPolicy
+{
+    Task ExecuteAsync(Func<IRequestBuilder, Task> action);
+}
+
+public class AsyncRequestPolicy : IAsyncRequestPolicy
+{
+    private readonly IAsyncPolicy    _policy;
+    private readonly IRequestBuilder _requestBuilder;
+
+    public AsyncRequestPolicy(IRequestBuilder requestBuilder, IAsyncPolicy policy)
+    {
+        _policy         = policy;
+        _requestBuilder = requestBuilder;
+    }
+
+    public Task ExecuteAsync(Func<IRequestBuilder, Task> action)
+    {
+        return _policy.ExecuteAsync(() => action(_requestBuilder));
     }
 }

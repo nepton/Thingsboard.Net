@@ -9,11 +9,10 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
 {
-    private readonly IRequestBuilder _builder;
+    
 
-    public FlurlTbQueueClient(IRequestBuilder builder)
-    {
-        _builder = builder;
+    public FlurlTbQueueClient(IRequestBuilder builder) : base(builder)    {
+        
     }
 
     /// <summary>
@@ -37,15 +36,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
         TbSortOrder?              sortOrder    = null,
         CancellationToken         cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbQueue>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbQueue>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbQueue>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/queues")
@@ -76,15 +75,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByIdAsync(Guid queueId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbQueue?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbQueue?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             return await builder.CreateRequest()
                 .AppendPathSegment($"/api/queues/{queueId}")
@@ -102,15 +101,15 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     /// <returns></returns>
     public Task<TbQueue?> GetQueueByNameAsync(string queueName, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbQueue?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbQueue?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/queues/name/{queueName}")

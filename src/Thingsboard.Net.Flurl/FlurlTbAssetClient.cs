@@ -10,11 +10,8 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
 {
-    private readonly IRequestBuilder _builder;
-
-    public FlurlTbAssetClient(IRequestBuilder builder)
+    public FlurlTbAssetClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
     /// <summary>
@@ -28,15 +25,14 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     {
         if (asset == null) throw new ArgumentNullException(nameof(asset));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbAsset>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(asset.Id))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/asset")
@@ -59,14 +55,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     {
         if (asset == null) throw new ArgumentNullException(nameof(asset));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbAsset>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/asset")
@@ -87,15 +82,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAsset?> GetAssetByIdAsync(Guid assetId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAsset?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/asset/{assetId}")
@@ -115,15 +108,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task DeleteAssetAsync(Guid assetId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ASSET, assetId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"/api/asset/{assetId}")
@@ -141,15 +132,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAssetInfo?> GetAssetInfoByIdAsync(Guid assetId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAssetInfo?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAssetInfo?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/asset/info/{assetId}")
@@ -167,15 +156,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAssetType[]> GetAssetTypesAsync(CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAssetType[]>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAssetType[]>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, Array.Empty<TbAssetType>())
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/asset/types")
@@ -196,15 +183,14 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     {
         if (query == null) throw new ArgumentNullException(nameof(query));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbAsset[]>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset[]>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, Array.Empty<TbAsset>())
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/assets")
@@ -227,15 +213,14 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         if (assetIds == null) throw new ArgumentNullException(nameof(assetIds));
         if (assetIds.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(assetIds));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbAsset[]>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset[]>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, Array.Empty<TbAsset>())
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/assets")
@@ -257,14 +242,12 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAsset> AssignAssetToCustomerAsync(Guid customerId, Guid assetId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAsset>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}/asset/{assetId}")
@@ -298,15 +281,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         TbSortOrder?               sortOrder    = null,
         CancellationToken          cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbAssetInfo>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAssetInfo>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAssetInfo>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}/assetInfos")
@@ -344,15 +325,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         TbSortOrder?               sortOrder    = null,
         CancellationToken          cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbAsset>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAsset>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAsset>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/{customerId}/assets")
@@ -377,16 +356,14 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <returns></returns>
     public Task<TbAsset> UnassignAssetFromCustomerAsync(Guid assetId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAsset>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
-            var response = await _builder.CreateRequest()
+            var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/asset/{assetId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .PostJsonAsync(null, cancel)
@@ -417,15 +394,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         TbSortOrder?               sortOrder    = null,
         CancellationToken          cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbAssetInfo>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAssetInfo>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAssetInfo>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment("/api/tenant/assetInfos")
@@ -452,15 +427,14 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     {
         if (string.IsNullOrEmpty(assetName)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetName));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
 
-        var policy = builder.GetPolicyBuilder<TbAsset?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAsset?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/tenant/assets")
@@ -493,15 +467,13 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         TbSortOrder?               sortOrder    = null,
         CancellationToken          cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbAsset>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAsset>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAsset>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment("/api/tenant/assets")

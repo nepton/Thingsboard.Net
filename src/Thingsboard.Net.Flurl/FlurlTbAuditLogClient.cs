@@ -10,11 +10,8 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditLogClient
 {
-    private readonly IRequestBuilder _builder;
-
-    public FlurlTbAuditLogClient(IRequestBuilder builder)
-    {
-        _builder = builder;
+    public FlurlTbAuditLogClient(IRequestBuilder builder) : base(builder)    {
+        
     }
 
     /// <summary>
@@ -41,15 +38,15 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                                        actionType   = null,
         CancellationToken                              cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbAudit>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAudit>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment("/api/audit/logs")
@@ -93,15 +90,15 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                                                     actionType   = null,
         CancellationToken                                           cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbAudit>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAudit>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/audit/logs/customer/{customerId}")
@@ -147,15 +144,15 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                                                           actionType   = null,
         CancellationToken                                                 cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbAudit>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAudit>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/audit/logs/entity/{entityType}/{entityId}")
@@ -199,15 +196,15 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
         string?                                                 actionType   = null,
         CancellationToken                                       cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbAudit>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAudit>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAudit>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/audit/logs/user/{userId}")

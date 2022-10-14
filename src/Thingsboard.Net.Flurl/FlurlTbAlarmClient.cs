@@ -10,11 +10,8 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
 {
-    private readonly IRequestBuilder _builder;
-
-    public FlurlTbAlarmClient(IRequestBuilder builder)
+    public FlurlTbAlarmClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
     /// <summary>
@@ -27,15 +24,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     {
         if (alarm == null) throw new ArgumentNullException(nameof(alarm));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAlarm>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAlarm>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, (() => throw new TbEntityNotFoundException(alarm.Id ?? TbEntityId.Empty)))
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(alarm.Id))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/alarm")
@@ -57,14 +52,12 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     {
         if (alarm == null) throw new ArgumentNullException(nameof(alarm));
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAlarm>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAlarm>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/alarm")
@@ -94,15 +87,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         DateTime?            endTime      = null,
         CancellationToken    cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbAlarm>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAlarm>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAlarm>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{entityType}/{entityId}")
@@ -129,15 +120,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task<TbAlarm?> GetAlarmByIdAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbAlarm?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbAlarm?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var result = await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{alarmId}")
@@ -156,15 +145,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task AcknowledgeAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, tbAlarmId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/ack")
@@ -181,15 +168,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task ClearAlarmAsync(Guid tbAlarmId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, tbAlarmId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{tbAlarmId}/clear")
@@ -206,15 +191,13 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, alarmId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"api/alarm/{alarmId}")

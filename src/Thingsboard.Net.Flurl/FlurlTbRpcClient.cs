@@ -10,11 +10,10 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
 {
-    private readonly IRequestBuilder _builder;
+    
 
-    public FlurlTbRpcClient(IRequestBuilder builder)
-    {
-        _builder = builder;
+    public FlurlTbRpcClient(IRequestBuilder builder) : base(builder)    {
+        
     }
 
     /// <summary>
@@ -32,15 +31,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         if (request.ExpirationTime < DateTime.Now.AddSeconds(5))
             throw new TbException("Expiration time must be greater than current time in persistent RPC call if exists");
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbRpcId>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbRpcId>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             return await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/oneway/{deviceId}")
@@ -62,15 +61,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         if (request == null) throw new ArgumentNullException(nameof(request));
         request.Persistent = false;
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.GatewayTimeout, () => throw new TbDeviceRpcException(TbDeviceRpcErrorCode.Timeout))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/oneway/{deviceId}")
@@ -88,15 +87,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns></returns>
     public Task<TbRpc?> GetPersistentRpcByIdAsync(Guid rpcId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbRpc?>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbRpc?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             return await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/persistent/{rpcId}")
@@ -114,15 +113,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
     /// <returns></returns>
     public Task DeletePersistentRpcAsync(Guid rpcId, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.RPC, rpcId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/persistent/{rpcId}")
@@ -152,15 +151,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         TbSortOrder?            sortOrder    = null,
         CancellationToken       cancel       = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbPage<TbRpc>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbRpc>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbRpc>.Empty)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var request = builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/persistent/device/{deviceId}")
@@ -190,15 +189,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         if (request.ExpirationTime < DateTime.Now.AddSeconds(5))
             throw new TbException("Expiration time must be greater than current time in persistent RPC call if exists");
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TbRpcId>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbRpcId>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             return await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/twoway/{deviceId}")
@@ -221,15 +220,15 @@ public class FlurlTbRpcClient : FlurlTbClient<ITbRpcClient>, ITbRpcClient
         if (request == null) throw new ArgumentNullException(nameof(request));
         request.Persistent = false;
 
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<TRpcResponse>()
+        var policy = RequestBuilder.GetPolicyBuilder<TRpcResponse>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.GatewayTimeout, () => throw new TbDeviceRpcException(TbDeviceRpcErrorCode.Timeout))
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             return await builder.CreateRequest()
                 .AppendPathSegment($"/api/rpc/twoway/{deviceId}")

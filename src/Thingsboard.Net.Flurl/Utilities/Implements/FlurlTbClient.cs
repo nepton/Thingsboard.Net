@@ -6,21 +6,30 @@ namespace Thingsboard.Net.Flurl.Utilities;
 
 public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOptionsReader where TClient : ITbClient<TClient>
 {
-    protected ThingsboardNetFlurlOptions? CustomOptions { get; private set; }
+    private readonly IRequestBuilder _requestBuilder;
+
+    private ThingsboardNetFlurlOptions? _customOptions;
+
+    protected FlurlTbClient(IRequestBuilder requestBuilder)
+    {
+        _requestBuilder = requestBuilder;
+    }
+
+    protected IRequestBuilder RequestBuilder => _customOptions != null ? _requestBuilder.MergeCustomOptions(_customOptions) : _requestBuilder;
 
     /// <summary>
     /// This method is used to do unit test
     /// </summary>
     /// <returns></returns>
-    ThingsboardNetFlurlOptions? IUnitTestOptionsReader.GetOptions() => CustomOptions;
+    ThingsboardNetFlurlOptions? IUnitTestOptionsReader.GetOptions() => _customOptions;
 
     public TClient WithCredentials(string username, string? password)
     {
         if (username == null) throw new ArgumentNullException(nameof(username));
 
-        CustomOptions          ??= new();
-        CustomOptions.Username =   username;
-        CustomOptions.Password =   password;
+        _customOptions          ??= new();
+        _customOptions.Username =   username;
+        _customOptions.Password =   password;
 
         return (TClient) (object) this;
     }
@@ -38,10 +47,10 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOpti
         if (retryTimes < 0) throw new ArgumentOutOfRangeException(nameof(retryTimes));
         if (retryIntervalInSec < 0) throw new ArgumentOutOfRangeException(nameof(retryIntervalInSec));
 
-        CustomOptions                    ??= new();
-        CustomOptions.TimeoutInSec       =   timeoutInSec;
-        CustomOptions.RetryTimes         =   retryTimes;
-        CustomOptions.RetryIntervalInSec =   retryIntervalInSec;
+        _customOptions                    ??= new();
+        _customOptions.TimeoutInSec       =   timeoutInSec;
+        _customOptions.RetryTimes         =   retryTimes;
+        _customOptions.RetryIntervalInSec =   retryIntervalInSec;
 
         return (TClient) (object) this;
     }
@@ -64,8 +73,8 @@ public abstract class FlurlTbClient<TClient> : ITbClient<TClient>, IUnitTestOpti
         if (url.Host == null)
             throw new ArgumentException("Thingsboard URL must be contains host", nameof(Url));
 
-        CustomOptions         ??= new();
-        CustomOptions.BaseUrl =   baseUrl;
+        _customOptions         ??= new();
+        _customOptions.BaseUrl =   baseUrl;
 
         return (TClient) (object) this;
     }

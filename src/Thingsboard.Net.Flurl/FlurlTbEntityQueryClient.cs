@@ -8,11 +8,8 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITbEntityQueryClient
 {
-    private readonly IRequestBuilder _builder;
-
-    public FlurlTbEntityQueryClient(IRequestBuilder builder)
+    public FlurlTbEntityQueryClient(IRequestBuilder builder) : base(builder)
     {
-        _builder = builder;
     }
 
     /// <summary>
@@ -21,17 +18,15 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <param name="request"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public async Task<TbPage<TbFindEntityDataResponse>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
+    public Task<TbPage<TbFindEntityDataResponse>> FindEntityDataByQueryAsync(TbFindEntityDataRequest request, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbPage<TbFindEntityDataResponse>>()
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbFindEntityDataResponse>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbFindEntityDataResponse>.Empty)
             .Build();
 
-        return await policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/entitiesQuery/find")
@@ -51,15 +46,13 @@ public class FlurlTbEntityQueryClient : FlurlTbClient<ITbEntityQueryClient>, ITb
     /// <returns></returns>
     public Task<int> CountEntityDataByQueryAsync(TbCountEntityDataRequest request, CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<int>()
+        var policy = RequestBuilder.GetPolicyBuilder<int>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackValueOn(HttpStatusCode.NotFound, 0)
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/entitiesQuery/count")

@@ -10,11 +10,10 @@ namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbDashboardClient : FlurlTbClient<ITbDashboardClient>, ITbDashboardClient
 {
-    private readonly IRequestBuilder _builder;
+    
 
-    public FlurlTbDashboardClient(IRequestBuilder builder)
-    {
-        _builder = builder;
+    public FlurlTbDashboardClient(IRequestBuilder builder) : base(builder)    {
+        
     }
 
     /// <summary>
@@ -24,14 +23,14 @@ public class FlurlTbDashboardClient : FlurlTbClient<ITbDashboardClient>, ITbDash
     /// <returns></returns>
     public Task<DateTime> GetServerTimeAsync(CancellationToken cancel = default)
     {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
+        
 
-        var policy = builder.GetPolicyBuilder<DateTime>()
+        var policy = RequestBuilder.GetPolicyBuilder<DateTime>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .Build();
 
-        return policy.ExecuteAsync(async () =>
+        return policy.ExecuteAsync(async builder =>
         {
             var response = await builder.CreateRequest()
                 .AppendPathSegment("/api/dashboard/serverTime")

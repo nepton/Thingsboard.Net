@@ -71,7 +71,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     public RequestPolicyBuilder GetPolicyBuilder()
     {
         var logger = _loggerFactory.CreateLogger<RequestPolicyBuilder>();
-        return new RequestPolicyBuilder(_optionsReader, logger);
+        return new RequestPolicyBuilder(_optionsReader, logger, this);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class FlurlRequestBuilder : IRequestBuilder
     public RequestPolicyBuilder<TResult> GetPolicyBuilder<TResult>()
     {
         var logger = _loggerFactory.CreateLogger<RequestPolicyBuilder<TResult>>();
-        return new RequestPolicyBuilder<TResult>(_optionsReader, logger);
+        return new RequestPolicyBuilder<TResult>(_optionsReader, logger, this);
     }
 
     public async Task<string> GetAccessTokenAsync()
