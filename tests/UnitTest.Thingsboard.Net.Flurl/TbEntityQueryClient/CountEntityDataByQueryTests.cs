@@ -46,7 +46,7 @@ public class CountEntityDataByQueryTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateEntityQueryClient(),
             async client =>
             {
-                var actual = await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
+                await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
                 {
                     EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, Guid.Empty),
                 });
@@ -59,7 +59,7 @@ public class CountEntityDataByQueryTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateEntityQueryClient(),
             async client =>
             {
-                var actual = await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
+                await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
                 {
                     EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, Guid.Empty),
                 });

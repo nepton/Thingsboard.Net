@@ -30,7 +30,6 @@ public class GetTenantDeviceByNameTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var deviceId = Guid.Empty;
         var actual   = await client.GetTenantDeviceByNameAsync(string.Empty);
 
         Assert.Null(actual);
@@ -42,7 +41,7 @@ public class GetTenantDeviceByNameTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetTenantDeviceByNameAsync(string.Empty);
+                await client.GetTenantDeviceByNameAsync(string.Empty);
             });
     }
 
@@ -52,7 +51,7 @@ public class GetTenantDeviceByNameTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetTenantDeviceByNameAsync(string.Empty);
+                await client.GetTenantDeviceByNameAsync(string.Empty);
             });
     }
 }

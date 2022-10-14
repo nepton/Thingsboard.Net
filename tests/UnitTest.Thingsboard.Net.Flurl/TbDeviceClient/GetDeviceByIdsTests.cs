@@ -41,7 +41,7 @@ public class GetDevicesByIdsTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
+                await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
             });
     }
 
@@ -51,7 +51,7 @@ public class GetDevicesByIdsTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
+                await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
             });
     }
 }

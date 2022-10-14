@@ -41,7 +41,7 @@ public class GetTimeSeriesKeysTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
+            await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
         });
 
         // assert
@@ -57,7 +57,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
             });
     }
 
@@ -68,7 +68,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
             });
     }
 }

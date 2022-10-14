@@ -36,7 +36,7 @@ public class GetAttributeKeysTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            var entities = await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
+            await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
         });
 
         // assert
@@ -52,7 +52,7 @@ public class GetAttributeKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
             });
     }
 
@@ -63,7 +63,7 @@ public class GetAttributeKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
             });
     }
 }

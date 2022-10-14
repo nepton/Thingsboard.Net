@@ -68,35 +68,6 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
     }
 
     /// <summary>
-    /// Create or update the Queue. When creating queue, platform generates Queue Id as time-based UUID. Specify existing Queue id to update the queue. Referencing non-existing Queue Id will cause 'Not Found' error.
-    /// Queue name is unique in the scope of sysadmin.Remove 'id', 'tenantId' from the request body example (below) to create new Queue entity.
-    /// Available for users with 'SYS_ADMIN' authority.
-    /// </summary>
-    /// <param name="serviceType">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
-    /// <param name="queue"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancellationToken = default)
-    {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder<TbQueue>()
-            .RetryOnHttpTimeout()
-            .RetryOnUnauthorized()
-            .Build();
-
-        return policy.ExecuteAsync(async () =>
-        {
-            var request = builder.CreateRequest()
-                .AppendPathSegment($"/api/queues")
-                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("serviceType", serviceType);
-
-            return await request.PostJsonAsync(queue, cancellationToken).ReceiveJson<TbQueue>();
-        });
-    }
-
-    /// <summary>
     /// Fetch the Queue object based on the provided Queue Id.
     /// Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
     /// </summary>
@@ -119,32 +90,6 @@ public class FlurlTbQueueClient : FlurlTbClient<ITbQueueClient>, ITbQueueClient
                 .AppendPathSegment($"/api/queues/{queueId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .GetJsonAsync<TbQueue?>(cancel);
-        });
-    }
-
-    /// <summary>
-    /// Deletes the Queue.
-    /// Available for users with 'SYS_ADMIN' authority.
-    /// </summary>
-    /// <param name="queueId">A string value representing the queue id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public Task DeleteQueueAsync(Guid queueId, CancellationToken cancel = default)
-    {
-        var builder = _builder.MergeCustomOptions(CustomOptions);
-
-        var policy = builder.GetPolicyBuilder()
-            .RetryOnHttpTimeout()
-            .RetryOnUnauthorized()
-            .Build();
-
-        return policy.ExecuteAsync(async () =>
-        {
-            var request = builder.CreateRequest()
-                .AppendPathSegment($"/api/queues/{queueId}")
-                .WithOAuthBearerToken(await builder.GetAccessTokenAsync());
-
-            await request.DeleteAsync(cancel);
         });
     }
 

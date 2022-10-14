@@ -24,14 +24,13 @@ public class GetDeviceByIdTests
     }
 
     [Fact]
-    public async Task TestWhenDeviceNotFound()
+    public async Task TestGetDeviceByIdWhenNotFound()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var deviceId = Guid.Empty;
-        var actual   = await client.GetDeviceByIdAsync(deviceId);
+        var actual   = await client.GetDeviceByIdAsync(Guid.NewGuid());
 
         Assert.Null(actual);
     }
@@ -42,7 +41,7 @@ public class GetDeviceByIdTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceByIdAsync(Guid.NewGuid());
+                await client.GetDeviceByIdAsync(Guid.NewGuid());
             });
     }
 
@@ -52,7 +51,7 @@ public class GetDeviceByIdTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceByIdAsync(Guid.NewGuid());
+                await client.GetDeviceByIdAsync(Guid.NewGuid());
             });
     }
 }

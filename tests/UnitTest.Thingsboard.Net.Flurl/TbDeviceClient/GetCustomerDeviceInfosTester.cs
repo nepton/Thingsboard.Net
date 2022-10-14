@@ -5,7 +5,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 public class GetCustomerDeviceInfosTester
 {
     [Fact]
-    public async Task TestGenerals()
+    public async Task TestGetCustomerDeviceInfos()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();
@@ -52,7 +52,7 @@ public class GetCustomerDeviceInfosTester
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var devices = await client.GetCustomerDeviceInfosAsync(Guid.NewGuid(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetCustomerDeviceInfosAsync(Guid.NewGuid(), 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 
@@ -62,7 +62,7 @@ public class GetCustomerDeviceInfosTester
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var devices = await client.GetCustomerDeviceInfosAsync(Guid.NewGuid(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetCustomerDeviceInfosAsync(Guid.NewGuid(), 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 }

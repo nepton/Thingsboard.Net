@@ -53,7 +53,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAsset?> GetAssetAsync(Guid assetId, CancellationToken cancel = default)
+    public Task<TbAsset?> GetAssetByIdAsync(Guid assetId, CancellationToken cancel = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -106,7 +106,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbAssetInfo?> GetAssetInfoAsync(Guid assetId, CancellationToken cancel = default)
+    public Task<TbAssetInfo?> GetAssetInfoByIdAsync(Guid assetId, CancellationToken cancel = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 

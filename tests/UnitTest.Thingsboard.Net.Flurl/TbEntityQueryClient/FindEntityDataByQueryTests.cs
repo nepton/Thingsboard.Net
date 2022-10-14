@@ -60,7 +60,7 @@ public class FindEntityDataByQueryTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateEntityQueryClient(),
             async client =>
             {
-                var actual = await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
+                await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
                 {
                     EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, Guid.Empty),
                     EntityFields = new[] {new TbEntityField("id", TbEntityFieldType.ENTITY_FIELD)},
@@ -79,7 +79,7 @@ public class FindEntityDataByQueryTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateEntityQueryClient(),
             async client =>
             {
-                var actual = await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
+                await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
                 {
                     EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, Guid.Empty),
                     EntityFields = new[] {new TbEntityField("id", TbEntityFieldType.ENTITY_FIELD)},

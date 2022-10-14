@@ -15,8 +15,17 @@ public interface ITbRpcClient : ITbClient<ITbRpcClient>
     /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="request"></param>
     /// <param name="cancel"></param>
-    /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID. In case of lightweight RPC, the result of this call is either 200 OK if the message was sent to device, or 504 Gateway Timeout if device is offline.</returns>
-    Task SendOneWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
+    /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID.</returns>
+    Task<TbRpcId> SendPersistentOneWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Sends the one-way remote-procedure call (RPC) request to device. Sends the one-way remote-procedure call (RPC) request to device. The RPC call is A JSON that contains the method name ('method'), parameters ('params') and multiple optional fields. See example below. We will review the properties of the RPC call one-by-one below.
+    /// </summary>
+    /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="request"></param>
+    /// <param name="cancel"></param>
+    /// <returns>In case of lightweight RPC, the result of this call is either 200 OK if the message was sent to device, or 504 Gateway Timeout if device is offline.</returns>
+    Task SendLightweightOneWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
 
     /// <summary>
     /// Get information about the status of the RPC call.
@@ -25,7 +34,7 @@ public interface ITbRpcClient : ITbClient<ITbRpcClient>
     /// <param name="rpcId">A string value representing the rpc id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbRpc?> GetPersistentRpcAsync(Guid rpcId, CancellationToken cancel = default);
+    Task<TbRpc?> GetPersistentRpcByIdAsync(Guid rpcId, CancellationToken cancel = default);
 
     /// <summary>
     /// Deletes the persistent RPC request.
@@ -64,6 +73,16 @@ public interface ITbRpcClient : ITbClient<ITbRpcClient>
     /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="request">The rpc request fields</param>
     /// <param name="cancel"></param>
+    /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID.</returns>
+    Task<TbRpcId> SendPersistentTwoWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Sends the two-way remote-procedure call (RPC) request to device. Sends the one-way remote-procedure call (RPC) request to device. The RPC call is A JSON that contains the method name ('method'), parameters ('params') and multiple optional fields. See example below. We will review the properties of the RPC call one-by-one below.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="request">The rpc request fields</param>
+    /// <param name="cancel"></param>
     /// <returns>In case of persistent RPC, the result of this call is 'rpcId' UUID. In case of lightweight RPC, the result of this call is the response from device, or 504 Gateway Timeout if device is offline.</returns>
-    Task SendTwoWayRpcAsync(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
+    Task<TRpcResponse> SendLightweightTwoWayRpcAsync<TRpcResponse>(Guid deviceId, TbRpcRequest request, CancellationToken cancel = default);
 }

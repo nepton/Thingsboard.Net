@@ -25,7 +25,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAsset?> GetAssetAsync(Guid assetId, CancellationToken cancel = default);
+    Task<TbAsset?> GetAssetByIdAsync(Guid assetId, CancellationToken cancel = default);
 
     /// <summary>
     /// Deletes the asset and all the relations (from and to the asset). Referencing non-existing asset Id will cause an error.
@@ -43,7 +43,7 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbAssetInfo?> GetAssetInfoAsync(Guid assetId, CancellationToken cancel = default);
+    Task<TbAssetInfo?> GetAssetInfoByIdAsync(Guid assetId, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a set of unique asset types based on assets that are either owned by the tenant or assigned to the customer which user is performing the request.

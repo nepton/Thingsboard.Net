@@ -26,13 +26,13 @@ public interface ITbAuditLogClient : ITbClient<ITbAuditLogClient>
     Task<TbPage<TbAudit>> GetAuditLogsAsync(
         int                          pageSize,
         int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default);
+        string?                      textSearch   = null,
+        TbAuditLogQuerySortProperty? sortProperty = null,
+        TbSortOrder?                 sortOrder    = null,
+        DateTime?                    startTime    = null,
+        DateTime?                    endTime      = null,
+        string?                      actionType   = null,
+        CancellationToken            cancel       = default);
 
     /// <summary>
     /// Returns a page of audit logs related to the targeted customer entities (devices, assets, etc.), and users actions (login, logout, etc.) that belong to this customer. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
@@ -53,13 +53,13 @@ public interface ITbAuditLogClient : ITbClient<ITbAuditLogClient>
         Guid                         customerId,
         int                          pageSize,
         int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default);
+        string?                      textSearch   = null,
+        TbAuditLogQuerySortProperty? sortProperty = null,
+        TbSortOrder?                 sortOrder    = null,
+        DateTime?                    startTime    = null,
+        DateTime?                    endTime      = null,
+        string?                      actionType   = null,
+        CancellationToken            cancel       = default);
 
     /// <summary>
     /// Returns a page of audit logs related to the actions on the targeted entity. Basically, this API call is used to get the full lifecycle of some specific entity. For example to see when a device was created, updated, assigned to some customer, or even deleted from the system. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
@@ -82,13 +82,13 @@ public interface ITbAuditLogClient : ITbClient<ITbAuditLogClient>
         Guid                         entityId,
         int                          pageSize,
         int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default);
+        string?                      textSearch   = null,
+        TbAuditLogQuerySortProperty? sortProperty = null,
+        TbSortOrder?                 sortOrder    = null,
+        DateTime?                    startTime    = null,
+        DateTime?                    endTime      = null,
+        string?                      actionType   = null,
+        CancellationToken            cancel       = default);
 
     /// <summary>
     /// Returns a page of audit logs related to the actions of targeted user. For example, RPC call to a particular device, or alarm acknowledgment for a specific device, etc. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
@@ -109,11 +109,11 @@ public interface ITbAuditLogClient : ITbClient<ITbAuditLogClient>
         Guid                         userId,
         int                          pageSize,
         int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default);
+        string?                      textSearch   = null,
+        TbAuditLogQuerySortProperty? sortProperty = null,
+        TbSortOrder?                 sortOrder    = null,
+        DateTime?                    startTime    = null,
+        DateTime?                    endTime      = null,
+        string?                      actionType   = null,
+        CancellationToken            cancel       = default);
 }

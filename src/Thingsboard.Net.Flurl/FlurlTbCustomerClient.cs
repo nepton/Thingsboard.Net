@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
 namespace Thingsboard.Net.Flurl;
@@ -88,6 +89,7 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
         var policy = builder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.CUSTOMER, customerId))
             .Build();
 
         return policy.ExecuteAsync(async () =>
@@ -217,8 +219,9 @@ public class FlurlTbCustomerClient : FlurlTbClient<ITbCustomerClient>, ITbCustom
         return policy.ExecuteAsync(async () =>
         {
             var response = await builder.CreateRequest()
-                .AppendPathSegment($"/api/tenant/customers/{customerTitle}")
+                .AppendPathSegment($"/api/tenant/customers")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .SetQueryParam("customerTitle", customerTitle)
                 .GetJsonAsync<TbCustomer>(cancel);
 
             return response;

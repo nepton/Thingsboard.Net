@@ -271,8 +271,8 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="keys">A string list of telemetry keys.</param>
     /// <param name="startTs">A datetime value representing the start timestamp of the time range in milliseconds, UTC.</param>
     /// <param name="endTs">A datetime value representing the end timestamp of the time range in milliseconds, UTC.</param>
-    /// <param name="interval">A long value representing the aggregation interval range in milliseconds.</param>
     /// <param name="agg">A enum value representing the aggregation function. If the interval is not specified, 'agg' parameter will use 'NONE' value.</param>
+    /// <param name="interval">A long value representing the aggregation interval range in milliseconds.</param>
     /// <param name="orderBy">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
@@ -283,8 +283,8 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
         string[]              keys,
         DateTime              startTs,
         DateTime              endTs,
-        int                   interval,
         TbTimeSeriesAggregate agg,
+        int                   interval,
         TbSortOrder?          orderBy            = null,
         bool?                 useStrictDataTypes = null,
         CancellationToken     cancel             = default);

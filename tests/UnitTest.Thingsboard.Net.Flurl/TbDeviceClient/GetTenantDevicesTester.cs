@@ -5,7 +5,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 public class GetTenantDevicesTester
 {
     [Fact]
-    public async Task TestGenerals()
+    public async Task TestGetTenantDevices()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();

@@ -25,18 +25,7 @@ public interface ITbQueueClient : ITbClient<ITbQueueClient>
         string?                   textSearch   = null,
         TbQueueQuerySortProperty? sortProperty = null,
         TbSortOrder?              sortOrder    = null,
-        CancellationToken         cancel       = default);  
-
-    /// <summary>
-    /// Create or update the Queue. When creating queue, platform generates Queue Id as time-based UUID. Specify existing Queue id to update the queue. Referencing non-existing Queue Id will cause 'Not Found' error.
-    /// Queue name is unique in the scope of sysadmin.Remove 'id', 'tenantId' from the request body example (below) to create new Queue entity.
-    /// Available for users with 'SYS_ADMIN' authority.
-    /// </summary>
-    /// <param name="serviceType">Sort order. ASC (ASCENDING) or DESC (DESCENDING)</param>
-    /// <param name="queue"></param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task<TbQueue> SaveQueueAsync(TbQueueServiceType serviceType, TbQueue queue, CancellationToken cancel = default);
+        CancellationToken         cancel       = default);
 
     /// <summary>
     /// Fetch the Queue object based on the provided Queue Id.
@@ -46,15 +35,6 @@ public interface ITbQueueClient : ITbClient<ITbQueueClient>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbQueue?> GetQueueByIdAsync(Guid queueId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes the Queue.
-    /// Available for users with 'SYS_ADMIN' authority.
-    /// </summary>
-    /// <param name="queueId">A string value representing the queue id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteQueueAsync(Guid queueId, CancellationToken cancel = default);
 
     /// <summary>
     /// Fetch the Queue object based on the provided Queue name.

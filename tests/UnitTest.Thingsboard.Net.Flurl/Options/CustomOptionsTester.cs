@@ -1,6 +1,6 @@
 ﻿using Thingsboard.Net.Flurl.Utilities;
 
-namespace UnitTest.Thingsboard.Net.Flurl.CustomOptions;
+namespace UnitTest.Thingsboard.Net.Flurl.Options;
 
 /// <summary>
 /// This class is used to test the custom options for the thingsboard.net flurl client.

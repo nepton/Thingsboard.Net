@@ -31,16 +31,15 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
     /// <param name="actionType">A String value representing comma-separated list of action types. This parameter is optional, but it can be used to filter results to fetch only audit logs of specific action types. For example, 'LOGIN', 'LOGOUT'. See the 'Model' tab of the Response Class for more details.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAudit>> GetAuditLogsAsync(
-        int                          pageSize,
-        int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default)
+    public Task<TbPage<TbAudit>> GetAuditLogsAsync(int pageSize,
+        int                                            page,
+        string?                                        textSearch,
+        TbAuditLogQuerySortProperty?                   sortProperty = null,
+        TbSortOrder?                                   sortOrder    = null,
+        DateTime?                                      startTime    = null,
+        DateTime?                                      endTime      = null,
+        string?                                        actionType   = null,
+        CancellationToken                              cancel       = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -83,17 +82,16 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
     /// <param name="actionType">A String value representing comma-separated list of action types. This parameter is optional, but it can be used to filter results to fetch only audit logs of specific action types. For example, 'LOGIN', 'LOGOUT'. See the 'Model' tab of the Response Class for more details.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAudit>> GetAuditLogsByCustomerIdAsync(
-        Guid                         customerId,
-        int                          pageSize,
-        int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default)
+    public Task<TbPage<TbAudit>> GetAuditLogsByCustomerIdAsync(Guid customerId,
+        int                                                         pageSize,
+        int                                                         page,
+        string?                                                     textSearch,
+        TbAuditLogQuerySortProperty?                                sortProperty = null,
+        TbSortOrder?                                                sortOrder    = null,
+        DateTime?                                                   startTime    = null,
+        DateTime?                                                   endTime      = null,
+        string?                                                     actionType   = null,
+        CancellationToken                                           cancel       = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -137,18 +135,17 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
     /// <param name="actionType">A String value representing comma-separated list of action types. This parameter is optional, but it can be used to filter results to fetch only audit logs of specific action types. For example, 'LOGIN', 'LOGOUT'. See the 'Model' tab of the Response Class for more details.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAudit>> GetAuditLogsByEntityIdAsync(
-        TbEntityType                 entityType,
-        Guid                         entityId,
-        int                          pageSize,
-        int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default)
+    public Task<TbPage<TbAudit>> GetAuditLogsByEntityIdAsync(TbEntityType entityType,
+        Guid                                                              entityId,
+        int                                                               pageSize,
+        int                                                               page,
+        string?                                                           textSearch,
+        TbAuditLogQuerySortProperty?                                      sortProperty = null,
+        TbSortOrder?                                                      sortOrder    = null,
+        DateTime?                                                         startTime    = null,
+        DateTime?                                                         endTime      = null,
+        string?                                                           actionType   = null,
+        CancellationToken                                                 cancel       = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 
@@ -191,17 +188,16 @@ public class FlurlTbAuditLogClient : FlurlTbClient<ITbAuditLogClient>, ITbAuditL
     /// <param name="actionType">A String value representing comma-separated list of action types. This parameter is optional, but it can be used to filter results to fetch only audit logs of specific action types. For example, 'LOGIN', 'LOGOUT'. See the 'Model' tab of the Response Class for more details.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbAudit>> GetAuditLogsByUserIdAsync(
-        Guid                         userId,
-        int                          pageSize,
-        int                          page,
-        string?                      textSearch,
-        TbAuditLogQuerySortProperty? sortProperty,
-        TbSortOrder?                 sortOrder,
-        DateTime?                    startTime,
-        DateTime?                    endTime,
-        string?                      actionType,
-        CancellationToken            cancel = default)
+    public Task<TbPage<TbAudit>> GetAuditLogsByUserIdAsync(Guid userId,
+        int                                                     pageSize,
+        int                                                     page,
+        string?                                                 textSearch,
+        TbAuditLogQuerySortProperty?                            sortProperty = null,
+        TbSortOrder?                                            sortOrder    = null,
+        DateTime?                                               startTime    = null,
+        DateTime?                                               endTime      = null,
+        string?                                                 actionType   = null,
+        CancellationToken                                       cancel       = default)
     {
         var builder = _builder.MergeCustomOptions(CustomOptions);
 

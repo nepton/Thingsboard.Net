@@ -27,13 +27,14 @@ public class GetTimeSeriesWithAggregateTests
             new[] {field1, field2},
             DateTime.Today.AddDays(-7),
             DateTime.Now,
-            100000,
-            TbTimeSeriesAggregate.AVG);
+            TbTimeSeriesAggregate.AVG,
+            10000000);
 
         // assert
         Assert.NotNull(entities);
         Assert.NotEmpty(entities);
-        Assert.Contains(entities, x => x.Key == "active");
+        Assert.Contains(entities, x => x.Key == field1);
+        Assert.Contains(entities, x => x.Key == field2);
 
         // cleanup
         await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {field1, field2});
@@ -51,8 +52,8 @@ public class GetTimeSeriesWithAggregateTests
             new[] {"test_not_exists"},
             DateTime.Today.AddDays(-7),
             DateTime.Now,
-            100000,
-            TbTimeSeriesAggregate.AVG);
+            TbTimeSeriesAggregate.AVG,
+            10000000);
 
         // assert
         Assert.NotNull(entities);
@@ -68,7 +69,7 @@ public class GetTimeSeriesWithAggregateTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            var entities = await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
+            await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
         });
 
         // assert
@@ -84,7 +85,7 @@ public class GetTimeSeriesWithAggregateTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
+                await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
             });
     }
 
@@ -95,7 +96,7 @@ public class GetTimeSeriesWithAggregateTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
+                await client.GetTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"}, DateTime.Today.AddDays(-7), DateTime.Now);
             });
     }
 }

@@ -40,7 +40,7 @@ public class GetDeviceCredentialsTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceCredentialsAsync(Guid.NewGuid());
+                await client.GetDeviceCredentialsAsync(Guid.NewGuid());
             });
     }
 
@@ -50,7 +50,7 @@ public class GetDeviceCredentialsTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                var actual = await client.GetDeviceCredentialsAsync(Guid.NewGuid());
+                await client.GetDeviceCredentialsAsync(Guid.NewGuid());
             });
     }
 }

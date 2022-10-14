@@ -50,7 +50,7 @@ public class GetAttributeTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, new[] {"active"});
+            await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, new[] {"active"});
         });
 
         // assert
@@ -66,7 +66,7 @@ public class GetAttributeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
+                await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
             });
     }
 
@@ -77,7 +77,7 @@ public class GetAttributeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
+                await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
             });
     }
 }

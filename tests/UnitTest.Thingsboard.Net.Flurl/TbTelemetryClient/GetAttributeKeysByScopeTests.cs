@@ -50,7 +50,7 @@ public class GetAttributeKeysByScopeTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            var entities = await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, TbAttributeScope.CLIENT_SCOPE);
+            await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, TbAttributeScope.CLIENT_SCOPE);
         });
 
         // assert
@@ -66,7 +66,7 @@ public class GetAttributeKeysByScopeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE);
+                await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE);
             });
     }
 
@@ -77,7 +77,7 @@ public class GetAttributeKeysByScopeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                var entities = await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE);
+                await client.GetAttributeKeysByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE);
             });
     }
 }
