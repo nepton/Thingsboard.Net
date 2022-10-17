@@ -9,54 +9,29 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-        <PackageReference Include="Thingsboard.Net.Flurl" Version="3.4.1.1" />
+        <PackageReference Include="Thingsboard.Net.Flurl" Version="3.4.1.4" />
     </ItemGroup>
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
-        <VersionPrefix>3.4.1.1</VersionPrefix>
-        <Description>The dotnet restful api client of thingsboard</Description>
-        <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
-        <PackageIcon>app.png</PackageIcon>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
-        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <VersionPrefix>3.4.1.4</VersionPrefix>
         <Authors>Nepton Liu</Authors>
+        <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
+        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
+        <PackageIcon>app.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
+
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <!--DEBUG just publish to local, fix bugs for ss.nuget.publish-->
-        <NuGetPublishLocation>.</NuGetPublishLocation>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <NuGetPublishType>remote</NuGetPublishType>
-        <NuGetPublishLocation>https://api.nuget.org/v3/index.json</NuGetPublishLocation>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="SS.NuGet.Publish" Version="1.0.1912.22">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
 
     <ItemGroup>
         <None Include="app.png" Pack="true" PackagePath="\" />
-        <None Remove="thingsboard.net.flurl.dependencyinjection\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="thingsboard.net.flurl.dependencyinjection\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="thingsboard.net.flurl.dependencyinjection\**" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

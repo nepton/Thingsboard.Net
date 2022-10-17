@@ -3,7 +3,7 @@
     <PropertyGroup>
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,55 +11,29 @@
         <PackageReference Include="Polly" Version="7.2.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.1.1" />
+        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.1.4" />
     </ItemGroup>
-
-
+    
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl</PackageId>
-        <VersionPrefix>3.4.1.2</VersionPrefix>
-        <Description>The dotnet restful api client of thingsboard</Description>
-        <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
-        <PackageIcon>app.png</PackageIcon>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
-        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <PackageVersion>3.4.1.4</PackageVersion>
         <Authors>Nepton Liu</Authors>
+        <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
+        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
+        <PackageIcon>app.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
+
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <!--DEBUG just publish to local, fix bugs for ss.nuget.publish-->
-        <NuGetPublishLocation>.</NuGetPublishLocation>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <NuGetPublishType>remote</NuGetPublishType>
-        <NuGetPublishLocation>https://api.nuget.org/v3/index.json</NuGetPublishLocation>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="SS.NuGet.Publish" Version="1.0.1912.22">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
 
     <ItemGroup>
         <None Include="app.png" Pack="true" PackagePath="\" />
-        <None Remove="thingsboard.net.flurl\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="thingsboard.net.flurl\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="thingsboard.net.flurl\**" />
+        <None Include="readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
