@@ -29,7 +29,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Thingsboard.Net.Flurl.DependencyInjection\Thingsboard.Net.Flurl.DependencyInjection.csproj" />
-      <ProjectReference Include="..\..\src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj" />
     </ItemGroup>
 
 </Project>

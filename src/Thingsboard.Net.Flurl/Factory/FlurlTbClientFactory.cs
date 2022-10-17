@@ -10,10 +10,34 @@ namespace Thingsboard.Net.Flurl;
 /// </summary>
 public class FlurlTbClientFactory
 {
+    /// <summary>
+    /// Global factory instance.
+    /// </summary>
     public static FlurlTbClientFactory Instance { get; } = new();
 
+    public FlurlTbClientFactory()
+    {
+    }
+
+    public FlurlTbClientFactory(ThingsboardNetFlurlOptions options)
+    {
+        Options = options;
+    }
+
+    public FlurlTbClientFactory(ThingsboardNetFlurlOptions options, ILoggerFactory loggerFactory)
+    {
+        Options       = options;
+        LoggerFactory = loggerFactory;
+    }
+
+    /// <summary>
+    /// The factory method options
+    /// </summary>
     public ThingsboardNetFlurlOptions Options { get; set; } = new();
 
+    /// <summary>
+    /// The logger factory used to create a logger to logging.
+    /// </summary>
     public ILoggerFactory? LoggerFactory { get; set; }
 
     public IRequestBuilder CreateRequestBuilder()

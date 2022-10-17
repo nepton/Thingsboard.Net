@@ -1,6 +1,4 @@
-﻿using Thingsboard.Net;
-
-namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
+﻿namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 
 /// <summary>
 /// This class is used to test GetAlarmByIdAsync API

@@ -51,6 +51,15 @@
 
     <ItemGroup>
         <None Include="app.png" Pack="true" PackagePath="\" />
+        <None Remove="thingsboard.net.abstractions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="thingsboard.net.abstractions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="thingsboard.net.abstractions\**" />
     </ItemGroup>
 
 </Project>

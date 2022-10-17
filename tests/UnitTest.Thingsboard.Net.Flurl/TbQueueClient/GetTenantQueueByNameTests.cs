@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Quibble.Xunit;
-using Thingsboard.Net;
+﻿using Thingsboard.Net;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbQueueClient;

@@ -1,6 +1,5 @@
 ﻿using Thingsboard.Net.Exceptions;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
-using UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 

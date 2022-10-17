@@ -1,8 +1,6 @@
 using System.Net;
-using Microsoft.Extensions.Options;
 using Thingsboard.Net;
 using Thingsboard.Net.Exceptions;
-using Thingsboard.Net.Flurl.Options;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbLoginClient;
 
