@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Nullable>enable</Nullable>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>10</LangVersion>
         <RootNamespace>Thingsboard.Net</RootNamespace>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,6 +13,44 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PackageId>Thingsboard.Net.Abstractions</PackageId>
+        <VersionPrefix>3.4.1.1</VersionPrefix>
+        <Description>The dotnet client restful api of thingsboard</Description>
+        <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
+        <PackageIcon>app.png</PackageIcon>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <Authors>Nepton Liu</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <IncludeSymbols>True</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <!--DEBUG无需发布, 解决保存问题-->
+        <NuGetPublishLocation>.</NuGetPublishLocation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <NuGetPublishType>remote</NuGetPublishType>
+        <NuGetPublishLocation>https://api.nuget.org/v3/index.json</NuGetPublishLocation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SS.NuGet.Publish" Version="1.0.1912.22">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="app.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
