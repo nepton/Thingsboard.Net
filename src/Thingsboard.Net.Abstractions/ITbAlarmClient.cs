@@ -34,8 +34,8 @@ public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
         Guid                 entityId,
         int                  pageSize,
         int                  page,
-        TbAlarmSearchStatus? searchStatus = null,
-        TbAlarmStatus?       status       = null,
+        bool?                acknowledged = null,
+        bool?                cleared      = null,
         string?              textSearch   = null,
         TbAlarmSortProperty? sortProperty = null,
         TbSortOrder?         sortOrder    = null,
@@ -74,4 +74,20 @@ public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default);
+
+    /// <summary>
+    /// Returns a page of alarms for the selected entity. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
+    /// </summary>
+    /// <returns></returns>
+    Task<TbPage<TbAlarm>> GetAllAlarmsAsync(
+        int                  pageSize,
+        int                  page,
+        bool?                acknowledged = null,
+        bool?                cleared      = null,
+        string?              textSearch   = null,
+        TbAlarmSortProperty? sortProperty = null,
+        TbSortOrder?         sortOrder    = null,
+        DateTime?            startTime    = null,
+        DateTime?            endTime      = null,
+        CancellationToken    cancel       = default);
 }

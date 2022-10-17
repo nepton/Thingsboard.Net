@@ -78,8 +78,8 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         Guid                 entityId,
         int                  pageSize,
         int                  page,
-        TbAlarmSearchStatus? searchStatus = null,
-        TbAlarmStatus?       status       = null,
+        bool?                acknowledged = null,
+        bool?                cleared      = null,
         string?              textSearch   = null,
         TbAlarmSortProperty? sortProperty = null,
         TbSortOrder?         sortOrder    = null,
@@ -87,6 +87,25 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
         DateTime?            endTime      = null,
         CancellationToken    cancel       = default)
     {
+        TbAlarmStatus? status = (cleared, acknowledged) switch
+        {
+            (true, true)   => TbAlarmStatus.CLEARED_ACK,
+            (true, false)  => TbAlarmStatus.CLEARED_UNACK,
+            (false, true)  => TbAlarmStatus.ACTIVE_ACK,
+            (false, false) => TbAlarmStatus.ACTIVE_UNACK,
+            _              => null,
+        };
+
+        TbAlarmSearchStatus? searchStatus = (cleared, acknowledged) switch
+        {
+            (null, true)  => TbAlarmSearchStatus.ACK,
+            (null, false) => TbAlarmSearchStatus.UNACK,
+            (true, null)  => TbAlarmSearchStatus.CLEARED,
+            (false, null) => TbAlarmSearchStatus.ACTIVE,
+            (null, null)  => TbAlarmSearchStatus.ANY,
+            _             => null,
+        };
+
         var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAlarm>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -203,6 +222,66 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
                 .AppendPathSegment($"api/alarm/{alarmId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel);
+        });
+    }
+
+    /// <summary>
+    /// Returns a page of alarms for the selected entity. Specifying both parameters 'searchStatus' and 'status' at the same time will cause an error. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
+    /// </summary>
+    /// <returns></returns>
+    public Task<TbPage<TbAlarm>> GetAllAlarmsAsync(
+        int                  pageSize,
+        int                  page,
+        bool?                acknowledged = null,
+        bool?                cleared      = null,
+        string?              textSearch   = null,
+        TbAlarmSortProperty? sortProperty = null,
+        TbSortOrder?         sortOrder    = null,
+        DateTime?            startTime    = null,
+        DateTime?            endTime      = null,
+        CancellationToken    cancel       = default)
+    {
+        TbAlarmStatus? status = (cleared, acknowledged) switch
+        {
+            (true, true)   => TbAlarmStatus.CLEARED_ACK,
+            (true, false)  => TbAlarmStatus.CLEARED_UNACK,
+            (false, true)  => TbAlarmStatus.ACTIVE_ACK,
+            (false, false) => TbAlarmStatus.ACTIVE_UNACK,
+            _              => null,
+        };
+
+        TbAlarmSearchStatus? searchStatus = (cleared, acknowledged) switch
+        {
+            (null, true)  => TbAlarmSearchStatus.ACK,
+            (null, false) => TbAlarmSearchStatus.UNACK,
+            (true, null)  => TbAlarmSearchStatus.CLEARED,
+            (false, null) => TbAlarmSearchStatus.ACTIVE,
+            (null, null)  => TbAlarmSearchStatus.ANY,
+            _             => null,
+        };
+
+        var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbAlarm>>()
+            .RetryOnHttpTimeout()
+            .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, TbPage<TbAlarm>.Empty)
+            .Build();
+
+        return policy.ExecuteAsync(async builder =>
+        {
+            var request = builder.CreateRequest()
+                .AppendPathSegment($"api/alarms")
+                .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
+                .SetQueryParam("pageSize",     pageSize)
+                .SetQueryParam("page",         page)
+                .SetQueryParam("searchStatus", searchStatus)
+                .SetQueryParam("status",       status)
+                .SetQueryParam("textSearch",   textSearch)
+                .SetQueryParam("sortProperty", sortProperty)
+                .SetQueryParam("sortOrder",    sortOrder)
+                .SetQueryParam("startTime",    startTime)
+                .SetQueryParam("endTime",      endTime);
+
+            return await request.GetJsonAsync<TbPage<TbAlarm>>(cancel);
         });
     }
 }
