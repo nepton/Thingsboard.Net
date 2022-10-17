@@ -7,7 +7,7 @@ using Thingsboard.Net.Flurl.Options;
 // You just need reference one package:
 // <PackageReference Include="Thingsboard.Net.Flurl" Version="3.4.1.1" />
 
-// Initial configuration
+// Initial factory
 var factory = new FlurlTbClientFactory
 {
     Options = new ThingsboardNetFlurlOptions()

@@ -33,5 +33,8 @@ var services = serviceBuilder.BuildServiceProvider();
 // Please see swagger at your thingsboard host http://your-tb-server/swagger-ui/
 var auth = services.GetRequiredService<ITbAuthClient>();
 
-var userInfo = await auth.GetCurrentUserAsync();
+var userInfo = await auth
+    .WithCredentials("newuser@thingsboard.com", "your-password")
+    .WithBaseUrl("https://tb-server")
+    .GetCurrentUserAsync();
 Console.WriteLine($"Hello {userInfo.Email}");
