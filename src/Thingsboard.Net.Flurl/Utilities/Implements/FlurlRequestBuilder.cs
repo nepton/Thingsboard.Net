@@ -191,7 +191,7 @@ public class FlurlRequestBuilder : IRequestBuilder
 
         _logger.Log(level,
             call.Exception,
-            "HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
+            "Thingsboard client called HTTP {Method}: {Url} returned {StatusCode} cost {Elapsed}",
             call.Request.Verb,
             call.Request.Url,
             call.Response?.StatusCode,

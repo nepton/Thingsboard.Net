@@ -285,7 +285,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
         DateTime              startTs,
         DateTime              endTs,
         TbTimeSeriesAggregate agg,
-        int                   interval,
+        long                  interval,
         TbSortOrder?          orderBy            = null,
         bool?                 useStrictDataTypes = null,
         CancellationToken     cancel             = default);
@@ -324,7 +324,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>> GetLatestTimeSeriesAsync(
+    Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue>> GetLatestTimeSeriesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]?         keys,

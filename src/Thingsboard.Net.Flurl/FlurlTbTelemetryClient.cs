@@ -492,7 +492,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         DateTime              startTs,
         DateTime              endTs,
         TbTimeSeriesAggregate agg,
-        int                   interval,
+        long                  interval,
         TbSortOrder?          orderBy            = null,
         bool?                 useStrictDataTypes = null,
         CancellationToken     cancel             = default)
@@ -553,7 +553,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         string[]               keys,
         DateTime               startTs,
         DateTime               endTs,
-        int?                   interval           = null,
+        long?                  interval           = null,
         int?                   limit              = null,
         TbTimeSeriesAggregate? agg                = null,
         TbSortOrder?           orderBy            = null,
@@ -600,14 +600,14 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>> GetLatestTimeSeriesAsync(
+    public Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue>> GetLatestTimeSeriesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]?         keys,
         bool?             useStrictDataTypes = null,
         CancellationToken cancel             = default)
     {
-        var policy = RequestBuilder.GetPolicyBuilder<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>>()
+        var policy = RequestBuilder.GetPolicyBuilder<ReadOnlyDictionary<TbEntityField, TbEntityTsValue>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(entityType, entityId))
@@ -622,9 +622,9 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
                 .SetQueryParam("useStrictDataTypes", useStrictDataTypes);
 
             var result    = await request.GetJsonAsync<Dictionary<string, TbEntityTsValue[]>>(cancel);
-            var converted = result.ToDictionary(x => new TbEntityField(x.Key, TbEntityFieldType.TIME_SERIES), x => x.Value);
+            var converted = result.ToDictionary(x => new TbEntityField(x.Key, TbEntityFieldType.TIME_SERIES), x => x.Value.FirstOrDefault());
 
-            return new ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>(converted);
+            return new ReadOnlyDictionary<TbEntityField, TbEntityTsValue>(converted);
         });
     }
 }

@@ -9,12 +9,12 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-        <PackageReference Include="Thingsboard.Net.Flurl" Version="3.4.1.4" />
+        <PackageReference Include="Thingsboard.Net.Flurl" Version="3.4.1.9" />
     </ItemGroup>
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
-        <VersionPrefix>3.4.1.4</VersionPrefix>
+        <VersionPrefix>3.4.1.9</VersionPrefix>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>

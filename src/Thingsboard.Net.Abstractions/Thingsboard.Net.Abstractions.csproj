@@ -16,7 +16,7 @@
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Abstractions</PackageId>
-        <PackageVersion>3.4.1.7</PackageVersion>
+        <PackageVersion>3.4.1.9</PackageVersion>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
