@@ -18,7 +18,7 @@ public class GetTimeSeriesKeysTests
         // arrange
         var client = TbTestFactory.Instance.CreateTelemetryClient();
         var key    = "testGetTimeSeriesKeys"; // WARN: the first letter must be lowercase
-        await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 1000, new Dictionary<string, object>() {[key] = 100});
+        await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 1000, new Dictionary<string, object>() {[key] = 100});
 
         // act
         var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);

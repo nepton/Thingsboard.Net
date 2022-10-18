@@ -3,9 +3,17 @@ using System.Collections.Generic;
 
 namespace Thingsboard.Net;
 
-public static class TbEntityQueryValueExtensions
+public static class TbEntityTsValueExtensions
 {
-    public static TbEntityQueryValue? GetEntityValue(this IReadOnlyDictionary<TbEntityField, TbEntityQueryValue>? source, TbEntityField key)
+    public static TbEntityTsValue[]? GetEntityTsValues(this IReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>? source, TbEntityField key)
+    {
+        if (source == null)
+            return null;
+
+        return source.TryGetValue(key, out var value) ? value : null;
+    }
+
+    public static TbEntityTsValue? GetEntityTsValue(this IReadOnlyDictionary<TbEntityField, TbEntityTsValue>? source, TbEntityField key)
     {
         if (source == null)
             return null;
@@ -19,9 +27,9 @@ public static class TbEntityQueryValueExtensions
     /// <param name="source"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static DateTime? GetTime(this IReadOnlyDictionary<TbEntityField, TbEntityQueryValue> source, TbEntityField key)
+    public static DateTime? GetTime(this IReadOnlyDictionary<TbEntityField, TbEntityTsValue> source, TbEntityField key)
     {
-        return source.GetEntityValue(key)?.Ts;
+        return source.GetEntityTsValue(key)?.Ts;
     }
 
     /// <summary>
@@ -31,7 +39,7 @@ public static class TbEntityQueryValueExtensions
     /// <param name="key"></param>
     /// <typeparam name="TValue"></typeparam>
     /// <returns></returns>
-    public static TValue? GetValue<TValue>(this IReadOnlyDictionary<TbEntityField, TbEntityQueryValue>? source, TbEntityField key)
+    public static TValue? GetValue<TValue>(this IReadOnlyDictionary<TbEntityField, TbEntityTsValue>? source, TbEntityField key)
     {
         return GetValue<TValue>(source, key, default);
     }
@@ -44,12 +52,12 @@ public static class TbEntityQueryValueExtensions
     /// <param name="defaultValue"></param>
     /// <typeparam name="TValue"></typeparam>
     /// <returns></returns>
-    public static TValue? GetValue<TValue>(this IReadOnlyDictionary<TbEntityField, TbEntityQueryValue>? source, TbEntityField key, TValue? defaultValue)
+    public static TValue? GetValue<TValue>(this IReadOnlyDictionary<TbEntityField, TbEntityTsValue>? source, TbEntityField key, TValue? defaultValue)
     {
         if (source == null)
             return defaultValue;
 
-        var entity = GetEntityValue(source, key);
+        var entity = GetEntityTsValue(source, key);
         if (entity == null)
             return defaultValue;
 
@@ -63,12 +71,12 @@ public static class TbEntityQueryValueExtensions
 
         try
         {
-            // 如果 type 是 Nullable<T> 的话, 使用 underlyingType
+            // If type is Nullable<T>, use underlyingType
             var type = typeof(TValue);
             if (Nullable.GetUnderlyingType(type) is { } underlyingType)
                 type = underlyingType;
 
-            // 如果T是Enum类型, 使用Enum.Parse()转换
+            // If T is of type Enum, use the enum.parse () conversion
             if (type.IsEnum)
             {
                 return (TValue) Enum.Parse(typeof(TValue), value.ToString() ?? "");

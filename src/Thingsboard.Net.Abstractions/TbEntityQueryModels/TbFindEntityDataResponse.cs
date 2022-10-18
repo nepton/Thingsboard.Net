@@ -8,15 +8,15 @@ public class TbFindEntityDataResponse
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object"></see> class.</summary>
     public TbFindEntityDataResponse(TbEntityId                                      entityId,
-        ReadOnlyDictionary<string, ReadOnlyDictionary<string, TbEntityQueryValue>>? latest,
-        ReadOnlyDictionary<string, TbEntityQueryValue[]>?                           timeseries)
+        ReadOnlyDictionary<string, ReadOnlyDictionary<string, TbEntityTsValue>>? latest,
+        ReadOnlyDictionary<string, TbEntityTsValue[]>?                           timeseries)
     {
         EntityId   = entityId;
         Latest     = ConvertLatest(latest);
         Timeseries = timeseries;
     }
 
-    private ReadOnlyDictionary<TbEntityField, TbEntityQueryValue>? ConvertLatest(ReadOnlyDictionary<string, ReadOnlyDictionary<string, TbEntityQueryValue>>? latest)
+    private ReadOnlyDictionary<TbEntityField, TbEntityTsValue>? ConvertLatest(ReadOnlyDictionary<string, ReadOnlyDictionary<string, TbEntityTsValue>>? latest)
     {
         if (latest == null)
             return null;
@@ -29,14 +29,14 @@ public class TbFindEntityDataResponse
                     Value = v.Value,
                 };
 
-        return new ReadOnlyDictionary<TbEntityField, TbEntityQueryValue>(q.ToDictionary(x => x.Field, x => x.Value));
+        return new ReadOnlyDictionary<TbEntityField, TbEntityTsValue>(q.ToDictionary(x => x.Field, x => x.Value));
     }
 
     public TbEntityId EntityId { get; }
 
-    public ReadOnlyDictionary<TbEntityField, TbEntityQueryValue>? Latest { get; }
+    public ReadOnlyDictionary<TbEntityField, TbEntityTsValue>? Latest { get; }
 
-    public ReadOnlyDictionary<string, TbEntityQueryValue[]>? Timeseries { get; }
+    public ReadOnlyDictionary<string, TbEntityTsValue[]>? Timeseries { get; }
 
     /// <summary>Returns a string that represents the current object.</summary>
     /// <returns>A string that represents the current object.</returns>

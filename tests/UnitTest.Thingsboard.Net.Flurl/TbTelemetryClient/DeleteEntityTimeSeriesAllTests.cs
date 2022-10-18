@@ -19,7 +19,7 @@ public class DeleteEntityTimeSeriesAllTests
         // Arrange
         var client  = TbTestFactory.Instance.CreateTelemetryClient();
         var testKey = "testDeleteExistsEntityTimeSeries";
-        await client.SaveEntityTelemetryAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new Dictionary<string, object> {{testKey, "testValue"}});
+        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new Dictionary<string, object> {{testKey, "testValue"}});
 
         // Act
         var ex = await Record.ExceptionAsync(async () =>

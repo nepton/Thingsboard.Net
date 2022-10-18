@@ -25,7 +25,7 @@ public class SaveEntityTelemetryWithTtlTester
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE, deviceId, 1000, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, deviceId, 1000, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // act
@@ -46,7 +46,7 @@ public class SaveEntityTelemetryWithTtlTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.ALARM, deviceId, -1000, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.ALARM, deviceId, -1000, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // act
@@ -67,7 +67,7 @@ public class SaveEntityTelemetryWithTtlTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE, entityId, 1000, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, entityId, 1000, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // assert
@@ -88,7 +88,7 @@ public class SaveEntityTelemetryWithTtlTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 1000, null!);
+            await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 1000, null!);
         });
 
         // assert
@@ -103,7 +103,7 @@ public class SaveEntityTelemetryWithTtlTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE,
+                await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE,
                     TbTestData.TestDeviceId,
                     1000,
                     new Dictionary<string, string> {{"key", "value"}});
@@ -117,7 +117,7 @@ public class SaveEntityTelemetryWithTtlTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveEntityTelemetryWithTtlAsync(TbEntityType.DEVICE,
+                await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE,
                     TbTestData.TestDeviceId,
                     1000,
                     new Dictionary<string, string> {{"key", "value"}});

@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Thingsboard.Net;
 
-public static class TbEntityValueExtensions
+public static class TbEntityKeyValueExtensions
 {
-    public static TbEntityValue? GetEntityValue(this IEnumerable<TbEntityValue>? source, TbEntityField key)
+    public static TbEntityKeyValue? GetEntityValue(this IEnumerable<TbEntityKeyValue>? source, TbEntityField key)
     {
         if (source == null)
             return null;
@@ -20,7 +20,7 @@ public static class TbEntityValueExtensions
     /// <param name="source"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static DateTime? GetTime(this IEnumerable<TbEntityValue>? source, TbEntityField key)
+    public static DateTime? GetTime(this IEnumerable<TbEntityKeyValue>? source, TbEntityField key)
     {
         return source.GetEntityValue(key)?.LastUpdateTs;
     }
@@ -32,7 +32,7 @@ public static class TbEntityValueExtensions
     /// <param name="key"></param>
     /// <typeparam name="TValue"></typeparam>
     /// <returns></returns>
-    public static TValue? GetValue<TValue>(this IEnumerable<TbEntityValue>? entities, TbEntityField key)
+    public static TValue? GetValue<TValue>(this IEnumerable<TbEntityKeyValue>? entities, TbEntityField key)
     {
         return GetValue<TValue>(entities, key, default);
     }
@@ -45,7 +45,7 @@ public static class TbEntityValueExtensions
     /// <param name="defaultValue"></param>
     /// <typeparam name="TValue"></typeparam>
     /// <returns></returns>
-    public static TValue? GetValue<TValue>(this IEnumerable<TbEntityValue>? entities, TbEntityField key, TValue? defaultValue)
+    public static TValue? GetValue<TValue>(this IEnumerable<TbEntityKeyValue>? entities, TbEntityField key, TValue? defaultValue)
     {
         if (entities == null)
             return defaultValue;

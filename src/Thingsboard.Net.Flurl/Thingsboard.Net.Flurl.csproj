@@ -11,12 +11,19 @@
         <PackageReference Include="Polly" Version="7.2.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.1.6" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <ProjectReference Include="..\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj" />
     </ItemGroup>
     
+    <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.1.7" />
+    </ItemGroup>
+
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl</PackageId>
-        <PackageVersion>3.4.1.6</PackageVersion>
+        <PackageVersion>3.4.1.7</PackageVersion>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>

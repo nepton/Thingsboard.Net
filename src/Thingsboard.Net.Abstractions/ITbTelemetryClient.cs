@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -163,7 +164,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="telemetry">Ref summary</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task SaveEntityTelemetryAsync(
+    Task SaveEntityTimeSeriesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         object            telemetry,
@@ -185,7 +186,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="telemetry">Ref summary</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task SaveEntityTelemetryWithTtlAsync(
+    Task SaveEntityTimeSeriesWithTtlAsync(
         TbEntityType      entityType,
         Guid              entityId,
         long              ttl,
@@ -239,7 +240,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="keys">A string list of attributes keys. For example, 'active,inactivityAlarmTime'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityValue[]> GetAttributesAsync(
+    Task<TbEntityKeyValue[]> GetAttributesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]          keys,
@@ -255,7 +256,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="keys">A string list of attributes keys. For example, 'active,inactivityAlarmTime'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityValue[]> GetAttributesByScopeAsync(
+    Task<TbEntityKeyValue[]> GetAttributesByScopeAsync(
         TbEntityType      entityType,
         Guid              entityId,
         TbAttributeScope  scope,
@@ -277,7 +278,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesAsync(
+    Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>> GetTimeSeriesAsync(
         TbEntityType          entityType,
         Guid                  entityId,
         string[]              keys,
@@ -303,7 +304,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<Dictionary<string, TbTimeSeriesValue[]>> GetTimeSeriesAsync(
+    Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>> GetTimeSeriesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]          keys,
@@ -323,7 +324,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="useStrictDataTypes">Enables/disables conversion of telemetry values to strings. Conversion is enabled by default. Set parameter to 'true' in order to disable the conversion.</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<Dictionary<string, TbTimeSeriesValue[]>> GetLatestTimeSeriesAsync(
+    Task<ReadOnlyDictionary<TbEntityField, TbEntityTsValue[]>> GetLatestTimeSeriesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]?         keys,
