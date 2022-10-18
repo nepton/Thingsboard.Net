@@ -1,4 +1,5 @@
-﻿using Thingsboard.Net;
+﻿using FluentAssertions;
+using Thingsboard.Net;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbEntityQueryClient;
@@ -15,10 +16,12 @@ public class FindEntityDataByQueryTests
         var client = TbTestFactory.Instance.CreateEntityQueryClient();
 
         // act
+        var labelField = new TbEntityField("label", TbEntityFieldType.ENTITY_FIELD);
+        var nameField  = new TbEntityField("name",  TbEntityFieldType.ENTITY_FIELD);
         var actual = await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
         {
             EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.TestDeviceId),
-            EntityFields = new[] {new TbEntityField("id", TbEntityFieldType.ENTITY_FIELD)},
+            EntityFields = new[] {labelField, nameField},
             PageLink = new TbEntityDataPageLink
             {
                 Page     = 0,
@@ -27,8 +30,8 @@ public class FindEntityDataByQueryTests
         });
 
         // assert
-        Assert.NotNull(actual);
-        Assert.NotEmpty(actual.Data);
+        actual.Data.Should().NotBeNull().And.NotBeNull();
+        actual.Data[0].Latest.GetValue(nameField, "").Should().Be(TbTestData.TestDeviceName);
     }
 
     [Fact]

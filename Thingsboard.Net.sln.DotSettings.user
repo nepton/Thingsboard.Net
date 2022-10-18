@@ -10,13 +10,15 @@
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\serilog.extensions.logging\3.1.0\lib\netstandard2.0\Serilog.Extensions.Logging.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\flurl.http\3.2.4\lib\netstandard2.0\Flurl.Http.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Nepton\.nuget\packages\quibble.xunit\0.2.51\lib\netstandard2.0\Quibble.Xunit.dll" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\Nepton\.nuget\packages\xunit.extensibility.core\2.4.1" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\Nepton\.nuget\packages\xunit.extensibility.core\2.4.2" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyMarkers</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=39ea1836_002D92c8_002D4d9b_002D9edb_002Df2f9a263667b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=39ea1836_002D92c8_002D4d9b_002D9edb_002Df2f9a263667b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b71b36f2_002Db627_002D437e_002Dbde2_002Df549908c4a13/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b71b36f2_002Db627_002D437e_002Dbde2_002Df549908c4a13/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
@@ -32,6 +34,7 @@
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=src_002FDoulex_002EPinyin_002FPinyinResource/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	
 	
 	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Aliyun/@EntryIndexedValue">True</s:Boolean>

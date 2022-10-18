@@ -15,7 +15,7 @@ public static class TbEntityValueExtensions
     }
 
     /// <summary>
-    /// 获取实体值的更新日期
+    /// Gets the update date of the entity value
     /// </summary>
     /// <param name="source"></param>
     /// <param name="key"></param>
@@ -26,7 +26,7 @@ public static class TbEntityValueExtensions
     }
 
     /// <summary>
-    /// 在集合中查找指定的值，如果找到，则返回指定类型 TValue 的默认值
+    /// Looks for the specified value in the collection and, if found, returns the default value for the specified type TValue
     /// </summary>
     /// <param name="entities"></param>
     /// <param name="key"></param>
@@ -38,7 +38,7 @@ public static class TbEntityValueExtensions
     }
 
     /// <summary>
-    /// 在集合中获取指定Key的值, 如果不存在, 返回默认值
+    /// Gets the value of the specified Key in the collection. If it does not exist, returns the default value
     /// </summary>
     /// <param name="entities"></param>
     /// <param name="key"></param>

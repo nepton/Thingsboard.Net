@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace Thingsboard.Net;
 
-public class TbEntityTimeValue
+public class TbEntityQueryValue
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object"></see> class.</summary>
-    public TbEntityTimeValue(DateTime ts, object? value)
+    public TbEntityQueryValue(DateTime ts, object? value)
     {
         Ts    = ts;
         Value = value;
