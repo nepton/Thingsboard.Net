@@ -18,14 +18,14 @@
     </ItemGroup>
     
     <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.1.9" />
+        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.3" />
     </ItemGroup>
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl</PackageId>
-        <PackageVersion>3.4.1.9</PackageVersion>
+        <PackageVersion>3.4.3</PackageVersion>
         <Authors>Nepton Liu</Authors>
-        <Description>The dotnet restful api client for thingsboard v3.4.1</Description>
+        <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
         <PackageIcon>app.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
