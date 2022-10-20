@@ -1,8 +1,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/6yuxsfe71po3ofqg?svg=true)](https://ci.appveyor.com/project/nepton/thingsboard-net)
 ![GitHub issues](https://img.shields.io/github/issues/nepton/thingsboard-net.svg)
-[![Tb.Net.Abst](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg?label=Tb.Net.Abst)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/)
-[![Tb.Net.Flurl](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg?label=Tb.Net.Flurl)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/)
-[![Tb.Net.Flurl.DI](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.DependencyInjection.svg?label=Tb.Net.Flurl.DI)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/)
+[![Tb.Net.Abstr nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg?label=Tb.Net.Abstr%20nuget)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/)
+[![Tb.Net.Flurl nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg?label=Tb.Net.Flurl%20nuget)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/)
+[![Tb.Net.Flurl.DI nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.DependencyInjection.svg?label=Tb.Net.Flurl.DI%20nuget)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/)
 
 Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
 
