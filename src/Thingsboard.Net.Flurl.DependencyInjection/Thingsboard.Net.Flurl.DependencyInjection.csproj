@@ -20,7 +20,6 @@
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
-        <PackageVersion>3.4.4</PackageVersion>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
