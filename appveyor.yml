@@ -16,12 +16,12 @@ branches:
 
 before_build:
   - ps: >-
+    dotnet --version
+
     dotnet restore "Thingsboard.Net.sln"
 
 build_script:
   - ps: >-
-    dotnet --version
-
     dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
 
     dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Flurl.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
