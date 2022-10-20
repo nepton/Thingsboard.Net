@@ -20,10 +20,13 @@ before_build:
 build_script:
   - ps: >-
       dotnet --version
-      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
-      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Flurl.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
-      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Flurl.DependencyInjection.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
 
+      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
+
+      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Flurl.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
+
+      dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Flurl.DependencyInjection.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
+      
 artifacts:
   - path: "src/Thingsboard.Net.*/**/*.nupkg"
     name: "Thingsboard.Net NuGet Packages"
