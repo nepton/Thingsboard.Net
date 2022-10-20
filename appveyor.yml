@@ -1,24 +1,27 @@
-﻿version: 3.4.{build}
+version: 3.4.{build}
+
+image: Visual Studio 2022
+
 environment:
   TARGET_CONFIGURATION: Release
 
-image: Visual Studio 2022
-configuration:
-  - Release
 platform: Any CPU
 
 pull_requests:
   do_not_increment_build_number: true
+
+skip_non_tags: true
 
 branches:
   only:
     - master
 
 before_build:
-- ps: >-
+- cmd: >-
     dotnet --version
 
     dotnet restore "Thingsboard.Net.sln"
+
 build_script:
 - cmd: >-
     dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
@@ -26,9 +29,11 @@ build_script:
     dotnet pack .\src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%
 
     dotnet pack .\src\Thingsboard.Net.Flurl.DependencyInjection\Thingsboard.Net.Flurl.DependencyInjection.csproj -p:VersionPrefix=%APPVEYOR_BUILD_VERSION% -c %TARGET_CONFIGURATION%      
+
 artifacts:
   - path: "src/Thingsboard.Net.*/**/*.nupkg"
     name: "Thingsboard.Net NuGet Packages"
+
 deploy:
   - provider: NuGet
     api_key:
