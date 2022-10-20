@@ -6,17 +6,21 @@
 
 Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
 
-## Installing
+> All client API are tested in Thingsboard v3.4.x
+
+## Usage
+Creating a client and trying to invoke getCurrentUser method:
+
+### Basic usage
+
 Install the NuGet package [Thingsboard.Net.Flurl](https://www.nuget.org/packages/Thingsboard.NET.Flurl/).
 
 ```
 PM> Install-Package Thingsboard.NET.Flurl
 ```
 
-## Usage
-Creating a client and trying to invoke getCurrentUser method:
+Then put following code into your project
 
-### Basic usage
 ```csharp
 // Initial factory
 var factory = new FlurlTbClientFactory
@@ -104,13 +108,15 @@ public class HomeController : Controller
     }
 }
 ```
-
-Leave a comment on GitHub if you have any questions or suggestions.
-
 ## Thanks
 * Thanks to [Flurl](https://flurl.dev/) for the great HTTP library.
 * Thanks to [Thingsboard](https://thingsboard.io/) for the great IoT platform.
 * Thanks to [Polly](https://github.com/App-vNext/Polly) for the great resilience and transient-fault-handling library.
+
+## Final
+Leave a comment on GitHub if you have any questions or suggestions.
+
+Turn on the star if you like this project.
 
 ## License
 This project is licensed under the MIT License
