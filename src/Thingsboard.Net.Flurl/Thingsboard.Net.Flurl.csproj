@@ -13,34 +13,43 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <ItemGroup>
         <ProjectReference Include="..\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj" />
     </ItemGroup>
     
-    <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <PackageReference Include="Thingsboard.Net.Abstractions" Version="3.4.3" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl</PackageId>
-        <PackageVersion>3.4.3</PackageVersion>
+        <PackageVersion>3.4.4</PackageVersion>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/nepton/thingsboard-net</RepositoryUrl>
         <PackageIcon>app.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
 
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(APPVEYOR)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    
     <ItemGroup>
         <None Include="app.png" Pack="true" PackagePath="\" />
-        <None Include="readme.md" Pack="true" PackagePath="\" />
+            <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

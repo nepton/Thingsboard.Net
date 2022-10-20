@@ -1,5 +1,26 @@
-﻿echo Start publishing Thingsboard.Net.Abstractions
-del bin\Release\Thingsboard.Net.Abstractions.*.nupkg
-del bin\Release\Thingsboard.Net.Abstractions.*.snupkg
+﻿@echo off
+echo Start publishing...
+
+echo *** Delete old packages **************************************************
+del bin\Release\*.* /q
+
+echo *** Restore packages *****************************************************
+dotnet restore
+if %errorlevel% neq 0 goto :error
+
+echo *** Building *************************************************************
 dotnet build -c Release
-dotnet nuget push bin\Release\Thingsboard.Net.Abstractions.*.nupkg --source https://api.nuget.org/v3/index.json 
+if %errorlevel% neq 0 goto :error
+
+echo *** Packaging ************************************************************
+dotnet pack -c Release
+if %errorlevel% neq 0 goto :error
+
+echo *** Publishing ***********************************************************
+dotnet nuget push bin\Release\*.nupkg --source https://api.nuget.org/v3/index.json 
+
+echo *** Done *****************************************************************
+exit 0
+
+:error
+echo *** Error ****************************************************************
