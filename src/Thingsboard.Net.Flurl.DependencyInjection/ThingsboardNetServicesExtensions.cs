@@ -30,9 +30,7 @@ public static class ThingsboardNetServicesExtensions
     /// <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for adding services.</param>
     /// <param name="configureOptions">A delegate to configure the <see cref="T:ThingsboardNetFlurlOptions" />.</param>
     /// <returns></returns>
-    public static IServiceCollection AddThingsboardNet(
-        this IServiceCollection            services,
-        Action<ThingsboardNetFlurlOptions> configureOptions)
+    public static IServiceCollection AddThingsboardNet(this IServiceCollection services, Action<ThingsboardNetFlurlOptions> configureOptions)
     {
         if (services == null)
             throw new ArgumentNullException(nameof(services));

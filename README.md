@@ -8,11 +8,11 @@ Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .
 **All client API are tested in Thingsboard v3.4.x**
 
 ## Nuget packages
-Name | Version | Downloads
---------|------------|---------
-Thingsboard.Net.Abstractions | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/) 
-Thingsboard.Net.Flurl | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/) 
-Thingsboard.Net.Flurl.DependencyInjection | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) 
+| Name                                      | Version                                                                                                                                                             | Downloads                                                                                                                                                            |
+|-------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Thingsboard.Net.Abstractions              | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/)                           | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/)                           |
+| Thingsboard.Net.Flurl                     | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/)                                         | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/)                                         |
+| Thingsboard.Net.Flurl.DependencyInjection | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) |
 
 ## Usage
 Creating a client and trying to invoke getCurrentUser method:
