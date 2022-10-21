@@ -13,7 +13,7 @@ public static class TbObjectExtensions
     /// <param name="source"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? To<T>(this object? source)
+    public static T? To<T>(this object source)
     {
         return To<T>(source, default);
     }
@@ -25,11 +25,9 @@ public static class TbObjectExtensions
     /// <param name="defaultValue"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? To<T>(this object? source, T? defaultValue)
+    public static T? To<T>(this object source, T? defaultValue)
     {
-        if (source is null)
-            return defaultValue;
-
+        if (source == null) throw new ArgumentNullException(nameof(source));
         if (source is T expected)
             return expected;
 

@@ -31,7 +31,7 @@ public class FindEntityDataByQueryTests
 
         // assert
         actual.Data.Should().NotBeNull().And.NotBeNull();
-        actual.Data[0].Latest.GetValue(nameField, "").Should().Be(TbTestData.TestDeviceName);
+        actual.Data[0].Latest?.Get(nameField)?.Value?.To("").Should().Be(TbTestData.TestDeviceName);
     }
 
     [Fact]

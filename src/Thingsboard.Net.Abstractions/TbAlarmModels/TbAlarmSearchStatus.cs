@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Thingsboard.Net;
+﻿namespace Thingsboard.Net;
 
 public enum TbAlarmSearchStatus
 {

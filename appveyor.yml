@@ -1,9 +1,10 @@
-version: '{build}'
-
-image: Visual Studio 2022
+version: '{build}'  # This version number is used by AppVeyor to identify the build, NOT the version of the software
 
 environment:
+  VERSION: 3.4.7
   TARGET_CONFIGURATION: Release
+
+image: Visual Studio 2022
 
 platform: Any CPU
 
@@ -20,19 +21,17 @@ before_build:
 - cmd: >-
     dotnet --version
 
-    dotnet restore "Thingsboard.Net.sln"
-
 build_script:
 - cmd: >-
-    dotnet pack .\src\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj -c %TARGET_CONFIGURATION%
+    dotnet pack .\src\Thingsboard.Net.Abstractions -c %TARGET_CONFIGURATION% -p:VersionPrefix=%VERSION%
+    
+    dotnet pack .\src\Thingsboard.Net.Flurl -c %TARGET_CONFIGURATION% -p:VersionPrefix=%VERSION%
 
-    dotnet pack .\src\Thingsboard.Net.Flurl\Thingsboard.Net.Flurl.csproj -c %TARGET_CONFIGURATION%
-
-    dotnet pack .\src\Thingsboard.Net.Flurl.DependencyInjection\Thingsboard.Net.Flurl.DependencyInjection.csproj -c %TARGET_CONFIGURATION%      
+    dotnet pack .\src\Thingsboard.Net.Flurl.DependencyInjection -c %TARGET_CONFIGURATION% -p:VersionPrefix=%VERSION%      
 
 artifacts:
   - path: "src/**/*.nupkg"
-    name: "Thingsboard.Net NuGet Packages"
+    name: "NuGet Packages"
 
 deploy:
   - provider: NuGet

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -240,7 +239,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="keys">A string list of attributes keys. For example, 'active,inactivityAlarmTime'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityKeyValue[]> GetAttributesAsync(
+    Task<TbEntityLatestValue[]> GetAttributesAsync(
         TbEntityType      entityType,
         Guid              entityId,
         string[]          keys,
@@ -256,7 +255,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
     /// <param name="keys">A string list of attributes keys. For example, 'active,inactivityAlarmTime'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityKeyValue[]> GetAttributesByScopeAsync(
+    Task<TbEntityLatestValue[]> GetAttributesByScopeAsync(
         TbEntityType      entityType,
         Guid              entityId,
         TbAttributeScope  scope,

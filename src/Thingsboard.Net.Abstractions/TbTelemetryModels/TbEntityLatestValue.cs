@@ -5,10 +5,10 @@ namespace Thingsboard.Net;
 /// <summary>
 /// The returned entity attribute value
 /// </summary>
-public class TbEntityKeyValue
+public class TbEntityLatestValue
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public TbEntityKeyValue(string key, DateTime lastUpdateTs, object? value)
+    public TbEntityLatestValue(string key, DateTime lastUpdateTs, object? value)
     {
         Key          = key;
         LastUpdateTs = lastUpdateTs;
