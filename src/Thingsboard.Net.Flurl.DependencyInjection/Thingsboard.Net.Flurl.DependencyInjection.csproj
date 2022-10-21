@@ -16,8 +16,8 @@
 
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
-        <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/nepton/thingsboard-net</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/nepton/Thingsboard.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/nepton/Thingsboard.Net.git</RepositoryUrl>
         <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
 
         <Authors>Nepton Liu</Authors>
