@@ -1,6 +1,7 @@
 # Thingsboard.Net
 [![Build status](https://ci.appveyor.com/api/projects/status/6yuxsfe71po3ofqg?svg=true)](https://ci.appveyor.com/project/nepton/thingsboard-net)
 ![GitHub issues](https://img.shields.io/github/issues/nepton/thingsboard-net.svg)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nepton/thingsboard-net/blob/master/LICENSE)  
 
 Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
 
