@@ -10,31 +10,25 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
     
     <PropertyGroup>
+        <VersionPrefix>3.4.6</VersionPrefix>
+
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
-        <VersionPrefix>3.4.5</VersionPrefix>
-        <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/nepton/thingsboard-net</RepositoryUrl>
-        <PackageIcon>app.png</PackageIcon>
-        <PackageReadmeFile>readme.md</PackageReadmeFile>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>api;swagger;thingsboard;tb;sdk;client</PackageTags>
 
+        <Authors>Nepton Liu</Authors>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(APPVEYOR)' == 'true'">
@@ -42,8 +36,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="app.png" Pack="true" PackagePath="\" />
+        <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
         <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
