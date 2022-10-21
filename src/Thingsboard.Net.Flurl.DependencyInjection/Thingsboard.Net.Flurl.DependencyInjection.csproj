@@ -22,7 +22,6 @@
     <PropertyGroup>
         <PackageId>Thingsboard.Net.Flurl.DependencyInjection</PackageId>
         <VersionPrefix>3.4.5</VersionPrefix>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Nepton Liu</Authors>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
         <PackageProjectUrl>https://github.com/nepton/thingsboard-net</PackageProjectUrl>
@@ -36,7 +35,6 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(APPVEYOR)' == 'true'">

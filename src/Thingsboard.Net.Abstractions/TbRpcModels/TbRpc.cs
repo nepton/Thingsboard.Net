@@ -5,7 +5,12 @@ namespace Thingsboard.Net;
 
 public class TbRpc
 {
-    public TbEntityId? Id { get; set; }
+    public TbRpc(TbEntityId id)
+    {
+        Id = id;
+    }
+
+    public TbEntityId Id { get; }
 
     public DateTime? CreatedTime { get; set; }
 

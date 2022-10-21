@@ -8,6 +8,7 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 /// </summary>
 public class AssignAssetToCustomerTests
 {
+    [Fact]
     public async Task TestAssignAssetToCustomer()
     {
         // arrange
@@ -26,6 +27,7 @@ public class AssignAssetToCustomerTests
         await client.DeleteAssetAsync(newAsset.Id!.Id);
     }
 
+    [Fact]
     public async Task TestAssignAssetToCustomerThatDoesNotExists()
     {
         // arrange

@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Flurl.Http" Version="3.2.4"/>
-        <PackageReference Include="Polly" Version="7.2.3"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2"/>
+        <PackageReference Include="Flurl.Http" Version="3.2.4" />
+        <PackageReference Include="Polly" Version="7.2.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj"/>
+        <ProjectReference Include="..\Thingsboard.Net.Abstractions\Thingsboard.Net.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,7 +40,6 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>True</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(APPVEYOR)' == 'true'">
@@ -48,8 +47,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="app.png" Pack="true" PackagePath="\"/>
-        <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+        <None Include="app.png" Pack="true" PackagePath="\" />
+        <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ public class GetTenantQueueByNameTests
         Assert.NotEmpty(queues.Data);
 
         // act
-        var actual = await client.GetQueueByNameAsync(queues.Data[0].Name);
+        var actual = await client.GetQueueByNameAsync(queues.Data[0].Name!);
 
         Assert.NotNull(actual);
         Assert.Equal(queues.Data[0].Name, actual.Name);

@@ -57,6 +57,6 @@ public class TbChangePasswordTests
                 .ChangePasswordAsync(new TbChangePasswordRequest("WrongCurrentPassword", "tenant"))
         );
 
-        Assert.Equal(false, ex.Completed);
+        Assert.False(ex.Completed);
     }
 }

@@ -5,7 +5,13 @@ namespace Thingsboard.Net;
 
 public class TbQueue
 {
-    public TbEntityId?                 Id                    { get; set; }
+    public TbQueue(TbEntityId id)
+    {
+        Id = id;
+    }
+
+    public TbEntityId Id { get; }
+
     public DateTime                    CreatedTime           { get; set; }
     public Dictionary<string, object>? AdditionalInfo        { get; set; }
     public TbEntityId?                 TenantId              { get; set; }

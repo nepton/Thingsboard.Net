@@ -30,7 +30,7 @@ public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime?>
         {
             if (reader.TokenType == JsonToken.String)
             {
-                string str = reader.Value.ToString();
+                var str = reader.Value?.ToString();
                 if (string.IsNullOrEmpty(str))
                     return default;
 
@@ -42,7 +42,7 @@ public class JavaScriptTicksDateTimeConverter : JsonConverter<DateTime?>
 
             if (reader.TokenType == JsonToken.Integer)
             {
-                var longValue = (long) reader.Value;
+                var longValue = (long) reader.Value!;
                 return longValue.ToDateTime();
             }
         }

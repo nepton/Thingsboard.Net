@@ -21,7 +21,7 @@ public class TbCommonTestHelper
                 .WithHttpTimeout(1, 0, 0));
         });
 
-        Assert.Equal(false, ex.Completed);
+        Assert.False(ex.Completed);
     }
 
     /// <summary>

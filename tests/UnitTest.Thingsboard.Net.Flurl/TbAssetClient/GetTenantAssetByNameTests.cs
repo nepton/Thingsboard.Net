@@ -13,7 +13,7 @@ public class GetTenantAssetByNameTests
         Assert.NotNull(expected);
 
         // act
-        var actual = await client.GetTenantAssetByNameAsync(expected.Name);
+        var actual = await client.GetTenantAssetByNameAsync(expected.Name!);
 
         // assert
         Assert.NotNull(actual);
@@ -46,7 +46,7 @@ public class GetTenantAssetByNameTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetTenantAssetByNameAsync(assetName);
+            await client.GetTenantAssetByNameAsync(assetName!);
         });
         
         // assert
