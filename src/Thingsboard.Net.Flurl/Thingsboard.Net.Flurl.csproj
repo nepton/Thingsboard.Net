@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <VersionPrefix>3.4.6</VersionPrefix>
+        <VersionPrefix>3.4.7</VersionPrefix>
 
         <PackageId>Thingsboard.Net.Flurl</PackageId>
         <Description>The dotnet restful api client for thingsboard v3.4.x</Description>
