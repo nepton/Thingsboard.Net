@@ -1,15 +1,17 @@
+# Thingsboard.Net
 [![Build status](https://ci.appveyor.com/api/projects/status/6yuxsfe71po3ofqg?svg=true)](https://ci.appveyor.com/project/nepton/thingsboard-net)
 ![GitHub issues](https://img.shields.io/github/issues/nepton/thingsboard-net.svg)
 
+Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
+
+> All client API are tested in Thingsboard v3.4.x
+
+## Nuget packages
 Name | Version | Downloads
 --------|------------|---------
 Thingsboard.Net.Abstractions | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Abstractions.svg)](https://www.nuget.org/packages/Thingsboard.Net.Abstractions/) 
 Thingsboard.Net.Flurl | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl/) 
 Thingsboard.Net.Flurl.DependencyInjection | [![nuget](https://img.shields.io/nuget/v/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) | [![stats](https://img.shields.io/nuget/dt/Thingsboard.Net.Flurl.DependencyInjection.svg)](https://www.nuget.org/packages/Thingsboard.Net.Flurl.DependencyInjection/) 
-
-Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
-
-> All client API are tested in Thingsboard v3.4.x
 
 ## Usage
 Creating a client and trying to invoke getCurrentUser method:
