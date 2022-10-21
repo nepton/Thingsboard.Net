@@ -13,8 +13,8 @@ branches:
 
 only_commits:
   message: /build/
-  files:
-    - src/*
+#  files:
+#    - src/*
 
 before_build:
 - cmd: >-
