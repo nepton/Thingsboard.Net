@@ -13,22 +13,9 @@ public static class TbObjectExtensions
     /// <param name="source"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? ConvertTo<T>(this object? source)
+    public static T? To<T>(this object source)
     {
-        return ConvertTo<T>(source, default);
-    }
-
-    /// <summary>
-    /// Converts the object to a specified type value.
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="defaultValue"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static T? ConvertTo<T>(this object? source, T? defaultValue)
-    {
-        if (source == null)
-            return defaultValue;
+        if (source == null) throw new ArgumentNullException(nameof(source));
         
         if (source is T expected)
             return expected;
@@ -46,12 +33,12 @@ public static class TbObjectExtensions
                 return (T) Enum.Parse(typeof(T), source.ToString() ?? "");
             }
 
-            var result = (T?) Convert.ChangeType(source.ToString(), type);
+            var result = (T) Convert.ChangeType(source.ToString(), type);
             return result;
         }
         catch (Exception)
         {
-            return defaultValue;
+            return default;
         }
     }
 }
