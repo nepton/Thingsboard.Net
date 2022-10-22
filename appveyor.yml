@@ -1,7 +1,8 @@
 version: '{build}'  # This version number is used by AppVeyor to identify the build, NOT the version of the software
 
 environment:
-  VERSION: 3.4.7
+  # This is the version of the software
+  VERSION: 3.4.8
   TARGET_CONFIGURATION: Release
 
 image: Visual Studio 2022
@@ -13,9 +14,7 @@ branches:
     - master
 
 only_commits:
-  message: /build/
-#  files:
-#    - src/*
+  message: /(publish|deploy|build)/
 
 before_build:
 - cmd: >-
@@ -38,4 +37,3 @@ deploy:
     api_key:
       secure: m281r1dMaWVDTd7j0coGCGUQDUBjgBuvmV1d9iD7ueI1AaME/Xx2t7GK3ox/z4UP
     artifact: /.*\.nupkg/
-
