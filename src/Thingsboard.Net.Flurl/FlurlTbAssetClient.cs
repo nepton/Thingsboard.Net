@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Polly;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
@@ -245,6 +246,12 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .CustomPolicy(() =>
+                Policy<TbAsset>.Handle<TbHttpException>(e => e.StatusCode == HttpStatusCode.NotFound && e.Message.Contains("Asset"))
+                    .FallbackAsync(_ => throw new TbEntityNotFoundException(TbEntityType.ASSET, assetId)))
+            .CustomPolicy(() =>
+                Policy<TbAsset>.Handle<TbHttpException>(e => e.StatusCode == HttpStatusCode.NotFound && e.Message.Contains("Customer"))
+                    .FallbackAsync(_ => throw new TbEntityNotFoundException(TbEntityType.CUSTOMER, assetId)))
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -359,6 +366,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
         var policy = RequestBuilder.GetPolicyBuilder<TbAsset>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
+            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ASSET, assetId))
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -366,7 +374,7 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment($"/api/customer/asset/{assetId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .PostJsonAsync(null, cancel)
+                .DeleteAsync(cancel)
                 .ReceiveJson<TbAsset>();
 
             return response;

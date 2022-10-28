@@ -80,6 +80,19 @@ public class RequestPolicyBuilder<TResult>
         return this;
     }
 
+    /// <summary>
+    /// Allow to add custom policy
+    /// </summary>
+    /// <param name="policyBuilder"></param>
+    /// <returns></returns>
+    public RequestPolicyBuilder<TResult> CustomPolicy(Func<IAsyncPolicy<TResult>> policyBuilder)
+    {
+        var policy = policyBuilder() ?? throw new ArgumentNullException("policyBuilder()");
+        _policies.Add(policy);
+
+        return this;
+    }
+
     public IAsyncRequestPolicy<TResult> Build()
     {
         if (_policies.Count == 0)
