@@ -13,14 +13,12 @@ public class GetDeviceByIdTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual = await client.GetDeviceByIdAsync(TbTestData.TestDeviceId);
+        var deviceId = TbTestData.GetTestDeviceId();
+        var actual   = await client.GetDeviceByIdAsync(deviceId);
 
         Assert.NotNull(actual);
-
-        var json = JsonConvert.SerializeObject(actual);
-        var expected =
-            """{"Id":{"Id":"ab5371c0-47a2-11ed-8248-233ce934eba0","EntityType":6},"TenantId":{"Id":"aaf39e80-47a2-11ed-8248-233ce934eba0","EntityType":15},"CustomerId":{"Id":"ab23af30-47a2-11ed-8248-233ce934eba0","EntityType":4},"Name":"Test Device A1","Type":"default","Label":null,"DeviceProfileId":{"Id":"aaf7e440-47a2-11ed-8248-233ce934eba0","EntityType":7},"FirmwareId":null,"SoftwareId":null}""";
-        JsonAssert.EqualOverrideDefault(expected, json, new JsonDiffConfig(true));
+        Assert.Equal(deviceId,                  actual.Id.Id);
+        Assert.Equal(TbTestData.TestDeviceName, actual.Name);
     }
 
     [Fact]
@@ -30,7 +28,7 @@ public class GetDeviceByIdTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual   = await client.GetDeviceByIdAsync(Guid.NewGuid());
+        var actual = await client.GetDeviceByIdAsync(Guid.NewGuid());
 
         Assert.Null(actual);
     }

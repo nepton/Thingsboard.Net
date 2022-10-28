@@ -34,6 +34,34 @@ public class SaveNewDeviceTests
         Assert.NotNull(newDevice.Id);
         Assert.Equal(device.Name,  newDevice.Name);
         Assert.Equal(device.Label, newDevice.Label);
+        Assert.Empty(newDevice.AdditionalInfo);
+
+        // cleanup
+        await client.DeleteDeviceAsync(newDevice.Id!.Id);
+    }
+
+    /// <summary>
+    /// Save new device with a valid device object.
+    /// </summary>
+    [Fact]
+    public async Task TestSaveNewDeviceWithAdditionalInfo()
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateDeviceClient();
+
+        // act
+        var device = DeviceUtility.GenerateEntity();
+        device.AdditionalInfo["gateway"]   = true;
+        device.AdditionalInfo["stringKey"] = "value2";
+
+        var newDevice = await client.SaveDeviceAsync(device);
+
+        // assert
+        Assert.NotNull(newDevice);
+        Assert.NotNull(newDevice.Id);
+        Assert.Equal(device.Name,           newDevice.Name);
+        Assert.Equal(device.Label,          newDevice.Label);
+        Assert.Equal(device.AdditionalInfo, newDevice.AdditionalInfo);
 
         // cleanup
         await client.DeleteDeviceAsync(newDevice.Id!.Id);

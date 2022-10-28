@@ -20,7 +20,7 @@ public class FindEntityDataByQueryTests
         var nameField  = new TbEntityField("name",  TbEntityFieldType.ENTITY_FIELD);
         var actual = await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
         {
-            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.TestDeviceId),
+            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.GetTestDeviceId()),
             EntityFields = new[] {labelField, nameField},
             PageLink = new TbEntityDataPageLink
             {

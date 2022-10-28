@@ -11,12 +11,12 @@ public class GetDevicesByIdsTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual = await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
+        var actual = await client.GetDevicesByIdsAsync(new[] {TbTestData.GetTestDeviceId(), TbTestData.GetTestDeviceId2()});
 
         Assert.NotNull(actual);
         Assert.Equal(2, actual.Length);
-        Assert.Contains(actual, d => d.Id.Id == TbTestData.TestDeviceId);
-        Assert.Contains(actual, d => d.Id.Id == TbTestData.TestDeviceId2);
+        Assert.Contains(actual, d => d.Id.Id == TbTestData.GetTestDeviceId());
+        Assert.Contains(actual, d => d.Id.Id == TbTestData.GetTestDeviceId2());
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class GetDevicesByIdsTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
+                await client.GetDevicesByIdsAsync(new[] {TbTestData.GetTestDeviceId(), TbTestData.GetTestDeviceId2()});
             });
     }
 
@@ -49,7 +49,7 @@ public class GetDevicesByIdsTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.GetDevicesByIdsAsync(new[] {TbTestData.TestDeviceId, TbTestData.TestDeviceId2});
+                await client.GetDevicesByIdsAsync(new[] {TbTestData.GetTestDeviceId(), TbTestData.GetTestDeviceId2()});
             });
     }
 }

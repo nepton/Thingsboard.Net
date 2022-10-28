@@ -20,7 +20,7 @@ public class SaveEntityTelemetryTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,7 +40,7 @@ public class SaveEntityTelemetryTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -88,7 +88,7 @@ public class SaveEntityTelemetryTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, null!);
+            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), null!);
         });
 
         // assert
@@ -104,7 +104,7 @@ public class SaveEntityTelemetryTester
             async client =>
             {
                 await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                    TbTestData.TestDeviceId,
+                    TbTestData.GetTestDeviceId(),
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }
@@ -117,7 +117,7 @@ public class SaveEntityTelemetryTester
             async client =>
             {
                 await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                    TbTestData.TestDeviceId,
+                    TbTestData.GetTestDeviceId(),
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }

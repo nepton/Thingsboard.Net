@@ -10,10 +10,10 @@ public class GetCustomerAssetInfosTester
         // arrange
         var client = TbTestFactory.Instance.CreateAssetClient();
         var asset  = await AssetUtility.CreateAssetAsync();
-        await client.AssignAssetToCustomerAsync(TbTestData.TestCustomerId, asset.Id.Id);
+        await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), asset.Id.Id);
 
         // act
-        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.TestCustomerId, 20, 0);
+        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.GetTestCustomerId(), 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -30,7 +30,7 @@ public class GetCustomerAssetInfosTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);

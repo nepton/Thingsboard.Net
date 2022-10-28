@@ -11,10 +11,10 @@ public class GetCustomerByIdTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var actual = await client.GetCustomerByIdAsync(TbTestData.TestCustomerId);
+        var actual = await client.GetCustomerByIdAsync(TbTestData.GetTestCustomerId());
 
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.TestCustomerId, actual!.Id!.Id);
+        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.Id!.Id);
     }
 
     [Fact]

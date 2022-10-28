@@ -13,7 +13,7 @@ public class UnassignAssetFromCustomerTester
         var newAsset = await AssetUtility.CreateAssetAsync();
 
         // act
-        await client.AssignAssetToCustomerAsync(newAsset.Id!.Id, TbTestData.TestCustomerId);
+        await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), newAsset.Id!.Id);
         var actualAssigned = await client.GetAssetByIdAsync(newAsset.Id!.Id);
         await client.UnassignAssetFromCustomerAsync(newAsset.Id!.Id);
         var actualUnassigned = await client.GetAssetByIdAsync(newAsset.Id!.Id);
@@ -21,15 +21,15 @@ public class UnassignAssetFromCustomerTester
         // assert
         Assert.NotNull(actualAssigned);
         Assert.NotNull(actualUnassigned);
-        Assert.Equal(TbTestData.TestCustomerId, actualAssigned!.CustomerId!.Id);
-        Assert.NotEqual(TbTestData.TestCustomerId, actualAssigned!.CustomerId!.Id);
+        Assert.Equal(TbTestData.GetTestCustomerId(), actualAssigned!.CustomerId!.Id);
+        Assert.NotEqual(TbTestData.GetTestCustomerId(), actualUnassigned!.CustomerId!.Id);
 
         // cleanup
         await client.DeleteAssetAsync(newAsset.Id!.Id);
     }
 
     [Fact]
-    public async Task TestAssignAssetToCustomerThatDoesNotExists()
+    public async Task TestUnassignAssetToCustomerThatDoesNotExists()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAssetClient();

@@ -20,7 +20,7 @@ public class AlarmUtility
         {
             Name              = Guid.NewGuid().ToString(),
             Type              = Guid.NewGuid().ToString(),
-            Originator        = new TbEntityId(TbEntityType.DEVICE, TbTestData.TestDeviceId),
+            Originator        = new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestDeviceId()),
             Severity          = TbAlarmSeverity.CRITICAL,
             Status            = TbAlarmStatus.ACTIVE_UNACK,
             Details           = new() {["prop"] = Guid.NewGuid().ToString()},

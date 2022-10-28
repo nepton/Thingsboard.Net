@@ -20,7 +20,7 @@ public class SaveEntityAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,7 +40,7 @@ public class SaveEntityAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -88,7 +88,7 @@ public class SaveEntityAttributeTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE, null!);
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, null!);
         });
 
         // assert
@@ -104,7 +104,7 @@ public class SaveEntityAttributeTester
             async client =>
             {
                 await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
-                    TbTestData.TestDeviceId,
+                    TbTestData.GetTestDeviceId(),
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
@@ -118,7 +118,7 @@ public class SaveEntityAttributeTester
             async client =>
             {
                 await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
-                    TbTestData.TestDeviceId,
+                    TbTestData.GetTestDeviceId(),
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
