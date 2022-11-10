@@ -15,8 +15,20 @@ public static class TbObjectExtensions
     /// <returns></returns>
     public static T? To<T>(this object source)
     {
+        return source.To(default(T));
+    }
+
+    /// <summary>
+    /// Converts the object to a specified type value.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="defaultValue">The default value</param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T? To<T>(this object source, T? defaultValue)
+    {
         if (source == null) throw new ArgumentNullException(nameof(source));
-        
+
         if (source is T expected)
             return expected;
 
@@ -30,7 +42,11 @@ public static class TbObjectExtensions
             // If T is of type Enum, use the enum.parse () conversion
             if (type.IsEnum)
             {
-                return (T) Enum.Parse(typeof(T), source.ToString() ?? "");
+                if (source is string str)
+                    return (T) Enum.Parse(type, str, true);
+
+                var enumResult = (T) Enum.ToObject(type, source);
+                return Enum.IsDefined(type, enumResult) ? enumResult : defaultValue;
             }
 
             var result = (T) Convert.ChangeType(source.ToString(), type);
@@ -38,7 +54,7 @@ public static class TbObjectExtensions
         }
         catch (Exception)
         {
-            return default;
+            return defaultValue;
         }
     }
 }
