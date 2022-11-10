@@ -13,7 +13,7 @@ public static class TbObjectExtensions
     /// <param name="source"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? To<T>(this object source)
+    public static T? To<T>(this object? source)
     {
         return source.To(default(T));
     }
@@ -25,9 +25,10 @@ public static class TbObjectExtensions
     /// <param name="defaultValue">The default value</param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? To<T>(this object source, T? defaultValue)
+    public static T? To<T>(this object? source, T? defaultValue)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
+        if (source == null)
+            return defaultValue;
 
         if (source is T expected)
             return expected;
@@ -42,10 +43,7 @@ public static class TbObjectExtensions
             // If T is of type Enum, use the enum.parse () conversion
             if (type.IsEnum)
             {
-                if (source is string str)
-                    return (T) Enum.Parse(type, str, true);
-
-                var enumResult = (T) Enum.ToObject(type, source);
+                var enumResult = source is string str ? (T) Enum.Parse(type, str, true) : (T) Enum.ToObject(type, source);
                 return Enum.IsDefined(type, enumResult) ? enumResult : defaultValue;
             }
 
