@@ -19,11 +19,11 @@ public class GetLatestTimeSeriesTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
         var field1 = "temperature";
         var field2 = "humidity";
-        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new Dictionary<string, object> {{field1, 10}, {field2, 20}});
+        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new Dictionary<string, object> {{field1, 10}, {field2, 20}});
 
         // act
         var entities = await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE,
-            TbTestData.TestDeviceId,
+            TbTestData.GetTestDeviceId(),
             new[] {field1, field2}
         );
 
@@ -34,7 +34,7 @@ public class GetLatestTimeSeriesTests
         Assert.Contains(entities, x => x.Key.Key == field2);
 
         // cleanup
-        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {field1, field2});
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {field1, field2});
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class GetLatestTimeSeriesTests
 
         // act
         var entities = await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE,
-            TbTestData.TestDeviceId,
+            TbTestData.GetTestDeviceId(),
             new[] {"test_not_exists2"}
         );
 
@@ -63,13 +63,13 @@ public class GetLatestTimeSeriesTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, new[] {"active"});
+            await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), new[] {"active"});
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.TestCustomerId), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class GetLatestTimeSeriesTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
+                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
             });
     }
 
@@ -90,7 +90,7 @@ public class GetLatestTimeSeriesTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {"active"});
+                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
             });
     }
 }

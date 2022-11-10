@@ -1,4 +1,5 @@
-﻿using Thingsboard.Net.Exceptions;
+﻿using Thingsboard.Net;
+using Thingsboard.Net.Exceptions;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
@@ -16,19 +17,39 @@ public class AssignAssetToCustomerTests
         var newAsset = await AssetUtility.CreateAssetAsync();
 
         // act
-        await client.AssignAssetToCustomerAsync(newAsset.Id!.Id, TbTestData.TestCustomerId);
+        await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), newAsset.Id!.Id);
         var actual = await client.GetAssetByIdAsync(newAsset.Id!.Id);
 
         // assert
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.TestCustomerId, actual!.CustomerId!.Id);
+        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.CustomerId!.Id);
 
         // cleanup
         await client.DeleteAssetAsync(newAsset.Id!.Id);
     }
 
     [Fact]
-    public async Task TestAssignAssetToCustomerThatDoesNotExists()
+    public async Task TestAssignAssetToCustomerThatAssetDoesNotExists()
+    {
+        // arrange
+        var client = TbTestFactory.Instance.CreateAssetClient();
+
+        // act
+        var ex = await Record.ExceptionAsync(async () =>
+        {
+            await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), Guid.NewGuid());
+        });
+
+        // assert
+        Assert.NotNull(ex);
+        Assert.IsType<TbEntityNotFoundException>(ex);
+
+        var notFoundException = (TbEntityNotFoundException) ex;
+        Assert.Equal(TbEntityType.ASSET, notFoundException.EntityId.EntityType);
+    }
+
+    [Fact]
+    public async Task TestAssignAssetToCustomerThatCustomerDoesNotExists()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAssetClient();
@@ -37,12 +58,15 @@ public class AssignAssetToCustomerTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.AssignAssetToCustomerAsync(newAsset.Id!.Id, Guid.NewGuid());
+            await client.AssignAssetToCustomerAsync(Guid.NewGuid(), newAsset.Id!.Id);
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
+
+        var notFoundException = (TbEntityNotFoundException) ex;
+        Assert.Equal(TbEntityType.CUSTOMER, notFoundException.EntityId.EntityType);
 
         // cleanup
         await client.DeleteAssetAsync(newAsset.Id!.Id);

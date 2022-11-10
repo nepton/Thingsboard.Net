@@ -13,15 +13,11 @@ public class GetDeviceInfoByIdTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var deviceId   = Guid.Parse("ab5371c0-47a2-11ed-8248-233ce934eba0");
-        var deviceInfo = await client.GetDeviceInfoByIdAsync(deviceId);
+        var deviceInfo = await client.GetDeviceInfoByIdAsync(TbTestData.GetTestDeviceId());
 
         Assert.NotNull(deviceInfo);
-
-        var json = JsonConvert.SerializeObject(deviceInfo);
-        var expected =
-            """{"Id":{"Id":"ab5371c0-47a2-11ed-8248-233ce934eba0","EntityType":6},"TenantId":{"Id":"aaf39e80-47a2-11ed-8248-233ce934eba0","EntityType":15},"CustomerId":{"Id":"ab23af30-47a2-11ed-8248-233ce934eba0","EntityType":4},"Name":"Test Device A1","Type":"default","Label":null,"DeviceProfileId":{"Id":"aaf7e440-47a2-11ed-8248-233ce934eba0","EntityType":7},"FirmwareId":null,"SoftwareId":null,"CustomerTitle":"Customer A","CustomerIsPublic":false,"DeviceProfileName":"default"}""";
-        JsonAssert.EqualOverrideDefault(expected, json, new JsonDiffConfig(true));
+        Assert.Equal(TbTestData.GetTestDeviceId(), deviceInfo.Id.Id);
+        Assert.Equal(TbTestData.TestDeviceName,    deviceInfo.Name);
     }
 
     [Fact]

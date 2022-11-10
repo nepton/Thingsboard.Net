@@ -11,7 +11,7 @@ public class GetCustomerDevicesTester
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual = await client.GetCustomerDevicesAsync(TbTestData.TestCustomerId, 20, 0);
+        var actual = await client.GetCustomerDevicesAsync(TbTestData.GetTestCustomerId(), 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -25,7 +25,7 @@ public class GetCustomerDevicesTester
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual = await client.GetCustomerDevicesAsync(TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetCustomerDevicesAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);

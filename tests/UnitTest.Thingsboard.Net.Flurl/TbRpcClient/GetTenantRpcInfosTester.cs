@@ -13,7 +13,7 @@ public class GetPersistentRpcRequestsTester
 
         // act
         await Task.Delay(1000);
-        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.TestDeviceId, 20, 0);
+        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId(), 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -30,7 +30,7 @@ public class GetPersistentRpcRequestsTester
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.TestDeviceId2, 20, 0);
+        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -43,7 +43,7 @@ public class GetPersistentRpcRequestsTester
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.GetPersistentRpcRequestsAsync(TbTestData.TestDeviceId2, 20, 0);
+                await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
             });
     }
 
@@ -53,7 +53,7 @@ public class GetPersistentRpcRequestsTester
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.GetPersistentRpcRequestsAsync(TbTestData.TestDeviceId2, 20, 0);
+                await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
             });
     }
 }

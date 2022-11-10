@@ -11,11 +11,10 @@ public class GetCustomerAssetsTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetAsync(TbTestData.TestCustomerId, 20, 0);
+        var actual = await client.GetCustomerAssetAsync(TbTestData.GetTestCustomerId(), 20, 0);
 
         // assert
         Assert.NotNull(actual);
-        Assert.NotEmpty(actual.Data);
     }
 
     [Fact]
@@ -25,7 +24,7 @@ public class GetCustomerAssetsTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetAsync(TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetCustomerAssetAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);

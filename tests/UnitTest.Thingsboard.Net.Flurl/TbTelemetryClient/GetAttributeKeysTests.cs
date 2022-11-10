@@ -19,7 +19,7 @@ public class GetAttributeKeysTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
 
         // act
-        var entities = await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+        var entities = await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
 
         // assert
         Assert.NotNull(entities);
@@ -36,13 +36,13 @@ public class GetAttributeKeysTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
+            await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId());
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.TestCustomerId), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class GetAttributeKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
             });
     }
 
@@ -63,7 +63,7 @@ public class GetAttributeKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetAttributeKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
             });
     }
 }

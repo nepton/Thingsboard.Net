@@ -11,7 +11,7 @@ public class DeviceUtility
             Name            = Guid.NewGuid().ToString(),
             Type            = "Test Device Type",
             Label           = "Test Device Label",
-            DeviceProfileId = new TbEntityId(TbEntityType.DEVICE_PROFILE, TbTestData.TestDeviceProfileId),
+            DeviceProfileId = new TbEntityId(TbEntityType.DEVICE_PROFILE, TbTestData.GetTestDeviceProfileId()),
         };
 
         return device;

@@ -20,7 +20,7 @@ public class SaveDeviceAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,7 +40,7 @@ public class SaveDeviceAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.TestDeviceId;
+        var deviceId = TbTestData.GetTestDeviceId();
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -88,7 +88,7 @@ public class SaveDeviceAttributeTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveDeviceAttributesAsync( TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE, null!);
+            await client.SaveDeviceAttributesAsync( TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, null!);
         });
 
         // assert
@@ -103,7 +103,7 @@ public class SaveDeviceAttributeTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveDeviceAttributesAsync(TbTestData.TestDeviceId,
+                await client.SaveDeviceAttributesAsync(TbTestData.GetTestDeviceId(),
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
@@ -116,7 +116,7 @@ public class SaveDeviceAttributeTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveDeviceAttributesAsync(TbTestData.TestDeviceId,
+                await client.SaveDeviceAttributesAsync(TbTestData.GetTestDeviceId(),
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });

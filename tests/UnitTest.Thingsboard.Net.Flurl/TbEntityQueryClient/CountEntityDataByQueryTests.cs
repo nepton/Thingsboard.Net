@@ -17,7 +17,7 @@ public class CountEntityDataByQueryTests
         // act
         var actual = await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
         {
-            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.TestDeviceId)
+            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.GetTestDeviceId())
         });
 
         // assert

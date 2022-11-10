@@ -22,8 +22,8 @@ public class DeleteDeviceAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.SaveDeviceAttributesAsync(TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new {testId = 100});
-            await client.DeleteDeviceAttributesAsync(TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"testId"});
+            await client.SaveDeviceAttributesAsync(TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new {testId = 100});
+            await client.DeleteDeviceAttributesAsync(TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"testId"});
         });
 
         // Assert
@@ -39,7 +39,7 @@ public class DeleteDeviceAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteDeviceAttributesAsync(TbTestData.TestDeviceId, TbAttributeScope.CLIENT_SCOPE, new[] {"testId"});
+            await client.DeleteDeviceAttributesAsync(TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, new[] {"testId"});
         });
 
         // Assert
@@ -55,7 +55,7 @@ public class DeleteDeviceAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteDeviceAttributesAsync(TbTestData.TestCustomerId, TbAttributeScope.SERVER_SCOPE, new[] {"testId123"});
+            await client.DeleteDeviceAttributesAsync(TbTestData.GetTestCustomerId(), TbAttributeScope.SERVER_SCOPE, new[] {"testId123"});
         });
 
         // Assert
@@ -71,7 +71,7 @@ public class DeleteDeviceAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteDeviceAttributesAsync(TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, Array.Empty<string>());
+            await client.DeleteDeviceAttributesAsync(TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, Array.Empty<string>());
         });
 
         // Assert
@@ -87,7 +87,7 @@ public class DeleteDeviceAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteDeviceAttributesAsync(TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, null!);
+            await client.DeleteDeviceAttributesAsync(TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, null!);
         });
 
         // Assert

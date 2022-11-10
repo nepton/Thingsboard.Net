@@ -19,7 +19,7 @@ public class GetAttributesByScopeTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
 
         // act
-        var entities = await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"active"});
+        var entities = await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"active"});
 
         // assert
         Assert.NotNull(entities);
@@ -34,7 +34,7 @@ public class GetAttributesByScopeTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
 
         // act
-        var entities = await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"test_not_exists"});
+        var entities = await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"test_not_exists"});
 
         // assert
         Assert.NotNull(entities);
@@ -50,13 +50,13 @@ public class GetAttributesByScopeTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId, TbAttributeScope.SERVER_SCOPE, new[] {"active"});
+            await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), TbAttributeScope.SERVER_SCOPE, new[] {"active"});
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.TestCustomerId), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class GetAttributesByScopeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"active"});
+                await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"active"});
             });
     }
 
@@ -77,7 +77,7 @@ public class GetAttributesByScopeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"active"});
+                await client.GetAttributesByScopeAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"active"});
             });
     }
 }

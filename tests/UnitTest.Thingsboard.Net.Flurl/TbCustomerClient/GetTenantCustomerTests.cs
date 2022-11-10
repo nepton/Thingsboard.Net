@@ -14,7 +14,7 @@ public class GetTenantCustomerTests
         var actual = await client.GetTenantCustomerAsync(TbTestData.TestCustomerTitle);
 
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.TestCustomerId, actual!.Id!.Id);
+        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.Id!.Id);
     }
 
     [Fact]

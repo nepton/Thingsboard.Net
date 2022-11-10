@@ -11,7 +11,7 @@ public class GetDeviceCredentialsTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var actual   = await client.GetDeviceCredentialsAsync(TbTestData.TestDeviceId);
+        var actual   = await client.GetDeviceCredentialsAsync(TbTestData.GetTestDeviceId());
         var expected = "A1_TEST_TOKEN";
 
         // assert

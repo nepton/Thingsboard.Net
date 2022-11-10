@@ -34,7 +34,7 @@ public class GetAuditLogsByEntityIdTester
         var client = TbTestFactory.Instance.CreateAuditLogClient();
 
         // act
-        var actual = await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);
@@ -47,7 +47,7 @@ public class GetAuditLogsByEntityIdTester
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateAuditLogClient(),
             async client =>
             {
-                await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 
@@ -57,7 +57,7 @@ public class GetAuditLogsByEntityIdTester
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateAuditLogClient(),
             async client =>
             {
-                await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.TestCustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAuditLogsByEntityIdAsync(TbEntityType.CUSTOMER, TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 }

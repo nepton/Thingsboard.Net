@@ -25,7 +25,7 @@ public class SendPersistentTwoWayRpcTests
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var newRpc = await client.SendPersistentTwoWayRpcAsync(TbTestData.TestDeviceId, new TbRpcRequest("testMethod"));
+        var newRpc = await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
 
         // assert
         Assert.NotNull(newRpc);
@@ -44,7 +44,7 @@ public class SendPersistentTwoWayRpcTests
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SendPersistentTwoWayRpcAsync(TbTestData.TestDeviceId, null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), null!));
 
         // assert
         Assert.NotNull(ex);
@@ -75,7 +75,7 @@ public class SendPersistentTwoWayRpcTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.SendPersistentTwoWayRpcAsync(TbTestData.TestDeviceId, new TbRpcRequest("testMethod"));
+                await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
             });
     }
 
@@ -85,7 +85,7 @@ public class SendPersistentTwoWayRpcTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.SendPersistentTwoWayRpcAsync(TbTestData.TestDeviceId, new TbRpcRequest("testMethod"));
+                await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
             });
     }
 }

@@ -18,10 +18,10 @@ public class GetTimeSeriesKeysTests
         // arrange
         var client = TbTestFactory.Instance.CreateTelemetryClient();
         var key    = "testGetTimeSeriesKeys"; // WARN: the first letter must be lowercase
-        await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, 1000, new Dictionary<string, object>() {[key] = 100});
+        await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 1000, new Dictionary<string, object>() {[key] = 100});
 
         // act
-        var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+        var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
 
         // assert
         Assert.NotNull(entities);
@@ -29,7 +29,7 @@ public class GetTimeSeriesKeysTests
         Assert.Contains(entities, x => x == key);
 
         // clean up
-        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId, new[] {key}, true);
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {key}, true);
     }
 
     [Fact]
@@ -41,13 +41,13 @@ public class GetTimeSeriesKeysTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestCustomerId);
+            await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId());
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.TestCustomerId), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
             });
     }
 
@@ -68,7 +68,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.TestDeviceId);
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
             });
     }
 }

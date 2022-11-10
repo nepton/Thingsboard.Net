@@ -11,7 +11,7 @@ public class GetCustomerShortInfoTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var actual = await client.GetCustomerShortInfoAsync(TbTestData.TestCustomerId);
+        var actual = await client.GetCustomerShortInfoAsync(TbTestData.GetTestCustomerId());
 
         Assert.NotNull(actual);
     }

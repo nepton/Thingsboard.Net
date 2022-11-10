@@ -1,9 +1,9 @@
 # Thingsboard.Net
 [![Build status](https://ci.appveyor.com/api/projects/status/evbtetf22sxxrph7?svg=true)](https://ci.appveyor.com/project/nepton/thingsboard-net)
-![GitHub issues](https://img.shields.io/github/issues/nepton/Thingsboard.Net.svg)
+[![CodeQL](https://github.com/nepton/Thingsboard.Net/actions/workflows/codeql.yml/badge.svg)](https://github.com/nepton/Thingsboard.Net/actions/workflows/codeql.yml)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nepton/Thingsboard.Net/blob/master/LICENSE)  
 
-Thingsboard.NET is a .NET client library for Thingsboard IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
+Thingsboard.NET is a .NET client library for [Thingsboard](https://github.com/thingsboard/thingsboard) IoT Platform. It is a .NET Standard 2.0 library, so it can be used in .NET Core and .NET Framework applications.
 
 **All client API are tested in Thingsboard v3.4.x**
 
