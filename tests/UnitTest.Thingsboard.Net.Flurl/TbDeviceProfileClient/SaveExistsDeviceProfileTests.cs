@@ -57,7 +57,7 @@ public class SaveExistsDeviceProfileTests
         // assert
         Assert.NotNull(ex);
         Assert.Equal(HttpStatusCode.BadRequest,                 ex.StatusCode);
-        Assert.Equal("DeviceProfile name should be specified!", ex.Message);
+        Assert.Equal("Device profile name should be specified!", ex.Message);
 
         // clean up
         await Task.Delay(500);

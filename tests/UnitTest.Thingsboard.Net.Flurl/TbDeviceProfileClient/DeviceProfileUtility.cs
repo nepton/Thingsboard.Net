@@ -6,7 +6,7 @@ public class DeviceProfileUtility
 {
     public static TbNewDeviceProfile GenerateEntity()
     {
-        var deviceProfile = new TbNewDeviceProfile
+        var deviceProfile = new TbNewDeviceProfile()
         {
             Name               = Guid.NewGuid().ToString(),
             Default            = false,
@@ -17,11 +17,6 @@ public class DeviceProfileUtility
             SoftwareId         = null,
             Description        = null,
             Image              = null,
-            ProvisionDeviceKey = null,
-            TransportType      = null,
-            ProvisionType      = null,
-            ProfileData        = null,
-            Type               = "Test DeviceProfile Type",
         };
 
         return deviceProfile;

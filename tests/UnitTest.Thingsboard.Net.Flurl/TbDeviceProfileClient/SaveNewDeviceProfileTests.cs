@@ -55,7 +55,7 @@ public class SaveNewDeviceProfileTests
         // assert
         Assert.NotNull(ex);
         Assert.Equal(HttpStatusCode.BadRequest,                 ex.StatusCode);
-        Assert.Equal("DeviceProfile name should be specified!", ex.Message);
+        Assert.Equal("Device profile name should be specified!", ex.Message);
     }
 
     /// <summary>

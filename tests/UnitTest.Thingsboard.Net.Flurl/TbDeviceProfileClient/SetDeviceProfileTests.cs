@@ -26,7 +26,7 @@ public class SetDeviceProfileTests
         var entityAfterSet = await client.GetDefaultDeviceProfileInfoAsync();
 
         // Assert
-        Assert.Null(entityAfterSet);
+        Assert.NotNull(entityAfterSet);
         Assert.Equal(newEntity.Id, entityAfterSet!.Id);
         Assert.Null(exception);
 

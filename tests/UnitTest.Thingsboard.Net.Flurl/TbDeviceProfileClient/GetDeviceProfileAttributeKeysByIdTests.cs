@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Quibble.Xunit;
+using Thingsboard.Net.Exceptions;
 using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceProfileClient;
@@ -27,9 +28,12 @@ public class GetDeviceProfileAttributeKeysByIdTests
         var client = TbTestFactory.Instance.CreateDeviceProfileClient();
 
         // act
-        var actual = await client.GetAttributeKeysAsync(Guid.NewGuid());
+        var actual = await Record.ExceptionAsync(async () =>
+        {
+            await client.GetAttributeKeysAsync(Guid.NewGuid());
+        });
 
-        Assert.Null(actual);
+        Assert.IsType<TbEntityNotFoundException>(actual);
     }
 
     [Fact]
