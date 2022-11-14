@@ -71,4 +71,6 @@ public class FlurlTbClientFactory
     public ITbTelemetryClient CreateTelemetryClient() => new FlurlTbTelemetryClient(CreateRequestBuilder());
 
     public ITbAuthClient CreateAuthClient() => new FlurlTbAuthClient(CreateRequestBuilder());
+
+    public ITbDeviceProfileClient CreateDeviceProfileClient() => new FlurlTbDeviceProfileClient(CreateRequestBuilder());
 }

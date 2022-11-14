@@ -95,7 +95,7 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     /// </summary>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbDeviceProfileInfo?> GetDefaultDeviceProfileInfoByIdAsync(CancellationToken cancel = default);
+    Task<TbDeviceProfileInfo?> GetDefaultDeviceProfileInfoAsync(CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of devices profile info objects owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details. Device Profile Info is a lightweight object that includes main information about Device Profile excluding the heavyweight configuration object.
@@ -120,7 +120,6 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     /// <summary>
     /// Obtaining the DeviceProfile List
     /// </summary>
-    /// <param name="type">Type of device</param>
     /// <param name="textSearch">The search criteria</param>
     /// <param name="sortProperty">Sort properties</param>
     /// <param name="sortOrder">Sort direction</param>
@@ -128,7 +127,7 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     /// <param name="pageSize">The number of records read</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbPage<TbDeviceProfile>> GetTenantDeviceProfilesAsync(
+    Task<TbPage<TbDeviceProfile>> GetDeviceProfilesAsync(
         int                                pageSize,
         int                                page,
         string?                            textSearch   = null,

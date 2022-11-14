@@ -243,7 +243,7 @@ public class FlurlTbDeviceProfileClient : FlurlTbClient<ITbDeviceProfileClient>,
     /// </summary>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbDeviceProfileInfo?> GetDefaultDeviceProfileInfoByIdAsync(CancellationToken cancel = default)
+    public Task<TbDeviceProfileInfo?> GetDefaultDeviceProfileInfoAsync(CancellationToken cancel = default)
     {
         var policy = RequestBuilder.GetPolicyBuilder<TbDeviceProfileInfo?>()
             .RetryOnUnauthorized()
@@ -316,7 +316,7 @@ public class FlurlTbDeviceProfileClient : FlurlTbClient<ITbDeviceProfileClient>,
     /// <param name="pageSize">The number of records read</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbPage<TbDeviceProfile>> GetTenantDeviceProfilesAsync(
+    public Task<TbPage<TbDeviceProfile>> GetDeviceProfilesAsync(
         int                                pageSize,
         int                                page,
         string?                            textSearch   = null,

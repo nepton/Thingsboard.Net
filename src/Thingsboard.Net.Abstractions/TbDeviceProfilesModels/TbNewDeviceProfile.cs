@@ -4,7 +4,6 @@ namespace Thingsboard.Net;
 
 public class TbNewDeviceProfile
 {
-    public TbEntityId?          TenantId           { get; set; }
     public string?              Name               { get; set; }
     public bool                 Default            { get; set; }
     public TbEntityId?          DefaultDashboardId { get; set; }
