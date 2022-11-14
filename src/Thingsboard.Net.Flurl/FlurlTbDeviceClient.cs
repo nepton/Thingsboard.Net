@@ -13,11 +13,9 @@ namespace Thingsboard.Net.Flurl;
 /// </summary>
 public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClient
 {
-    
-
     /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
-    public FlurlTbDeviceClient(IRequestBuilder builder) : base(builder)    {
-        
+    public FlurlTbDeviceClient(IRequestBuilder builder) : base(builder)
+    {
     }
 
     /// <summary>
@@ -30,8 +28,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> AssignDeviceToCustomerAsync(Guid customerId, Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -75,8 +71,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder       = null,
         CancellationToken           cancel          = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -124,8 +118,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder    = null,
         CancellationToken           cancel       = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -158,8 +150,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> UnassignDeviceFromCustomerAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -194,7 +184,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     {
         if (device == null) throw new ArgumentNullException(nameof(device));
 
-        
 
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice>()
             .RetryOnHttpTimeout()
@@ -232,7 +221,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     {
         if (device == null) throw new ArgumentNullException(nameof(device));
 
-        
 
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice>()
             .RetryOnHttpTimeout()
@@ -260,12 +248,10 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns>Returns the device object, or null if it does not exist</returns>
     public Task<TbDevice?> GetDeviceByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
-            .FallbackValueOn(HttpStatusCode.NotFound, null)
             .RetryOnUnauthorized()
+            .FallbackValueOn(HttpStatusCode.NotFound, null)
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -288,8 +274,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -314,8 +298,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceInfo?> GetDeviceInfoByIdAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDeviceInfo?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -342,8 +324,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceCredential?> GetDeviceCredentialsAsync(Guid deviceId, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDeviceCredential?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -370,8 +350,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDeviceCredential> UpdateDeviceCredentialsAsync(TbDeviceCredential credential, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDeviceCredential>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -401,7 +379,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         if (deviceIds == null) throw new ArgumentNullException(nameof(deviceIds));
         if (deviceIds.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(deviceIds));
 
-        
 
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice[]>()
             .RetryOnHttpTimeout()
@@ -443,8 +420,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder       = null,
         CancellationToken           cancel          = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbDeviceInfo>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -478,8 +453,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task<TbDevice?> GetTenantDeviceByNameAsync(string deviceName, CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbDevice?>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
@@ -519,8 +492,6 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
         TbSortOrder?                sortOrder    = null,
         CancellationToken           cancel       = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<TbPage<TbDevice>>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()

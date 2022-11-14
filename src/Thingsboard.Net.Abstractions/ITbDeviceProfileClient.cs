@@ -28,13 +28,13 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     /// Create or update the Device Profile. When creating device profile, platform generates device profile id as time-based UUID. The newly created device profile id will be present in the response. Specify existing device profile id to update the device profile. Referencing non-existing device profile Id will cause 'Not Found' error.
     /// Device profile name is unique in the scope of tenant.Only one 'default' device profile may exist in scope of tenant.
     /// </summary>
-    /// <param name="device">New device info</param>
+    /// <param name="deviceProfile">New device info</param>
     /// <param name="cancel"></param>
     /// <remarks>
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     ///</remarks>
     /// <returns></returns>
-    Task<TbDeviceProfile> SaveDeviceProfileAsync(TbDeviceProfile device, CancellationToken cancel = default);
+    Task<TbDeviceProfile> SaveDeviceProfileAsync(TbDeviceProfile deviceProfile, CancellationToken cancel = default);
 
     /// <summary>
     /// Fetch the Device Profile object based on the provided Device Profile Id. The server checks that the device profile is owned by the same tenant.
@@ -111,9 +111,9 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     Task<TbPage<TbDeviceProfileInfo>> GetDeviceProfileInfosAsync(
         int                                pageSize,
         int                                page,
+        string?                            textSearch    = null,
         TbDeviceProfileSearchSortProperty? sortProperty  = null,
         TbSortOrder?                       sortOrder     = null,
-        string?                            textSearch    = null,
         TbDeviceProfileTransportType?      transportType = null,
         CancellationToken                  cancel        = default);
 
