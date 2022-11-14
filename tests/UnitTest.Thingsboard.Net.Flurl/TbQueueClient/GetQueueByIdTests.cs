@@ -29,7 +29,7 @@ public class GetQueueByIdTests
         var client = TbTestFactory.Instance.CreateQueueClient();
 
         // act
-        var actual  = await client.GetQueueByIdAsync(Guid.NewGuid());
+        var actual = await client.GetQueueByIdAsync(Guid.NewGuid());
 
         Assert.Null(actual);
     }

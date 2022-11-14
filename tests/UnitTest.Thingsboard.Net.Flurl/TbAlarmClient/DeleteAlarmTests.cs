@@ -10,8 +10,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 1: Delete an alarm that exists.
 /// 2: Delete an alarm that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteAlarmTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteAlarmTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestDeleteExistsAlarm()
     {
@@ -19,10 +28,10 @@ public class DeleteAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // Act
-        var newEntity          = await AlarmUtility.CreateNewAlarmAsync();
-        var entityBeforeDelete = await client.GetAlarmByIdAsync(newEntity.Id!.Id);
-        var exception          = await Record.ExceptionAsync(async () => await client.DeleteAlarmAsync(newEntity.Id!.Id));
-        var entityAfterDelete  = await client.GetAlarmByIdAsync(newEntity.Id!.Id);
+        var newEntity          = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
+        var entityBeforeDelete = await client.GetAlarmByIdAsync(newEntity.Id.Id);
+        var exception          = await Record.ExceptionAsync(async () => await client.DeleteAlarmAsync(newEntity.Id.Id));
+        var entityAfterDelete  = await client.GetAlarmByIdAsync(newEntity.Id.Id);
 
         // Assert
         Assert.NotNull(entityBeforeDelete);

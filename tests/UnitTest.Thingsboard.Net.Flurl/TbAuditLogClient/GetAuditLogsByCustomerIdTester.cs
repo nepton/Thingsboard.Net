@@ -3,8 +3,16 @@ using UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAuditLogClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetAuditLogsByCustomerIdTester
 {
+    private readonly TbTestFixture _fixture;
+
+    public GetAuditLogsByCustomerIdTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetAuditLogsByCustomerId()
     {
@@ -13,12 +21,12 @@ public class GetAuditLogsByCustomerIdTester
 
         // add device for log audit
         var deviceClient = TbTestFactory.Instance.CreateDeviceClient();
-        var newDevice    = await deviceClient.SaveDeviceAsync(DeviceUtility.GenerateEntity());
-        await deviceClient.AssignDeviceToCustomerAsync(TbTestData.GetTestCustomerId(), newDevice.Id!.Id);
-        await deviceClient.DeleteDeviceAsync(newDevice.Id!.Id);
+        var newDevice    = await deviceClient.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
+        await deviceClient.AssignDeviceToCustomerAsync(_fixture.CustomerId, newDevice.Id.Id);
+        await deviceClient.DeleteDeviceAsync(newDevice.Id.Id);
 
         // act
-        var actual = await client.GetAuditLogsByCustomerIdAsync(TbTestData.GetTestCustomerId(), 20, 0);
+        var actual = await client.GetAuditLogsByCustomerIdAsync(_fixture.CustomerId, 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -32,7 +40,7 @@ public class GetAuditLogsByCustomerIdTester
         var client = TbTestFactory.Instance.CreateAuditLogClient();
 
         // act
-        var actual = await client.GetAuditLogsByCustomerIdAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetAuditLogsByCustomerIdAsync(_fixture.CustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);
@@ -45,7 +53,7 @@ public class GetAuditLogsByCustomerIdTester
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateAuditLogClient(),
             async client =>
             {
-                await client.GetAuditLogsByCustomerIdAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAuditLogsByCustomerIdAsync(_fixture.CustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 
@@ -55,7 +63,7 @@ public class GetAuditLogsByCustomerIdTester
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateAuditLogClient(),
             async client =>
             {
-                await client.GetAuditLogsByCustomerIdAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAuditLogsByCustomerIdAsync(_fixture.CustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 }

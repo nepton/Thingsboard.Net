@@ -1,11 +1,18 @@
-﻿using Newtonsoft.Json;
-using Quibble.Xunit;
-using UnitTest.Thingsboard.Net.Flurl.TbCommon;
+﻿using UnitTest.Thingsboard.Net.Flurl.TbCommon;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetDeviceByIdTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetDeviceByIdTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetDeviceById()
     {
@@ -13,12 +20,12 @@ public class GetDeviceByIdTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
         var actual   = await client.GetDeviceByIdAsync(deviceId);
 
         Assert.NotNull(actual);
-        Assert.Equal(deviceId,                  actual.Id.Id);
-        Assert.Equal(TbTestData.TestDeviceName, actual.Name);
+        Assert.Equal(deviceId,             actual.Id.Id);
+        Assert.Equal(_fixture.Device.Name, actual.Name);
     }
 
     [Fact]

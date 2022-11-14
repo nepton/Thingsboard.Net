@@ -2,14 +2,23 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbRpcClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetPersistentRpcByIdTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetPersistentRpcByIdTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetPersistentRpcById()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync(_fixture.DeviceId);
 
         // act
         var rpcInfo = await client.GetPersistentRpcByIdAsync(newRpc.Id);

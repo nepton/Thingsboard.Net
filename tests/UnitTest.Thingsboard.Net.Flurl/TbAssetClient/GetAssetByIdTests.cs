@@ -12,13 +12,13 @@ public class GetAssetByIdTests
         var expected = await AssetUtility.CreateAssetAsync();
 
         // act
-        var actual = await client.GetAssetByIdAsync(expected.Id!.Id);
+        var actual = await client.GetAssetByIdAsync(expected.Id.Id);
 
         Assert.NotNull(actual);
-        Assert.Equal(expected.Id!.Id, actual!.Id!.Id);
+        Assert.Equal(expected.Id.Id, actual.Id.Id);
 
         // cleanup
-        await client.DeleteAssetAsync(expected.Id!.Id);
+        await client.DeleteAssetAsync(expected.Id.Id);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class GetAssetByIdTests
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual  = await client.GetAssetByIdAsync(Guid.NewGuid());
+        var actual = await client.GetAssetByIdAsync(Guid.NewGuid());
 
         Assert.Null(actual);
     }

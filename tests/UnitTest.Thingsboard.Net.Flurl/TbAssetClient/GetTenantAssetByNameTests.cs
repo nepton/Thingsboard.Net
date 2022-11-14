@@ -34,7 +34,7 @@ public class GetTenantAssetByNameTests
 
         Assert.Null(actual);
     }
-    
+
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -48,7 +48,7 @@ public class GetTenantAssetByNameTests
         {
             await client.GetTenantAssetByNameAsync(assetName!);
         });
-        
+
         // assert
         Assert.NotNull(ex);
         Assert.IsType<ArgumentException>(ex);

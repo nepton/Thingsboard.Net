@@ -11,20 +11,29 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1: Delete an alarm that exists.
 /// 2: Delete an alarm that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteEntityTimeSeriesAllTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteEntityTimeSeriesAllTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestDeleteExistsEntityTimeSeries()
     {
         // Arrange
         var client  = TbTestFactory.Instance.CreateTelemetryClient();
         var testKey = "testDeleteExistsEntityTimeSeries";
-        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new Dictionary<string, object> {{testKey, "testValue"}});
+        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new Dictionary<string, object> {{testKey, "testValue"}});
 
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {testKey});
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {testKey});
         });
 
         // Assert
@@ -40,12 +49,12 @@ public class DeleteEntityTimeSeriesAllTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), new[] {$"test_not_exist{new Random().Next()}"});
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.CustomerId, new[] {$"test_not_exist{new Random().Next()}"});
         });
 
         // Assert
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, _fixture.CustomerId), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -57,7 +66,7 @@ public class DeleteEntityTimeSeriesAllTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {$"test_not_exist{new Random().Next()}"});
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {$"test_not_exist{new Random().Next()}"});
         });
 
         // Assert
@@ -73,7 +82,7 @@ public class DeleteEntityTimeSeriesAllTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), Array.Empty<string>());
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, Array.Empty<string>());
         });
 
         // Assert
@@ -89,7 +98,7 @@ public class DeleteEntityTimeSeriesAllTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), null!);
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, null!);
         });
 
         // Assert

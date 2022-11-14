@@ -13,14 +13,23 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveDeviceAttributeTester
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveDeviceAttributeTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestSaveDeviceAttributes()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,13 +49,13 @@ public class SaveDeviceAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveDeviceAttributesAsync( deviceId, TbAttributeScope.CLIENT_SCOPE, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveDeviceAttributesAsync(deviceId, TbAttributeScope.CLIENT_SCOPE, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // act
@@ -67,7 +76,7 @@ public class SaveDeviceAttributeTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveDeviceAttributesAsync( entityId, TbAttributeScope.SERVER_SCOPE, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveDeviceAttributesAsync(entityId, TbAttributeScope.SERVER_SCOPE, new Dictionary<string, string> {{"key", "value"}});
         });
 
         // assert
@@ -88,7 +97,7 @@ public class SaveDeviceAttributeTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveDeviceAttributesAsync( TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, null!);
+            await client.SaveDeviceAttributesAsync(_fixture.DeviceId, TbAttributeScope.CLIENT_SCOPE, null!);
         });
 
         // assert
@@ -103,7 +112,7 @@ public class SaveDeviceAttributeTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveDeviceAttributesAsync(TbTestData.GetTestDeviceId(),
+                await client.SaveDeviceAttributesAsync(_fixture.DeviceId,
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
@@ -116,7 +125,7 @@ public class SaveDeviceAttributeTester
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.SaveDeviceAttributesAsync(TbTestData.GetTestDeviceId(),
+                await client.SaveDeviceAttributesAsync(_fixture.DeviceId,
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });

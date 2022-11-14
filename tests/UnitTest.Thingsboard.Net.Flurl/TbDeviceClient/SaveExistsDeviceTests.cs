@@ -14,8 +14,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 /// 4. Update an exists device with a valid device object.
 /// 5. Update an not exists device with a valid device object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveExistsDeviceTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveExistsDeviceTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Update an exists device with a valid device object.
     /// </summary>
@@ -25,7 +34,7 @@ public class SaveExistsDeviceTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();
-        var device = await DeviceUtility.CreateDeviceAsync();
+        var device = await DeviceUtility.CreateDeviceAsync(_fixture.DeviceProfileId);
 
         // act
         device.Label                       = Guid.NewGuid().ToString();
@@ -40,7 +49,7 @@ public class SaveExistsDeviceTests
         Assert.Equal(device.AdditionalInfo, updatedDevice.AdditionalInfo);
 
         // cleanup
-        await client.DeleteDeviceAsync(updatedDevice.Id!.Id);
+        await client.DeleteDeviceAsync(updatedDevice.Id.Id);
     }
 
     /// <summary>
@@ -51,7 +60,7 @@ public class SaveExistsDeviceTests
     {
         // arrange
         var client = TbTestFactory.Instance.CreateDeviceClient();
-        var actual = await DeviceUtility.CreateDeviceAsync();
+        var actual = await DeviceUtility.CreateDeviceAsync(_fixture.DeviceProfileId);
 
         // act
         actual.Name = null;
@@ -89,7 +98,7 @@ public class SaveExistsDeviceTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity());
+                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
             });
     }
 
@@ -99,7 +108,7 @@ public class SaveExistsDeviceTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity());
+                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
             });
     }
 }

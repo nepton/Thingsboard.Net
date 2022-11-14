@@ -2,18 +2,27 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbRpcClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetPersistentRpcRequestsTester
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetPersistentRpcRequestsTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetPersistentRpcRequests()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync(_fixture.DeviceId);
 
         // act
         await Task.Delay(1000);
-        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId(), 20, 0);
+        var actual = await client.GetPersistentRpcRequestsAsync(_fixture.DeviceId, 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -30,7 +39,7 @@ public class GetPersistentRpcRequestsTester
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var actual = await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
+        var actual = await client.GetPersistentRpcRequestsAsync(_fixture.Device2.Id.Id, 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -43,7 +52,7 @@ public class GetPersistentRpcRequestsTester
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
+                await client.GetPersistentRpcRequestsAsync(_fixture.Device2.Id.Id, 20, 0);
             });
     }
 
@@ -53,7 +62,7 @@ public class GetPersistentRpcRequestsTester
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.GetPersistentRpcRequestsAsync(TbTestData.GetTestDeviceId2(), 20, 0);
+                await client.GetPersistentRpcRequestsAsync(_fixture.Device2.Id.Id, 20, 0);
             });
     }
 }

@@ -10,14 +10,23 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbRpcClient;
 /// 1: Delete an rpc that exists.
 /// 2: Delete an rpc that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteRpcTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteRpcTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task DeleteExistsRpcTest()
     {
         // Arrange
         var client = TbTestFactory.Instance.CreateRpcClient();
-        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync();
+        var newRpc = await RpcUtility.SendPersistentOneWayRpcAsync(_fixture.DeviceId);
 
         // Act
         var entityBeforeDelete = await client.GetPersistentRpcByIdAsync(newRpc.Id);

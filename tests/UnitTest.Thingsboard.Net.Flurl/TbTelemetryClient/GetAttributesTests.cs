@@ -10,8 +10,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetAttributeTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetAttributeTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetAttributes()
     {
@@ -19,7 +28,7 @@ public class GetAttributeTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
 
         // act
-        var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
+        var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"active"});
 
         // assert
         Assert.NotNull(entities);
@@ -34,7 +43,7 @@ public class GetAttributeTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
 
         // act
-        var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"test_not_exists"});
+        var entities = await client.GetAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"test_not_exists"});
 
         // assert
         Assert.NotNull(entities);
@@ -50,13 +59,13 @@ public class GetAttributeTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), new[] {"active"});
+            await client.GetAttributesAsync(TbEntityType.DEVICE, _fixture.CustomerId, new[] {"active"});
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, _fixture.CustomerId), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -66,7 +75,7 @@ public class GetAttributeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
+                await client.GetAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"active"});
             });
     }
 
@@ -77,7 +86,7 @@ public class GetAttributeTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
+                await client.GetAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"active"});
             });
     }
 }

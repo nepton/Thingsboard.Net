@@ -2,23 +2,31 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetCustomerAssetInfosTester
 {
+    private readonly TbTestFixture _fixture;
+
+    public GetCustomerAssetInfosTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetCustomerAssetInfos()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateAssetClient();
         var asset  = await AssetUtility.CreateAssetAsync();
-        await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), asset.Id.Id);
+        await client.AssignAssetToCustomerAsync(_fixture.CustomerId, asset.Id.Id);
 
         // act
-        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.GetTestCustomerId(), 20, 0);
+        var actual = await client.GetCustomerAssetInfosAsync(_fixture.CustomerId, 20, 0);
 
         // assert
         Assert.NotNull(actual);
         Assert.NotEmpty(actual.Data);
-        
+
         // cleanup
         await AssetUtility.DeleteAssetAsync(asset.Id);
     }
@@ -30,7 +38,7 @@ public class GetCustomerAssetInfosTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetInfosAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetCustomerAssetInfosAsync(_fixture.CustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);

@@ -22,7 +22,7 @@ public class SetDeviceProfileTests
 
         // Act
         var newEntity      = await DeviceProfileUtility.CreateDeviceProfileAsync();
-        var exception      = await Record.ExceptionAsync(async () => await client.SetDefaultDeviceProfileAsync(newEntity.Id!.Id));
+        var exception      = await Record.ExceptionAsync(async () => await client.SetDefaultDeviceProfileAsync(newEntity.Id.Id));
         var entityAfterSet = await client.GetDefaultDeviceProfileInfoAsync();
 
         // Assert
@@ -31,7 +31,7 @@ public class SetDeviceProfileTests
         Assert.Null(exception);
 
         // cleanup
-        await client.SetDefaultDeviceProfileAsync(defaultDeviceProfile.Id!.Id);
+        await client.SetDefaultDeviceProfileAsync(defaultDeviceProfile.Id.Id);
     }
 
     [Fact]

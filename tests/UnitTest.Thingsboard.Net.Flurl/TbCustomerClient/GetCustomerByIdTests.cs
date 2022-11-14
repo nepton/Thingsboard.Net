@@ -2,8 +2,17 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbCustomerClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetCustomerByIdTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetCustomerByIdTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetCustomerById()
     {
@@ -11,10 +20,10 @@ public class GetCustomerByIdTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var actual = await client.GetCustomerByIdAsync(TbTestData.GetTestCustomerId());
+        var actual = await client.GetCustomerByIdAsync(_fixture.CustomerId);
 
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.Id!.Id);
+        Assert.Equal(_fixture.CustomerId, actual.Id.Id);
     }
 
     [Fact]

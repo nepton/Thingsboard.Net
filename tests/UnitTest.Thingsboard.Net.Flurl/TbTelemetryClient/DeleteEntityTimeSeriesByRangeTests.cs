@@ -11,20 +11,29 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1: Delete an alarm that exists.
 /// 2: Delete an alarm that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteEntityTimeSeriesByRangeTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteEntityTimeSeriesByRangeTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestDeleteExistsEntityTimeSeries()
     {
         // Arrange
         var client  = TbTestFactory.Instance.CreateTelemetryClient();
         var testKey = "testDeleteExistsEntityTimeSeries";
-        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new Dictionary<string, object> {{testKey, "testValue"}});
+        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new Dictionary<string, object> {{testKey, "testValue"}});
 
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {testKey}, DateTime.Today.AddDays(-7), DateTime.Now);
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {testKey}, DateTime.Today.AddDays(-7), DateTime.Now);
         });
 
         // Assert
@@ -41,7 +50,7 @@ public class DeleteEntityTimeSeriesByRangeTests
         var ex = await Record.ExceptionAsync(async () =>
         {
             await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                TbTestData.GetTestCustomerId(),
+                _fixture.CustomerId,
                 new[] {$"test_not_exist{new Random().Next()}"},
                 DateTime.Today.AddDays(-7),
                 DateTime.Now);
@@ -49,7 +58,7 @@ public class DeleteEntityTimeSeriesByRangeTests
 
         // Assert
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, _fixture.CustomerId), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -62,7 +71,7 @@ public class DeleteEntityTimeSeriesByRangeTests
         var ex = await Record.ExceptionAsync(async () =>
         {
             await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                TbTestData.GetTestDeviceId(),
+                _fixture.DeviceId,
                 new[] {$"test_not_exist{new Random().Next()}"},
                 DateTime.Today.AddDays(-7),
                 DateTime.Now);
@@ -81,7 +90,7 @@ public class DeleteEntityTimeSeriesByRangeTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), Array.Empty<string>(), DateTime.Today.AddDays(-7), DateTime.Now);
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, Array.Empty<string>(), DateTime.Today.AddDays(-7), DateTime.Now);
         });
 
         // Assert
@@ -97,7 +106,7 @@ public class DeleteEntityTimeSeriesByRangeTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), null!, DateTime.Today.AddDays(-7), DateTime.Now);
+            await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, null!, DateTime.Today.AddDays(-7), DateTime.Now);
         });
 
         // Assert

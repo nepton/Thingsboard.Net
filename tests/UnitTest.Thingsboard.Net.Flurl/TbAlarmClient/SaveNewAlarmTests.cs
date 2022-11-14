@@ -14,8 +14,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveNewAlarmTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveNewAlarmTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Save new alarm with a valid alarm object.
     /// </summary>
@@ -26,7 +35,7 @@ public class SaveNewAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var expected = AlarmUtility.GenerateNewAlarm();
+        var expected = AlarmUtility.GenerateNewAlarm(_fixture.DeviceId);
         var actual   = await client.SaveAlarmAsync(expected);
 
         // assert
@@ -53,7 +62,7 @@ public class SaveNewAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var entity = AlarmUtility.GenerateNewAlarm();
+        var entity = AlarmUtility.GenerateNewAlarm(_fixture.DeviceId);
         entity.Originator = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
 
@@ -73,7 +82,7 @@ public class SaveNewAlarmTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var entity = AlarmUtility.GenerateNewAlarm();
+        var entity = AlarmUtility.GenerateNewAlarm(_fixture.DeviceId);
         entity.Originator = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveAlarmAsync(entity));
 
@@ -106,7 +115,7 @@ public class SaveNewAlarmTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm());
+                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm(_fixture.DeviceId));
             });
     }
 
@@ -117,7 +126,7 @@ public class SaveNewAlarmTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm());
+                await client.SaveAlarmAsync(AlarmUtility.GenerateNewAlarm(_fixture.DeviceId));
             });
     }
 }

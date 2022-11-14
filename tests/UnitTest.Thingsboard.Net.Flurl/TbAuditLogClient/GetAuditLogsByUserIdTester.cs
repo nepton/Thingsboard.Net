@@ -3,8 +3,16 @@ using UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAuditLogClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetAuditLogsByUserIdTester
 {
+    private readonly TbTestFixture _fixture;
+
+    public GetAuditLogsByUserIdTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetAuditLogsByUserId()
     {
@@ -13,8 +21,8 @@ public class GetAuditLogsByUserIdTester
 
         // add device for log audit
         var deviceClient = TbTestFactory.Instance.CreateDeviceClient();
-        var newDevice    = await deviceClient.SaveDeviceAsync(DeviceUtility.GenerateEntity());
-        await deviceClient.DeleteDeviceAsync(newDevice.Id!.Id);
+        var newDevice    = await deviceClient.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
+        await deviceClient.DeleteDeviceAsync(newDevice.Id.Id);
 
         // get current user
         var authClient  = TbTestFactory.Instance.CreateAuthClient();

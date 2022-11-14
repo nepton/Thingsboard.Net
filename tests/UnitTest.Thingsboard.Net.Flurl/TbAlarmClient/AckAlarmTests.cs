@@ -11,8 +11,16 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 2: Acknowledge an alarm that already acknowledged
 /// 3: Acknowledge an alarm with an invalid alarm id
 /// </summary>
-public class AckAlarmTests
+public class AckAlarmTests : IClassFixture<TbTestFixture>
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public AckAlarmTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Acknowledge an alarm
     /// </summary>
@@ -22,19 +30,19 @@ public class AckAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
-        await client.AcknowledgeAlarmAsync(newAlarm.Id!.Id);
-        var ackedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id!.Id);
+        await client.AcknowledgeAlarmAsync(newAlarm.Id.Id);
+        var ackedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id.Id);
 
         // assert
         Assert.NotNull(ackedAlarm);
         Assert.False(newAlarm.Acknowledged());
-        Assert.True(ackedAlarm!.Acknowledged());
+        Assert.True(ackedAlarm.Acknowledged());
 
         // cleanup
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     /// <summary>
@@ -46,20 +54,20 @@ public class AckAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
-        await client.AcknowledgeAlarmAsync(newAlarm.Id!.Id);
-        await client.AcknowledgeAlarmAsync(newAlarm.Id!.Id);
-        var ackedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id!.Id);
+        await client.AcknowledgeAlarmAsync(newAlarm.Id.Id);
+        await client.AcknowledgeAlarmAsync(newAlarm.Id.Id);
+        var ackedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id.Id);
 
         // assert
         Assert.NotNull(ackedAlarm);
         Assert.False(newAlarm.Acknowledged());
-        Assert.True(ackedAlarm!.Acknowledged());
+        Assert.True(ackedAlarm.Acknowledged());
 
         // cleanup
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     [Fact]

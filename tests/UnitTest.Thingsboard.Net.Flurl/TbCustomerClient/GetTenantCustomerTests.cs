@@ -2,8 +2,17 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbCustomerClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetTenantCustomerTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetTenantCustomerTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetTenantCustomer()
     {
@@ -11,10 +20,10 @@ public class GetTenantCustomerTests
         var client = TbTestFactory.Instance.CreateCustomerClient();
 
         // act
-        var actual = await client.GetTenantCustomerAsync(TbTestData.TestCustomerTitle);
+        var actual = await client.GetTenantCustomerAsync(_fixture.Customer.Title!);
 
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.Id!.Id);
+        Assert.Equal(_fixture.CustomerId, actual.Id.Id);
     }
 
     [Fact]
@@ -36,7 +45,7 @@ public class GetTenantCustomerTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateCustomerClient(),
             async client =>
             {
-                await client.GetTenantCustomerAsync(TbTestData.TestCustomerTitle);
+                await client.GetTenantCustomerAsync(_fixture.Customer.Title!);
             });
     }
 
@@ -46,7 +55,7 @@ public class GetTenantCustomerTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateCustomerClient(),
             async client =>
             {
-                await client.GetTenantCustomerAsync(TbTestData.TestCustomerTitle);
+                await client.GetTenantCustomerAsync(_fixture.Customer.Title!);
             });
     }
 }

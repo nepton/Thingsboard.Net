@@ -41,8 +41,8 @@ public class CustomOptionsTester
 
         // Assert
         Assert.NotNull(options);
-        Assert.Equal(username, options!.Username);
-        Assert.Equal(password, options!.Password);
+        Assert.Equal(username, options.Username);
+        Assert.Equal(password, options.Password);
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class CustomOptionsTester
 
         // Assert
         Assert.NotNull(options);
-        Assert.Equal(baseUrl, options!.BaseUrl);
+        Assert.Equal(baseUrl, options.BaseUrl);
     }
 
     [Theory]
@@ -99,9 +99,9 @@ public class CustomOptionsTester
 
         // Assert
         Assert.NotNull(options);
-        Assert.Equal(customHttpTimeout,   options!.TimeoutInSec);
-        Assert.Equal(customRetryCount,    options!.RetryTimes);
-        Assert.Equal(customRetryInterval, options!.RetryIntervalInSec);
+        Assert.Equal(customHttpTimeout,   options.TimeoutInSec);
+        Assert.Equal(customRetryCount,    options.RetryTimes);
+        Assert.Equal(customRetryInterval, options.RetryIntervalInSec);
     }
 
     [Fact]

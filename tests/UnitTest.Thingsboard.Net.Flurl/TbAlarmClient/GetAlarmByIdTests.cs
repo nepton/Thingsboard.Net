@@ -6,8 +6,17 @@
 /// 1. Get the correct alarm id
 /// 2. Get the incorrect alarm id
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetAlarmByIdTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetAlarmByIdTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// This test is used to test GetAlarmByIdAsync API with correct alarm id
     /// </summary>
@@ -16,14 +25,14 @@ public class GetAlarmByIdTests
     {
         //Arrange
         var client = TbTestFactory.Instance.CreateAlarmClient();
-        var alarm  = await AlarmUtility.CreateNewAlarmAsync();
+        var alarm  = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // Act
         var result = await client.GetAlarmByIdAsync(alarm.Id.Id);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(alarm.Id,         result!.Id);
+        Assert.Equal(alarm.Id,         result.Id);
         Assert.Equal(alarm.Type,       result.Type);
         Assert.Equal(alarm.Originator, result.Originator);
         Assert.Equal(alarm.Severity,   result.Severity);

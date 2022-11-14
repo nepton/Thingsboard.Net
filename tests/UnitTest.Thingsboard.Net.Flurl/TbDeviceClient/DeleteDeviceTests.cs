@@ -10,8 +10,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 /// 1: Delete an device that exists.
 /// 2: Delete an device that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteDeviceTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteDeviceTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task DeleteExistsDeviceTest()
     {
@@ -19,10 +28,10 @@ public class DeleteDeviceTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // Act
-        var newEntity          = await DeviceUtility.CreateDeviceAsync();
-        var entityBeforeDelete = await client.GetDeviceByIdAsync(newEntity.Id!.Id);
-        var exception          = await Record.ExceptionAsync(async () => await client.DeleteDeviceAsync(newEntity.Id!.Id));
-        var entityAfterDelete  = await client.GetDeviceByIdAsync(newEntity.Id!.Id);
+        var newEntity          = await DeviceUtility.CreateDeviceAsync(_fixture.DeviceProfileId);
+        var entityBeforeDelete = await client.GetDeviceByIdAsync(newEntity.Id.Id);
+        var exception          = await Record.ExceptionAsync(async () => await client.DeleteDeviceAsync(newEntity.Id.Id));
+        var entityAfterDelete  = await client.GetDeviceByIdAsync(newEntity.Id.Id);
 
         // Assert
         Assert.NotNull(entityBeforeDelete);

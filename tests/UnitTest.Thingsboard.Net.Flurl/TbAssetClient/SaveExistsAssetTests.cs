@@ -33,7 +33,7 @@ public class SaveExistsAssetTests
         Assert.Equal(newAsset.Label, updatedAsset.Label);
 
         // cleanup
-        await client.DeleteAssetAsync(updatedAsset.Id!.Id);
+        await client.DeleteAssetAsync(updatedAsset.Id.Id);
     }
 
     /// <summary>

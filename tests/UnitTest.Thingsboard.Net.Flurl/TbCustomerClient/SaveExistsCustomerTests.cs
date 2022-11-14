@@ -30,7 +30,7 @@ public class SaveExistsCustomerTests
         Assert.Equal(newCustomer.Address, updatedCustomer.Address);
 
         // cleanup
-        await client.DeleteCustomerAsync(updatedCustomer.Id!.Id);
+        await client.DeleteCustomerAsync(updatedCustomer.Id.Id);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class SaveExistsCustomerTests
         Assert.Equal("Invalid email address format '1234'!", ex.Message);
 
         // cleanup
-        await client.DeleteCustomerAsync(actual.Id!.Id);
+        await client.DeleteCustomerAsync(actual.Id.Id);
     }
 
     /// <summary>

@@ -10,8 +10,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetLatestTimeSeriesTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetLatestTimeSeriesTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetLatestTimeSeries()
     {
@@ -19,11 +28,11 @@ public class GetLatestTimeSeriesTests
         var client = TbTestFactory.Instance.CreateTelemetryClient();
         var field1 = "temperature";
         var field2 = "humidity";
-        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new Dictionary<string, object> {{field1, 10}, {field2, 20}});
+        await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new Dictionary<string, object> {{field1, 10}, {field2, 20}});
 
         // act
         var entities = await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE,
-            TbTestData.GetTestDeviceId(),
+            _fixture.DeviceId,
             new[] {field1, field2}
         );
 
@@ -34,7 +43,7 @@ public class GetLatestTimeSeriesTests
         Assert.Contains(entities, x => x.Key.Key == field2);
 
         // cleanup
-        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {field1, field2});
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {field1, field2});
     }
 
     [Fact]
@@ -45,7 +54,7 @@ public class GetLatestTimeSeriesTests
 
         // act
         var entities = await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE,
-            TbTestData.GetTestDeviceId(),
+            _fixture.DeviceId,
             new[] {"test_not_exists2"}
         );
 
@@ -63,13 +72,13 @@ public class GetLatestTimeSeriesTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), new[] {"active"});
+            await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, _fixture.CustomerId, new[] {"active"});
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, _fixture.CustomerId), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -79,7 +88,7 @@ public class GetLatestTimeSeriesTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
+                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"active"});
             });
     }
 
@@ -90,7 +99,7 @@ public class GetLatestTimeSeriesTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {"active"});
+                await client.GetLatestTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {"active"});
             });
     }
 }

@@ -6,8 +6,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbEntityQueryClient;
 /// <summary>
 /// This class is used to test change password functionality
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class CountEntityDataByQueryTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public CountEntityDataByQueryTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestCountEntityDataByQuery()
     {
@@ -17,7 +26,7 @@ public class CountEntityDataByQueryTests
         // act
         var actual = await client.CountEntityDataByQueryAsync(new TbCountEntityDataRequest
         {
-            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.GetTestDeviceId())
+            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, _fixture.DeviceId)
         });
 
         // assert

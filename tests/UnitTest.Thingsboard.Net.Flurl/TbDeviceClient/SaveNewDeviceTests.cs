@@ -14,8 +14,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 /// 4. Update an exists device with a valid device object.
 /// 5. Update an not exists device with a valid device object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveNewDeviceTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveNewDeviceTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Save new device with a valid device object.
     /// </summary>
@@ -26,7 +35,7 @@ public class SaveNewDeviceTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var device    = DeviceUtility.GenerateEntity();
+        var device    = DeviceUtility.GenerateEntity(_fixture.DeviceProfileId);
         var newDevice = await client.SaveDeviceAsync(device);
 
         // assert
@@ -37,7 +46,7 @@ public class SaveNewDeviceTests
         Assert.Empty(newDevice.AdditionalInfo);
 
         // cleanup
-        await client.DeleteDeviceAsync(newDevice.Id!.Id);
+        await client.DeleteDeviceAsync(newDevice.Id.Id);
     }
 
     /// <summary>
@@ -50,7 +59,7 @@ public class SaveNewDeviceTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var device = DeviceUtility.GenerateEntity();
+        var device = DeviceUtility.GenerateEntity(_fixture.DeviceProfileId);
         device.AdditionalInfo["gateway"]   = true;
         device.AdditionalInfo["stringKey"] = "value2";
 
@@ -64,7 +73,7 @@ public class SaveNewDeviceTests
         Assert.Equal(device.AdditionalInfo, newDevice.AdditionalInfo);
 
         // cleanup
-        await client.DeleteDeviceAsync(newDevice.Id!.Id);
+        await client.DeleteDeviceAsync(newDevice.Id.Id);
     }
 
     /// <summary>
@@ -77,7 +86,7 @@ public class SaveNewDeviceTests
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var device = DeviceUtility.GenerateEntity();
+        var device = DeviceUtility.GenerateEntity(_fixture.DeviceProfileId);
         device.Name = null;
         var ex = await Assert.ThrowsAsync<TbHttpException>(async () => await client.SaveDeviceAsync(device));
 
@@ -109,7 +118,7 @@ public class SaveNewDeviceTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity());
+                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
             });
     }
 
@@ -119,7 +128,7 @@ public class SaveNewDeviceTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateDeviceClient(),
             async client =>
             {
-                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity());
+                await client.SaveDeviceAsync(DeviceUtility.GenerateEntity(_fixture.DeviceProfileId));
             });
     }
 }

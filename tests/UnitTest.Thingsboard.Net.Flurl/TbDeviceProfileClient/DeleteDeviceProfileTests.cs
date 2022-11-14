@@ -20,9 +20,9 @@ public class DeleteDeviceProfileTests
 
         // Act
         var newEntity          = await DeviceProfileUtility.CreateDeviceProfileAsync();
-        var entityBeforeDelete = await client.GetDeviceProfileByIdAsync(newEntity.Id!.Id);
-        var exception          = await Record.ExceptionAsync(async () => await client.DeleteDeviceProfileAsync(newEntity.Id!.Id));
-        var entityAfterDelete  = await client.GetDeviceProfileByIdAsync(newEntity.Id!.Id);
+        var entityBeforeDelete = await client.GetDeviceProfileByIdAsync(newEntity.Id.Id);
+        var exception          = await Record.ExceptionAsync(async () => await client.DeleteDeviceProfileAsync(newEntity.Id.Id));
+        var entityAfterDelete  = await client.GetDeviceProfileByIdAsync(newEntity.Id.Id);
 
         // Assert
         Assert.NotNull(entityBeforeDelete);

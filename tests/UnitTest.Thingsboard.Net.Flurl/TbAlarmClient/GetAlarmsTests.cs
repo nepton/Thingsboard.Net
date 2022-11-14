@@ -9,17 +9,25 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetAlarmsTests
 {
+    private readonly TbTestFixture _fixture;
+
+    public GetAlarmsTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetAlarms()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
-        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 20, 0, textSearch: newAlarm.Name);
+        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, _fixture.DeviceId, 20, 0, textSearch: newAlarm.Name);
 
         // assert
         Assert.NotNull(entities);
@@ -29,7 +37,7 @@ public class GetAlarmsTests
         Assert.Equal(newAlarm.Name, entities.Data[0].Name);
 
         // clean up
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     [Fact]
@@ -39,15 +47,14 @@ public class GetAlarmsTests
         var client = TbTestFactory.Instance.CreateAlarmClient();
 
         // act
-        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+        var entities = await client.GetAlarmsAsync(TbEntityType.DEVICE, _fixture.DeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(entities);
         Assert.Empty(entities.Data);
         Assert.Equal(0, entities.TotalElements);
     }
-    
-    
+
     [Fact]
     public async Task TestIncorrectUsername()
     {
@@ -55,7 +62,7 @@ public class GetAlarmsTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAlarmsAsync(TbEntityType.DEVICE, _fixture.DeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
 
@@ -66,8 +73,7 @@ public class GetAlarmsTests
             TbTestFactory.Instance.CreateAlarmClient(),
             async client =>
             {
-                await client.GetAlarmsAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+                await client.GetAlarmsAsync(TbEntityType.DEVICE, _fixture.DeviceId, 20, 0, textSearch: Guid.NewGuid().ToString());
             });
     }
-
 }

@@ -7,8 +7,16 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 /// <summary>
 /// Test assign asset to customer.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class AssignAssetToCustomerTests
 {
+    private readonly TbTestFixture _fixture;
+
+    public AssignAssetToCustomerTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestAssignAssetToCustomer()
     {
@@ -17,15 +25,15 @@ public class AssignAssetToCustomerTests
         var newAsset = await AssetUtility.CreateAssetAsync();
 
         // act
-        await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), newAsset.Id!.Id);
-        var actual = await client.GetAssetByIdAsync(newAsset.Id!.Id);
+        await client.AssignAssetToCustomerAsync(_fixture.CustomerId, newAsset.Id.Id);
+        var actual = await client.GetAssetByIdAsync(newAsset.Id.Id);
 
         // assert
         Assert.NotNull(actual);
-        Assert.Equal(TbTestData.GetTestCustomerId(), actual!.CustomerId!.Id);
+        Assert.Equal(_fixture.CustomerId, actual.CustomerId!.Id);
 
         // cleanup
-        await client.DeleteAssetAsync(newAsset.Id!.Id);
+        await client.DeleteAssetAsync(newAsset.Id.Id);
     }
 
     [Fact]
@@ -37,7 +45,7 @@ public class AssignAssetToCustomerTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.AssignAssetToCustomerAsync(TbTestData.GetTestCustomerId(), Guid.NewGuid());
+            await client.AssignAssetToCustomerAsync(_fixture.CustomerId, Guid.NewGuid());
         });
 
         // assert
@@ -58,7 +66,7 @@ public class AssignAssetToCustomerTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.AssignAssetToCustomerAsync(Guid.NewGuid(), newAsset.Id!.Id);
+            await client.AssignAssetToCustomerAsync(Guid.NewGuid(), newAsset.Id.Id);
         });
 
         // assert
@@ -69,7 +77,7 @@ public class AssignAssetToCustomerTests
         Assert.Equal(TbEntityType.CUSTOMER, notFoundException.EntityId.EntityType);
 
         // cleanup
-        await client.DeleteAssetAsync(newAsset.Id!.Id);
+        await client.DeleteAssetAsync(newAsset.Id.Id);
     }
 
     [Fact]

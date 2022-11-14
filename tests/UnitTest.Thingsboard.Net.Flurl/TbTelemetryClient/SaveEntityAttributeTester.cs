@@ -13,14 +13,23 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveEntityAttributeTester
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveEntityAttributeTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestSaveEntityAttributes()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,7 +49,7 @@ public class SaveEntityAttributeTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -88,7 +97,7 @@ public class SaveEntityAttributeTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, null!);
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.CLIENT_SCOPE, null!);
         });
 
         // assert
@@ -104,7 +113,7 @@ public class SaveEntityAttributeTester
             async client =>
             {
                 await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
-                    TbTestData.GetTestDeviceId(),
+                    _fixture.DeviceId,
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });
@@ -118,7 +127,7 @@ public class SaveEntityAttributeTester
             async client =>
             {
                 await client.SaveEntityAttributesAsync(TbEntityType.DEVICE,
-                    TbTestData.GetTestDeviceId(),
+                    _fixture.DeviceId,
                     TbAttributeScope.CLIENT_SCOPE,
                     new Dictionary<string, string> {{"key", "value"}});
             });

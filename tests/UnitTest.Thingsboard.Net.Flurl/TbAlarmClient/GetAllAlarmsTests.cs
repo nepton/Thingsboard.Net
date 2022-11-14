@@ -8,14 +8,23 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetAllAlarmsTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetAllAlarmsTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetAlarms()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
         var entities = await client.GetAllAlarmsAsync(20, 0, textSearch: newAlarm.Name);
@@ -28,7 +37,7 @@ public class GetAllAlarmsTests
         Assert.Equal(newAlarm.Name, entities.Data[0].Name);
 
         // clean up
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     [Fact]

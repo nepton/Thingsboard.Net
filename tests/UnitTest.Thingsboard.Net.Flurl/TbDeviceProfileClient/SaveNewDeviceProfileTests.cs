@@ -35,7 +35,7 @@ public class SaveNewDeviceProfileTests
         Assert.Equal(deviceProfile.Name, newDeviceProfile.Name);
 
         // cleanup
-        await client.DeleteDeviceProfileAsync(newDeviceProfile.Id!.Id);
+        await client.DeleteDeviceProfileAsync(newDeviceProfile.Id.Id);
     }
 
     /// <summary>

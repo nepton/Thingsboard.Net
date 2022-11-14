@@ -18,7 +18,7 @@ public class GetAssetInfoByIdTests
         Assert.Equal(expected.Id, actual.Id);
 
         // cleanup
-        await client.DeleteAssetAsync(expected.Id!.Id);
+        await client.DeleteAssetAsync(expected.Id.Id);
     }
 
     [Fact]

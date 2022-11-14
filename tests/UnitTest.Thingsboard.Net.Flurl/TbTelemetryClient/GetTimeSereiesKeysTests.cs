@@ -10,18 +10,27 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1. Get all entities with limit.
 /// 2. Get nothing has right response.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class GetTimeSeriesKeysTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetTimeSeriesKeysTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetTimeSeriesKeys()
     {
         // arrange
         var client = TbTestFactory.Instance.CreateTelemetryClient();
         var key    = "testGetTimeSeriesKeys"; // WARN: the first letter must be lowercase
-        await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), 1000, new Dictionary<string, object>() {[key] = 100});
+        await client.SaveEntityTimeSeriesWithTtlAsync(TbEntityType.DEVICE, _fixture.DeviceId, 1000, new Dictionary<string, object>() {[key] = 100});
 
         // act
-        var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
+        var entities = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
 
         // assert
         Assert.NotNull(entities);
@@ -29,7 +38,7 @@ public class GetTimeSeriesKeysTests
         Assert.Contains(entities, x => x == key);
 
         // clean up
-        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), new[] {key}, true);
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {key}, true);
     }
 
     [Fact]
@@ -41,13 +50,13 @@ public class GetTimeSeriesKeysTests
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId());
+            await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.CustomerId);
         });
 
         // assert
         Assert.NotNull(ex);
         Assert.IsType<TbEntityNotFoundException>(ex);
-        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, TbTestData.GetTestCustomerId()), ((TbEntityNotFoundException) ex).EntityId);
+        Assert.Equal(new TbEntityId(TbEntityType.DEVICE, _fixture.CustomerId), ((TbEntityNotFoundException) ex).EntityId);
     }
 
     [Fact]
@@ -57,7 +66,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
             });
     }
 
@@ -68,7 +77,7 @@ public class GetTimeSeriesKeysTests
             TbTestFactory.Instance.CreateTelemetryClient(),
             async client =>
             {
-                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId());
+                await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
             });
     }
 }

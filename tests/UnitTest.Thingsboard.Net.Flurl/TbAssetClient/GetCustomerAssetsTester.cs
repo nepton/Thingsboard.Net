@@ -2,8 +2,16 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbAssetClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetCustomerAssetsTester
 {
+    private readonly TbTestFixture _fixture;
+
+    public GetCustomerAssetsTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetCustomerAssets()
     {
@@ -11,7 +19,7 @@ public class GetCustomerAssetsTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetAsync(TbTestData.GetTestCustomerId(), 20, 0);
+        var actual = await client.GetCustomerAssetAsync(_fixture.Customer.Id.Id, 20, 0);
 
         // assert
         Assert.NotNull(actual);
@@ -24,7 +32,7 @@ public class GetCustomerAssetsTester
         var client = TbTestFactory.Instance.CreateAssetClient();
 
         // act
-        var actual = await client.GetCustomerAssetAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+        var actual = await client.GetCustomerAssetAsync(_fixture.Customer.Id.Id, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(actual);

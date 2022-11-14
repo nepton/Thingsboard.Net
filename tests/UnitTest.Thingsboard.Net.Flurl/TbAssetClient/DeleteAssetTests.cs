@@ -20,9 +20,9 @@ public class DeleteAssetTests
 
         // Act
         var newEntity          = await AssetUtility.CreateAssetAsync();
-        var entityBeforeDelete = await client.GetAssetByIdAsync(newEntity.Id!.Id);
-        var exception          = await Record.ExceptionAsync(async () => await client.DeleteAssetAsync(newEntity.Id!.Id));
-        var entityAfterDelete  = await client.GetAssetByIdAsync(newEntity.Id!.Id);
+        var entityBeforeDelete = await client.GetAssetByIdAsync(newEntity.Id.Id);
+        var exception          = await Record.ExceptionAsync(async () => await client.DeleteAssetAsync(newEntity.Id.Id));
+        var entityAfterDelete  = await client.GetAssetByIdAsync(newEntity.Id.Id);
 
         // Assert
         Assert.NotNull(entityBeforeDelete);

@@ -29,7 +29,7 @@ public class SaveNewCustomerTests
         Assert.Equal(expected.Address, newCustomer.Address);
 
         // cleanup
-        await client.DeleteCustomerAsync(newCustomer.Id!.Id);
+        await client.DeleteCustomerAsync(newCustomer.Id.Id);
     }
 
     /// <summary>

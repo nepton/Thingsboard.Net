@@ -11,8 +11,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 1: Delete an alarm that exists.
 /// 2: Delete an alarm that does not exist.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class DeleteEntityAttributesTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public DeleteEntityAttributesTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestDeleteExistsEntityAttributes()
     {
@@ -22,8 +31,8 @@ public class DeleteEntityAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new {testId = 100});
-            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, new[] {"testId"});
+            await client.SaveEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.SERVER_SCOPE, new {testId = 100});
+            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.SERVER_SCOPE, new[] {"testId"});
         });
 
         // Assert
@@ -39,7 +48,7 @@ public class DeleteEntityAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.CLIENT_SCOPE, new[] {"testId"});
+            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.CLIENT_SCOPE, new[] {"testId"});
         });
 
         // Assert
@@ -55,7 +64,7 @@ public class DeleteEntityAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestCustomerId(), TbAttributeScope.SERVER_SCOPE, new[] {"testId123"});
+            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, _fixture.CustomerId, TbAttributeScope.SERVER_SCOPE, new[] {"testId123"});
         });
 
         // Assert
@@ -71,7 +80,7 @@ public class DeleteEntityAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, Array.Empty<string>());
+            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.SERVER_SCOPE, Array.Empty<string>());
         });
 
         // Assert
@@ -87,7 +96,7 @@ public class DeleteEntityAttributesTests
         // Act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), TbAttributeScope.SERVER_SCOPE, null!);
+            await client.DeleteEntityAttributesAsync(TbEntityType.DEVICE, _fixture.DeviceId, TbAttributeScope.SERVER_SCOPE, null!);
         });
 
         // Assert

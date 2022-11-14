@@ -13,14 +13,23 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbTelemetryClient;
 /// 4. Update an exists alarm with a valid alarm object.
 /// 5. Update an not exists alarm with a valid alarm object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SaveEntityTelemetryTester
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SaveEntityTelemetryTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestSaveEntityTelemetry()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -40,7 +49,7 @@ public class SaveEntityTelemetryTester
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
-        var deviceId = TbTestData.GetTestDeviceId();
+        var deviceId = _fixture.DeviceId;
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
@@ -88,7 +97,7 @@ public class SaveEntityTelemetryTester
         var ex = await Record.ExceptionAsync(async () =>
         {
             // this client can't save the data to CLIENT_SCOPE
-            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, TbTestData.GetTestDeviceId(), null!);
+            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, null!);
         });
 
         // assert
@@ -104,7 +113,7 @@ public class SaveEntityTelemetryTester
             async client =>
             {
                 await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                    TbTestData.GetTestDeviceId(),
+                    _fixture.DeviceId,
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }
@@ -117,7 +126,7 @@ public class SaveEntityTelemetryTester
             async client =>
             {
                 await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
-                    TbTestData.GetTestDeviceId(),
+                    _fixture.DeviceId,
                     new Dictionary<string, string> {{"key", "value"}});
             });
     }

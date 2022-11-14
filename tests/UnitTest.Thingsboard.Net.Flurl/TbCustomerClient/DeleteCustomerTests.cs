@@ -20,9 +20,9 @@ public class DeleteCustomerTests
 
         // Act
         var newEntity          = await CustomerUtility.CreateEntityAsync();
-        var entityBeforeDelete = await client.GetCustomerByIdAsync(newEntity.Id!.Id);
-        var exception          = await Record.ExceptionAsync(async () => await client.DeleteCustomerAsync(newEntity.Id!.Id));
-        var entityAfterDelete  = await client.GetCustomerByIdAsync(newEntity.Id!.Id);
+        var entityBeforeDelete = await client.GetCustomerByIdAsync(newEntity.Id.Id);
+        var exception          = await Record.ExceptionAsync(async () => await client.DeleteCustomerAsync(newEntity.Id.Id));
+        var entityAfterDelete  = await client.GetCustomerByIdAsync(newEntity.Id.Id);
 
         // Assert
         Assert.NotNull(entityBeforeDelete);

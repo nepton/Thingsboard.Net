@@ -7,8 +7,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbEntityQueryClient;
 /// <summary>
 /// This class is used to test change password functionality
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class FindEntityDataByQueryTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public FindEntityDataByQueryTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestFindEntityDataByQuery()
     {
@@ -20,7 +29,7 @@ public class FindEntityDataByQueryTests
         var nameField  = new TbEntityField("name",  TbEntityFieldType.ENTITY_FIELD);
         var actual = await client.FindEntityDataByQueryAsync(new TbFindEntityDataRequest
         {
-            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, TbTestData.GetTestDeviceId()),
+            EntityFilter = new TbSingleEntityFilter(TbEntityType.DEVICE, _fixture.DeviceId),
             EntityFields = new[] {labelField, nameField},
             PageLink = new TbEntityDataPageLink
             {
@@ -31,7 +40,7 @@ public class FindEntityDataByQueryTests
 
         // assert
         actual.Data.Should().NotBeNull().And.NotBeNull();
-        actual.Data[0].Latest?.Get(nameField)?.Value?.To<string>().Should().Be(TbTestData.TestDeviceName);
+        actual.Data[0].Latest?.Get(nameField)?.Value?.To<string>().Should().Be(_fixture.Device.Name);
     }
 
     [Fact]

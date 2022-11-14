@@ -2,8 +2,17 @@
 
 namespace UnitTest.Thingsboard.Net.Flurl.TbDeviceClient;
 
+[Collection(nameof(TbTestCollection))]
 public class GetCustomerDeviceInfosTester
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public GetCustomerDeviceInfosTester(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task TestGetCustomerDeviceInfos()
     {
@@ -11,7 +20,7 @@ public class GetCustomerDeviceInfosTester
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var devices = await client.GetCustomerDeviceInfosAsync(TbTestData.GetTestCustomerId(), 20, 0);
+        var devices = await client.GetCustomerDeviceInfosAsync(_fixture.CustomerId, 20, 0);
 
         // assert
         Assert.NotNull(devices);
@@ -25,7 +34,7 @@ public class GetCustomerDeviceInfosTester
         var client = TbTestFactory.Instance.CreateDeviceClient();
 
         // act
-        var devices = await client.GetCustomerDeviceInfosAsync(TbTestData.GetTestCustomerId(), 20, 0, textSearch: Guid.NewGuid().ToString());
+        var devices = await client.GetCustomerDeviceInfosAsync(_fixture.CustomerId, 20, 0, textSearch: Guid.NewGuid().ToString());
 
         // assert
         Assert.NotNull(devices);

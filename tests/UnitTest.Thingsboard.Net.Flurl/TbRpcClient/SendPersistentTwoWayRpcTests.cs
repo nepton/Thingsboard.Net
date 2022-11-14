@@ -13,8 +13,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbRpcClient;
 /// 4. Update an exists rpc with a valid rpc object.
 /// 5. Update an not exists rpc with a valid rpc object.
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class SendPersistentTwoWayRpcTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public SendPersistentTwoWayRpcTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Save new rpc with a valid rpc object.
     /// </summary>
@@ -25,7 +34,7 @@ public class SendPersistentTwoWayRpcTests
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var newRpc = await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
+        var newRpc = await client.SendPersistentTwoWayRpcAsync(_fixture.DeviceId, new TbRpcRequest("testMethod"));
 
         // assert
         Assert.NotNull(newRpc);
@@ -44,7 +53,7 @@ public class SendPersistentTwoWayRpcTests
         var client = TbTestFactory.Instance.CreateRpcClient();
 
         // act
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), null!));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(async () => await client.SendPersistentTwoWayRpcAsync(_fixture.DeviceId, null!));
 
         // assert
         Assert.NotNull(ex);
@@ -75,7 +84,7 @@ public class SendPersistentTwoWayRpcTests
         await new TbCommonTestHelper().TestIncorrectUsername(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
+                await client.SendPersistentTwoWayRpcAsync(_fixture.DeviceId, new TbRpcRequest("testMethod"));
             });
     }
 
@@ -85,7 +94,7 @@ public class SendPersistentTwoWayRpcTests
         await new TbCommonTestHelper().TestIncorrectBaseUrl(TbTestFactory.Instance.CreateRpcClient(),
             async client =>
             {
-                await client.SendPersistentTwoWayRpcAsync(TbTestData.GetTestDeviceId(), new TbRpcRequest("testMethod"));
+                await client.SendPersistentTwoWayRpcAsync(_fixture.DeviceId, new TbRpcRequest("testMethod"));
             });
     }
 }

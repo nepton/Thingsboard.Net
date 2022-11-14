@@ -11,8 +11,17 @@ namespace UnitTest.Thingsboard.Net.Flurl.TbAlarmClient;
 /// 2: Clear an alarm that already cleared
 /// 3: Clear an alarm with an invalid alarm id
 /// </summary>
+[Collection(nameof(TbTestCollection))]
 public class ClearAlarmTests
 {
+    private readonly TbTestFixture _fixture;
+
+    /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+    public ClearAlarmTests(TbTestFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     /// <summary>
     /// Clear an alarm
     /// </summary>
@@ -22,19 +31,19 @@ public class ClearAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
-        await client.ClearAlarmAsync(newAlarm.Id!.Id);
-        var clearedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id!.Id);
+        await client.ClearAlarmAsync(newAlarm.Id.Id);
+        var clearedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id.Id);
 
         // assert
         Assert.NotNull(clearedAlarm);
         Assert.False(newAlarm.Cleared());
-        Assert.True(clearedAlarm!.Cleared());
+        Assert.True(clearedAlarm.Cleared());
 
         // cleanup
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     /// <summary>
@@ -46,20 +55,20 @@ public class ClearAlarmTests
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateAlarmClient();
-        var newAlarm = await AlarmUtility.CreateNewAlarmAsync();
+        var newAlarm = await AlarmUtility.CreateNewAlarmAsync(_fixture.DeviceId);
 
         // act
-        await client.ClearAlarmAsync(newAlarm.Id!.Id);
-        await client.ClearAlarmAsync(newAlarm.Id!.Id);
-        var clearedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id!.Id);
+        await client.ClearAlarmAsync(newAlarm.Id.Id);
+        await client.ClearAlarmAsync(newAlarm.Id.Id);
+        var clearedAlarm = await client.GetAlarmByIdAsync(newAlarm.Id.Id);
 
         // assert
         Assert.NotNull(clearedAlarm);
         Assert.False(newAlarm.Cleared());
-        Assert.True(clearedAlarm!.Cleared());
+        Assert.True(clearedAlarm.Cleared());
 
         // cleanup
-        await client.DeleteAlarmAsync(newAlarm.Id!.Id);
+        await client.DeleteAlarmAsync(newAlarm.Id.Id);
     }
 
     [Fact]
