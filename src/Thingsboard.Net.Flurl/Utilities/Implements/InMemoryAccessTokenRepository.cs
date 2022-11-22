@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Thingsboard.Net.Exceptions;
-using Thingsboard.Net.Flurl.Utilities.Implements;
 using Thingsboard.Net.Flurl.Utilities.Models;
 
 namespace Thingsboard.Net.Flurl.Utilities;

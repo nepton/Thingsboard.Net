@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements
+namespace Thingsboard.Net.Flurl.Utilities
 {
     /// <summary>
     /// 一个把 javascript 时间戳转换为 DateTime 的工具类

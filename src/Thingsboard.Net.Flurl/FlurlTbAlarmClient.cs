@@ -124,8 +124,8 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
                 .SetQueryParam("textSearch",   textSearch)
                 .SetQueryParam("sortProperty", sortProperty)
                 .SetQueryParam("sortOrder",    sortOrder)
-                .SetQueryParam("startTime",    startTime)
-                .SetQueryParam("endTime",      endTime);
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks());
 
             return await request.GetJsonAsync<TbPage<TbAlarm>>(cancel);
         });
@@ -278,8 +278,8 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
                 .SetQueryParam("textSearch",   textSearch)
                 .SetQueryParam("sortProperty", sortProperty)
                 .SetQueryParam("sortOrder",    sortOrder)
-                .SetQueryParam("startTime",    startTime)
-                .SetQueryParam("endTime",      endTime);
+                .SetQueryParam("startTime",    startTime.ToJavaScriptTicks())
+                .SetQueryParam("endTime",      endTime.ToJavaScriptTicks());
 
             return await request.GetJsonAsync<TbPage<TbAlarm>>(cancel);
         });

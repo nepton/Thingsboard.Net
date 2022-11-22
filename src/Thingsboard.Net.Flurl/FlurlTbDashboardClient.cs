@@ -4,16 +4,13 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
-using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
 public class FlurlTbDashboardClient : FlurlTbClient<ITbDashboardClient>, ITbDashboardClient
 {
-    
-
-    public FlurlTbDashboardClient(IRequestBuilder builder) : base(builder)    {
-        
+    public FlurlTbDashboardClient(IRequestBuilder builder) : base(builder)
+    {
     }
 
     /// <summary>
@@ -23,8 +20,6 @@ public class FlurlTbDashboardClient : FlurlTbClient<ITbDashboardClient>, ITbDash
     /// <returns></returns>
     public Task<DateTime> GetServerTimeAsync(CancellationToken cancel = default)
     {
-        
-
         var policy = RequestBuilder.GetPolicyBuilder<DateTime>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()

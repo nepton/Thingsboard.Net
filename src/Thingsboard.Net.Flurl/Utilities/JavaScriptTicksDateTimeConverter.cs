@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Thingsboard.Net.Flurl.Utilities.Implements;
+namespace Thingsboard.Net.Flurl.Utilities;
 
 /// <summary>
 /// Convert a long value from 1970 to a DateTime value

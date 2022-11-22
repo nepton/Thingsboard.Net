@@ -10,7 +10,6 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Options;
-using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl.Utilities;
 

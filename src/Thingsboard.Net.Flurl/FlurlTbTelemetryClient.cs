@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Flurl.Http;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
-using Thingsboard.Net.Flurl.Utilities.Implements;
 
 namespace Thingsboard.Net.Flurl;
 
