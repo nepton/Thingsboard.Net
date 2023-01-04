@@ -54,7 +54,7 @@ public class FlurlRequestBuilder : IRequestBuilder
             new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore, // persistent rpc call will fail if null values are sent 
-                ContractResolver  = new DefaultContractResolver(),  // We use the default contract resolver to avoid the casing issue, for example, "id" vs "Id" in time-series or attribute save
+                ContractResolver  = new CamelCasePropertyNamesContractResolver(),
                 Converters = new List<JsonConverter>()
                 {
                     new StringEnumConverter(),
