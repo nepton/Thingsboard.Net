@@ -7,9 +7,9 @@ public class TbUserAdditionalInfo
 {
     public TbUserAdditionalInfo(
         string                     description,
-        Guid                       defaultDashboardId,
+        Guid?                      defaultDashboardId,
         bool                       defaultDashboardFullscreen,
-        Guid                       homeDashboardId,
+        Guid?                      homeDashboardId,
         bool                       homeDashboardHideToolbar,
         Dictionary<string, string> userPasswordHistory,
         bool                       userCredentialsEnabled,
@@ -29,9 +29,9 @@ public class TbUserAdditionalInfo
     }
 
     public string                     Description                { get; }
-    public object                     DefaultDashboardId         { get; }
+    public Guid?                      DefaultDashboardId         { get; }
     public bool                       DefaultDashboardFullscreen { get; }
-    public object                     HomeDashboardId            { get; }
+    public Guid?                      HomeDashboardId            { get; }
     public bool                       HomeDashboardHideToolbar   { get; }
     public Dictionary<string, string> UserPasswordHistory        { get; }
     public bool                       UserCredentialsEnabled     { get; }
