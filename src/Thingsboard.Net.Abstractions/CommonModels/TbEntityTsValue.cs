@@ -23,4 +23,11 @@ public class TbEntityTsValue
     /// The value.
     /// </summary>
     public object? Value { get; }
+
+    /// <summary>Returns a string that represents the current object.</summary>
+    /// <returns>A string that represents the current object.</returns>
+    public override string ToString()
+    {
+        return $"{nameof(Ts)}: {Ts}, {nameof(Value)}: {Value}";
+    }
 }
