@@ -1,9 +1,11 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 public class TbRelationsQueryItem
 {
-    public string?         RelationType { get; }
-    public TbEntityType[]? EntityTypes  { get; }
+    public string         RelationType { get; set; } = string.Empty;
+    public TbEntityType[] EntityTypes  { get; set; } = Array.Empty<TbEntityType>();
 
     public TbRelationsQueryItem()
     {

@@ -2,5 +2,6 @@
 
 public enum TbRelationDirection
 {
-    To, From
+    TO,
+    FROM
 }

@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 /// <summary>
 /// Allows to filter entities that are related to the provided root entity. Possible direction values are 'TO' and 'FROM'. The 'maxLevel' defines how many relation levels
@@ -12,11 +14,11 @@ public class TbRelationsQueryFilter : TbEntityFilter
 {
     public override string Type => "relationsQuery";
 
-    public TbEntityId?             RootEntity         { get; set; }
-    public TbRelationDirection     Direction          { get; set; }
-    public int                     MaxLevel           { get; set; }
-    public bool                    FetchLastLevelOnly { get; set; }
-    public TbRelationsQueryItem[]? Filters            { get; set; }
+    public TbEntityId             RootEntity         { get; set; } = TbEntityId.Empty;
+    public TbRelationDirection    Direction          { get; set; }
+    public int                    MaxLevel           { get; set; }
+    public bool                   FetchLastLevelOnly { get; set; }
+    public TbRelationsQueryItem[] Filters            { get; set; } = Array.Empty<TbRelationsQueryItem>();
 
     public TbRelationsQueryFilter()
     {
