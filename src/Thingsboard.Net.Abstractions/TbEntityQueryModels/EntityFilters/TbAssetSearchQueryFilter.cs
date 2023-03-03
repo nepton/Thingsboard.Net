@@ -5,7 +5,7 @@
 /// 
 /// For example, this entity filter selects 'charging station' assets which are related to the asset with id 'e51de0c0-2a7a-11ec-94eb-213c95f54092' using 'Contains' relation:
 /// </summary>
-public class TbAssetSearchQuery : TbEntityFilter
+public class TbAssetSearchQueryFilter : TbEntityFilter
 {
     /// <summary>
     /// The type of filter
@@ -24,11 +24,11 @@ public class TbAssetSearchQuery : TbEntityFilter
 
     public string[]? AssetTypes { get; set; }
 
-    public TbAssetSearchQuery()
+    public TbAssetSearchQueryFilter()
     {
     }
 
-    public TbAssetSearchQuery(TbEntityId rootEntity, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] assetTypes)
+    public TbAssetSearchQueryFilter(TbEntityId rootEntity, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] assetTypes)
     {
         RootEntity         = rootEntity;
         Direction          = direction;

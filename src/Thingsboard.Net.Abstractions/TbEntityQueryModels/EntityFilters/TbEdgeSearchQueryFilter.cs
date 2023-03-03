@@ -9,9 +9,9 @@
 ///
 /// For example, this entity filter selects 'Factory' edge instances which are related to the asset with id 'e52b0020-2a7a-11ec-94eb-213c95f54092' using 'Contains' relation:
 /// </summary>
-public class TbEdgeSearchQuery : TbEntityFilter
+public class TbEdgeSearchQueryFilter : TbEntityFilter
 {
-    public override string Type => "deviceSearchQuery";
+    public override string Type => "edgeSearchQuery";
 
     public TbEntityId?         RootEntity         { get; set; }
     public TbRelationDirection Direction          { get; set; }
@@ -20,11 +20,11 @@ public class TbEdgeSearchQuery : TbEntityFilter
     public string?             RelationType       { get; set; }
     public string[]?           EdgeTypes          { get; set; }
 
-    public TbEdgeSearchQuery()
+    public TbEdgeSearchQueryFilter()
     {
     }
 
-    public TbEdgeSearchQuery(TbEntityId rootEntity,
+    public TbEdgeSearchQueryFilter(TbEntityId rootEntity,
         TbRelationDirection             direction,
         int                             maxLevel,
         bool                            fetchLastLevelOnly,

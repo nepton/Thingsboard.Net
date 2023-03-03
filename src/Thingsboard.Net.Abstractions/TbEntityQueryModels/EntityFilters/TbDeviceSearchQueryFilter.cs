@@ -10,7 +10,7 @@
 /// 
 /// For example, this entity filter selects 'Charging port' and 'Air Quality Sensor' devices which are related to the asset with id 'e52b0020-2a7a-11ec-94eb-213c95f54092' using 'Contains' relation:
 /// </summary>
-public class TbDeviceSearchQuery : TbEntityFilter
+public class TbDeviceSearchQueryFilter : TbEntityFilter
 {
     /// <summary>
     /// The type of filter
@@ -29,11 +29,11 @@ public class TbDeviceSearchQuery : TbEntityFilter
 
     public string[]? DeviceTypes { get; set; }
 
-    public TbDeviceSearchQuery()
+    public TbDeviceSearchQueryFilter()
     {
     }
 
-    public TbDeviceSearchQuery(TbEntityId rootEntity, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] deviceTypes)
+    public TbDeviceSearchQueryFilter(TbEntityId rootEntity, TbRelationDirection direction, int maxLevel, bool fetchLastLevelOnly, string relationType, string[] deviceTypes)
     {
         RootEntity         = rootEntity;
         Direction          = direction;
