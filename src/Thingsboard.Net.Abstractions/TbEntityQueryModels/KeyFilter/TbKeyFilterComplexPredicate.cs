@@ -1,4 +1,6 @@
-﻿namespace Thingsboard.Net;
+﻿using System;
+
+namespace Thingsboard.Net;
 
 public class TbKeyFilterComplexPredicate : TbKeyFilterPredicate
 {
@@ -9,13 +11,13 @@ public class TbKeyFilterComplexPredicate : TbKeyFilterPredicate
     /// <summary>
     /// The list of predicates to be evaluated.
     /// </summary>
-    public TbKeyFilterPredicate[]? Predicates { get; set; }
+    public TbKeyFilterPredicate[] Predicates { get; set; } = Array.Empty<TbKeyFilterPredicate>();
 
     public TbKeyFilterComplexPredicate()
     {
     }
 
-    public TbKeyFilterComplexPredicate(TbKeyFilterComplexOperation operation, params TbKeyFilterPredicate[]? predicates)
+    public TbKeyFilterComplexPredicate(TbKeyFilterComplexOperation operation, params TbKeyFilterPredicate[] predicates)
     {
         Operation  = operation;
         Predicates = predicates;
