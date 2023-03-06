@@ -15,12 +15,12 @@ public class TbKeyFilterValue
         var result = string.Empty;
         if (DefaultValue != null)
         {
-            result += $"{DefaultValue} (DEF)";
+            result += $"{DefaultValue}";
         }
 
         if (DynamicValue != null)
         {
-            result += $"{DynamicValue} (DYN)";
+            result += $"{DynamicValue}";
         }
 
         if (string.IsNullOrEmpty(result))
