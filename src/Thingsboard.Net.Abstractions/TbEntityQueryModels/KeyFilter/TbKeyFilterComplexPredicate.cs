@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Thingsboard.Net;
 
@@ -21,5 +22,10 @@ public class TbKeyFilterComplexPredicate : TbKeyFilterPredicate
     {
         Operation  = operation;
         Predicates = predicates;
+    }
+
+    public override string ToString()
+    {
+        return $"{Predicates.FirstOrDefault()?.ToString() ?? "???"} {Operation} {Predicates.Skip(1).FirstOrDefault()?.ToString() ?? "???"}";
     }
 }

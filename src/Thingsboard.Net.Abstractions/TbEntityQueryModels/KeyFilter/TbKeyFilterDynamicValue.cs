@@ -11,4 +11,9 @@ public class TbKeyFilterDynamicValue : TbKeyFilterValue
         SourceType      = sourceType;
         SourceAttribute = sourceAttribute;
     }
+
+    public override string ToString()
+    {
+        return $"{SourceType} {SourceAttribute}";
+    }
 }

@@ -20,4 +20,9 @@ public class TbKeyFilterBooleanValuePredicate : TbKeyFilterPredicate
         Operation = operation;
         Value     = value;
     }
+
+    public override string ToString()
+    {
+        return $"{Operation} {Value}";
+    }
 }
