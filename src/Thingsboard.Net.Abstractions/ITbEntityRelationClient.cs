@@ -20,10 +20,9 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// <param name="from">A string value representing the entity id and entityType</param>
     /// <param name="to">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelation?> GetRelationAsync(TbEntityId from, TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelation?> GetRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default);
 
     /// <summary>
     /// Deletes a relation between two entities in the platform.
@@ -31,10 +30,9 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="relationType"></param>
-    /// <param name="relationTypeGroup"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns all entities that are related to the specific entity. The entity id, relation type, entity types, depth of the search, and other query parameters defined using complex 'EntityRelationsQuery' object. See 'Model' tab of the Parameters for more info.
@@ -57,38 +55,34 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string relationType, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns list of relation objects for the specified entity by the 'from' direction and relation type.
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns list of relation objects for the specified entity by the 'to' direction and relation type.
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string relationType, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns list of relation objects for the specified entity by the 'to' direction and relation type.
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns all entities that are related to the specific entity. The entity id, relation type, entity types, depth of the search, and other query parameters defined using complex 'EntityRelationsQuery' object. See 'Model' tab of the Parameters for more info.
@@ -102,17 +96,15 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// Returns list of relation objects for the specified entity by the 'from' direction and relation type.
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelationInfo[]> FindInfoByFromAsync(TbEntityId from, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelationInfo[]> FindInfoByFromAsync(TbEntityId from, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns list of relation objects for the specified entity by the 'to' direction and relation type.
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task<TbEntityRelationInfo[]> FindInfoByToAsync(TbEntityId to, string? relationTypeGroup = null, CancellationToken cancel = default);
+    Task<TbEntityRelationInfo[]> FindInfoByToAsync(TbEntityId to, CancellationToken cancel = default);
 }

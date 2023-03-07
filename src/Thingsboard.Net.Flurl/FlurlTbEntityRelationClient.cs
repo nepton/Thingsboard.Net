@@ -48,10 +48,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// <param name="from">A string value representing the entity id and entityType</param>
     /// <param name="to">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelation?> GetRelationAsync(TbEntityId from, TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelation?> GetRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default)
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
         if (to == null) throw new ArgumentNullException(nameof(to));
@@ -68,12 +67,11 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relation")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("fromId",            from.Id)
-                .SetQueryParam("fromType",          from.EntityType)
-                .SetQueryParam("relationType",      relationType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
-                .SetQueryParam("toId",              to.Id)
-                .SetQueryParam("toType",            to.EntityType)
+                .SetQueryParam("fromId",       from.Id)
+                .SetQueryParam("fromType",     from.EntityType)
+                .SetQueryParam("relationType", relationType)
+                .SetQueryParam("toId",         to.Id)
+                .SetQueryParam("toType",       to.EntityType)
                 .GetJsonAsync<TbEntityRelation?>(cancel);
 
             return response;
@@ -86,10 +84,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="relationType"></param>
-    /// <param name="relationTypeGroup"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default)
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
         if (to == null) throw new ArgumentNullException(nameof(to));
@@ -106,12 +103,11 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             await builder.CreateRequest()
                 .AppendPathSegment("api/relation")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("fromId",            from.Id)
-                .SetQueryParam("fromType",          from.EntityType)
-                .SetQueryParam("relationType",      relationType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
-                .SetQueryParam("toId",              to.Id)
-                .SetQueryParam("toType",            to.EntityType)
+                .SetQueryParam("fromId",       from.Id)
+                .SetQueryParam("fromType",     from.EntityType)
+                .SetQueryParam("relationType", relationType)
+                .SetQueryParam("toId",         to.Id)
+                .SetQueryParam("toType",       to.EntityType)
                 .DeleteAsync(cancel);
         });
     }
@@ -152,19 +148,19 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     public Task DeleteRelationsAsync(TbEntityId entityId, CancellationToken cancel = default)
     {
         if (entityId == null) throw new ArgumentNullException(nameof(entityId));
-        
+
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
             .FallbackOn(HttpStatusCode.NotFound, () => throw new TbRelationNotFoundException())
             .Build();
-        
+
         return policy.ExecuteAsync(async builder =>
         {
             await builder.CreateRequest()
                 .AppendPathSegment("api/relations")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("entityId", entityId.Id)
+                .SetQueryParam("entityId",   entityId.Id)
                 .SetQueryParam("entityType", entityId.EntityType)
                 .DeleteAsync(cancel);
         });
@@ -175,10 +171,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string relationType, CancellationToken cancel = default)
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
         if (relationType == null) throw new ArgumentNullException(nameof(relationType));
@@ -193,10 +188,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("fromId",            from.Id)
-                .SetQueryParam("fromType",          from.EntityType)
-                .SetQueryParam("relationType",      relationType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("fromId",       from.Id)
+                .SetQueryParam("fromType",     from.EntityType)
+                .SetQueryParam("relationType", relationType)
                 .GetJsonAsync<TbEntityRelation[]>(cancel);
 
             return response;
@@ -207,10 +201,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// Returns list of relation objects for the specified entity by the 'from' direction and relation type.
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelation[]> FindByFromAsync(TbEntityId from, CancellationToken cancel = default)
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
 
@@ -224,9 +217,8 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("fromId",            from.Id)
-                .SetQueryParam("fromType",          from.EntityType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("fromId",   from.Id)
+                .SetQueryParam("fromType", from.EntityType)
                 .GetJsonAsync<TbEntityRelation[]>(cancel);
 
             return response;
@@ -238,10 +230,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
     /// <param name="relationType">A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string relationType, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string relationType, CancellationToken cancel = default)
     {
         if (to == null) throw new ArgumentNullException(nameof(to));
         if (relationType == null) throw new ArgumentNullException(nameof(relationType));
@@ -256,10 +247,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("toId",              to.Id)
-                .SetQueryParam("toType",            to.EntityType)
-                .SetQueryParam("relationType",      relationType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("toId",         to.Id)
+                .SetQueryParam("toType",       to.EntityType)
+                .SetQueryParam("relationType", relationType)
                 .GetJsonAsync<TbEntityRelation[]>(cancel);
 
             return response;
@@ -270,10 +260,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// Returns list of relation objects for the specified entity by the 'to' direction and relation type.
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelation[]> FindByToAsync(TbEntityId to, CancellationToken cancel = default)
     {
         if (to == null) throw new ArgumentNullException(nameof(to));
 
@@ -287,9 +276,8 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("toId",              to.Id)
-                .SetQueryParam("toType",            to.EntityType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("toId",   to.Id)
+                .SetQueryParam("toType", to.EntityType)
                 .GetJsonAsync<TbEntityRelation[]>(cancel);
 
             return response;
@@ -327,10 +315,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// Returns list of relation objects for the specified entity by the 'from' direction and relation type.
     /// </summary>
     /// <param name="from">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelationInfo[]> FindInfoByFromAsync(TbEntityId from, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelationInfo[]> FindInfoByFromAsync(TbEntityId from, CancellationToken cancel = default)
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
 
@@ -344,9 +331,8 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations/info")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("fromId",            from.Id)
-                .SetQueryParam("fromType",          from.EntityType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("fromId",   from.Id)
+                .SetQueryParam("fromType", from.EntityType)
                 .GetJsonAsync<TbEntityRelationInfo[]>(cancel);
 
             return response;
@@ -357,10 +343,9 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// Returns list of relation objects for the specified entity by the 'to' direction and relation type.
     /// </summary>
     /// <param name="to">A string value representing the entity id and entityType</param>
-    /// <param name="relationTypeGroup">A string value representing relation type group. For example, 'COMMON'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task<TbEntityRelationInfo[]> FindInfoByToAsync(TbEntityId to, string? relationTypeGroup = null, CancellationToken cancel = default)
+    public Task<TbEntityRelationInfo[]> FindInfoByToAsync(TbEntityId to, CancellationToken cancel = default)
     {
         if (to == null) throw new ArgumentNullException(nameof(to));
 
@@ -374,9 +359,8 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
             var response = await builder.CreateRequest()
                 .AppendPathSegment("api/relations/info")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .SetQueryParam("toId",              to.Id)
-                .SetQueryParam("toType",            to.EntityType)
-                .SetQueryParam("relationTypeGroup", relationTypeGroup)
+                .SetQueryParam("toId",   to.Id)
+                .SetQueryParam("toType", to.EntityType)
                 .GetJsonAsync<TbEntityRelationInfo[]>(cancel);
 
             return response;

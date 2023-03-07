@@ -1,5 +1,3 @@
-using System.Runtime.Serialization;
-
 namespace Thingsboard.Net.TbEntityRelationModels;
 
 /// <summary>
@@ -7,20 +5,31 @@ namespace Thingsboard.Net.TbEntityRelationModels;
 /// </summary>
 public class TbEntityRelation
 {
+    public TbEntityRelation()
+    {
+    }
+
+    public TbEntityRelation(TbEntityId from, TbEntityId to, string type)
+    {
+        From = from;
+        To   = to;
+        Type = type;
+    }
+
     /// <summary>
     /// The from entity id.
     /// </summary>
-    public TbEntityId? From { get; set; }
+    public TbEntityId From { get; private set; } = TbEntityId.Empty;
 
     /// <summary>
     /// The to entity id.
     /// </summary>
-    public TbEntityId? To { get; set; }
+    public TbEntityId To { get; private set; } = TbEntityId.Empty;
 
     /// <summary>
     /// The relation type.
     /// </summary>
-    public string? Type { get; set; }
+    public string Type { get; private set; } = string.Empty;
 
     /// <summary>
     /// The additional info.

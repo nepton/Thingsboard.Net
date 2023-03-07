@@ -1,3 +1,5 @@
+using System;
+
 namespace Thingsboard.Net.TbEntityRelationModels;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class TbEntityRelationInfo
     /// <summary>
     /// The from entity id.
     /// </summary>
-    public TbEntityId? From { get; set; }
+    public TbEntityId From { get; set; } = TbEntityId.Empty;
 
     /// <summary>
     /// The from entity name.
@@ -18,7 +20,7 @@ public class TbEntityRelationInfo
     /// <summary>
     /// The to entity id.
     /// </summary>
-    public TbEntityId? To { get; set; }
+    public TbEntityId To { get; set; } = TbEntityId.Empty;
 
     /// <summary>
     /// The to entity name.
@@ -28,7 +30,7 @@ public class TbEntityRelationInfo
     /// <summary>
     /// The relation type.
     /// </summary>
-    public string? Type { get; set; }
+    public string Type { get; set; } = String.Empty;
 
     /// <summary>
     /// The additional info.
