@@ -63,5 +63,6 @@ public static class ThingsboardNetServicesExtensions
         services.AddTransient<ITbAuditLogClient, FlurlTbAuditLogClient>();
         services.AddTransient<ITbQueueClient, FlurlTbQueueClient>();
         services.AddTransient<ITbDeviceProfileClient, FlurlTbDeviceProfileClient>();
+        services.AddTransient<ITbEntityRelationClient, FlurlTbEntityRelationClient>();
     }
 }

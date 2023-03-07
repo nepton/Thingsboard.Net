@@ -19,3 +19,7 @@ public class TbEntityNotFoundException : Exception
         EntityId = entityId;
     }
 }
+
+public class TbRelationNotFoundException : Exception
+{
+}
