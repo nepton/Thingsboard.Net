@@ -3,12 +3,11 @@ namespace Thingsboard.Net.TbEntityRelationModels;
 /// <summary>
 /// The entity relation.
 /// </summary>
-public class TbEntityRelation
+public record TbEntityRelation
 {
-    public TbEntityRelation()
-    {
-    }
-
+    /// <summary>
+    /// The entity relation.
+    /// </summary>
     public TbEntityRelation(TbEntityId from, TbEntityId to, string type)
     {
         From = from;
@@ -19,17 +18,17 @@ public class TbEntityRelation
     /// <summary>
     /// The from entity id.
     /// </summary>
-    public TbEntityId From { get; private set; } = TbEntityId.Empty;
+    public TbEntityId From { get; }
 
     /// <summary>
     /// The to entity id.
     /// </summary>
-    public TbEntityId To { get; private set; } = TbEntityId.Empty;
+    public TbEntityId To { get; }
 
     /// <summary>
     /// The relation type.
     /// </summary>
-    public string Type { get; private set; } = string.Empty;
+    public string Type { get; }
 
     /// <summary>
     /// The additional info.
