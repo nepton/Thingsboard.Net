@@ -116,25 +116,12 @@ public class FlurlTbDeviceProfileClient : FlurlTbClient<ITbDeviceProfileClient>,
     /// <param name="deviceProfileId">A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task DeleteDeviceProfileAsync(Guid deviceProfileId, CancellationToken cancel = default)
+    public Task<bool> DeleteDeviceProfileAsync(Guid deviceProfileId, CancellationToken cancel = default)
     {
-        return DeleteDeviceProfileAsync(deviceProfileId, true, cancel);
-    }
-
-    /// <summary>
-    /// Deletes the device profile. Referencing non-existing device profile Id will cause an error. Can't delete the device profile if it is referenced by existing devices.
-    /// Available for users with 'TENANT_ADMIN' authority.
-    /// </summary>
-    /// <param name="deviceProfileId">A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="throwIfNotExist">If true, throw an exception if the device profile does not exist</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public Task DeleteDeviceProfileAsync(Guid deviceProfileId, bool throwIfNotExist, CancellationToken cancel = default)
-    {
-        var policy = RequestBuilder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder<bool>()
             .RetryOnUnauthorized()
             .RetryOnHttpTimeout()
-            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbEntityNotFoundException(TbEntityType.DEVICE_PROFILE, deviceProfileId) : Task.CompletedTask)
+            .FallbackValueOn(HttpStatusCode.NotFound, false)
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -143,6 +130,8 @@ public class FlurlTbDeviceProfileClient : FlurlTbClient<ITbDeviceProfileClient>,
                 .AppendPathSegment($"/api/deviceProfile/{deviceProfileId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel);
+
+            return true;
         });
     }
 

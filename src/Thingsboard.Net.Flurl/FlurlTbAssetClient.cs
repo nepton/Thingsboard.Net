@@ -107,25 +107,12 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
     /// <param name="assetId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    public Task DeleteAssetAsync(Guid assetId, CancellationToken cancel = default)
+    public Task<bool> DeleteAssetAsync(Guid assetId, CancellationToken cancel = default)
     {
-        return DeleteAssetAsync(assetId, true, cancel);
-    }
-
-    /// <summary>
-    /// Deletes the asset and all the relations (from and to the asset). Referencing non-existing asset Id will cause an error.
-    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
-    /// </summary>
-    /// <param name="assetId"></param>
-    /// <param name="throwIfNotExist"></param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    public Task DeleteAssetAsync(Guid assetId, bool throwIfNotExist, CancellationToken cancel = default)
-    {
-        var policy = RequestBuilder.GetPolicyBuilder()
+        var policy = RequestBuilder.GetPolicyBuilder<bool>()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbEntityNotFoundException(TbEntityType.ASSET, assetId) : Task.CompletedTask)
+            .FallbackValueOn(HttpStatusCode.NotFound, false)
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -134,6 +121,8 @@ public class FlurlTbAssetClient : FlurlTbClient<ITbAssetClient>, ITbAssetClient
                 .AppendPathSegment($"/api/asset/{assetId}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
                 .DeleteAsync(cancel);
+
+            return true;
         });
     }
 

@@ -51,17 +51,7 @@ public interface ITbDeviceProfileClient : ITbClient<ITbDeviceProfileClient>
     /// <param name="deviceProfileId">A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteDeviceProfileAsync(Guid deviceProfileId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes the device profile. Referencing non-existing device profile Id will cause an error. Can't delete the device profile if it is referenced by existing devices.
-    /// Available for users with 'TENANT_ADMIN' authority.
-    /// </summary>
-    /// <param name="deviceProfileId">A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="throwIfNotExist">If true, throw an exception if the device profile does not exist</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteDeviceProfileAsync(Guid deviceProfileId, bool throwIfNotExist, CancellationToken cancel = default);
+    Task<bool> DeleteDeviceProfileAsync(Guid deviceProfileId, CancellationToken cancel = default);
 
     /// <summary>
     /// Marks device profile as default within a tenant scope.

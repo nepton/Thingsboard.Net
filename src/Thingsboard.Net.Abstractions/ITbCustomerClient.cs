@@ -23,7 +23,7 @@ public interface ITbCustomerClient : ITbClient<ITbCustomerClient>
     /// <param name="cancel"></param>
     /// <returns></returns>
     Task<TbCustomer> SaveCustomerAsync(TbNewCustomer customer, CancellationToken cancel = default);
-    
+
     /// <summary>
     /// Get the Customer object based on the provided Customer Id. If the user has the authority of 'Tenant Administrator', the server checks that the customer is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the user belongs to the customer.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -40,17 +40,7 @@ public interface ITbCustomerClient : ITbClient<ITbCustomerClient>
     /// <param name="customerId">A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteCustomerAsync(Guid customerId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes the Customer and all customer Users. All assigned Dashboards, Assets, Devices, etc. will be unassigned but not deleted. Referencing non-existing Customer Id will cause an error.
-    /// Available for users with 'TENANT_ADMIN' authority.
-    /// </summary>
-    /// <param name="customerId">A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="throwIfNotExist">Indicates whether to throw an exception if the customer does not exist.</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteCustomerAsync(Guid customerId, bool throwIfNotExist, CancellationToken cancel = default);
+    Task<bool> DeleteCustomerAsync(Guid customerId, CancellationToken cancel = default);
 
     /// <summary>
     /// Get the short customer object that contains only the title and 'isPublic' flag. If the user has the authority of 'Tenant Administrator', the server checks that the customer is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the user belongs to the customer.

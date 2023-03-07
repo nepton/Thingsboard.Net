@@ -32,18 +32,7 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// <param name="relationType"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes a relation between two entities in the platform.
-    /// </summary>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="relationType"></param>
-    /// <param name="throwIfNotExist">If true, throws exception if relation does not exist. Otherwise, does nothing.</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, bool throwIfNotExist, CancellationToken cancel = default);
+    Task<bool> DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns all entities that are related to the specific entity. The entity id, relation type, entity types, depth of the search, and other query parameters defined using complex 'EntityRelationsQuery' object. See 'Model' tab of the Parameters for more info.
@@ -59,16 +48,7 @@ public interface ITbEntityRelationClient : ITbClient<ITbEntityRelationClient>
     /// <param name="entityId"></param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteRelationsAsync(TbEntityId entityId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes all the relation (both 'from' and 'to' direction) for the specified entity.
-    /// </summary>
-    /// <param name="entityId"></param>
-    /// <param name="throwIfNotExist">If true, throws exception if relation does not exist. Otherwise, does nothing.</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteRelationsAsync(TbEntityId entityId, bool throwIfNotExist, CancellationToken cancel = default);
+    Task<bool> DeleteRelationsAsync(TbEntityId entityId, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns list of relation objects for the specified entity by the 'from' direction and relation type.

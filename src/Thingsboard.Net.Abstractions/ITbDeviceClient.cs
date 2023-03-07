@@ -121,17 +121,7 @@ public interface ITbDeviceClient : ITbClient<ITbDeviceClient>
     /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
-    Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes the device, it's credentials and all the relations (from and to the device). Referencing non-existing device Id will cause an error.
-    /// Available for users with 'TENANT_ADMIN' authority.
-    /// </summary>
-    /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
-    /// <param name="throwIfNotExist">Indicates whether to throw an exception if the device does not exist</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteDeviceAsync(Guid deviceId, bool throwIfNotExist, CancellationToken cancel = default);
+    Task<bool> DeleteDeviceAsync(Guid deviceId, CancellationToken cancel = default);
 
     /// <summary>
     /// Fetch the Device Info object based on the provided Device Id. If the user has the authority of 'Tenant Administrator', the server checks that the device is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the device is assigned to the same customer. Device Info is an extension of the default Device object that contains information about the assigned customer name and device profile name.

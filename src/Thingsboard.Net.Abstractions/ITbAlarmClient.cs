@@ -72,17 +72,8 @@ public interface ITbAlarmClient : ITbClient<ITbAlarmClient>
     /// </summary>
     /// <param name="alarmId"></param>
     /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default);
-
-    /// <summary>
-    /// Deletes the Alarm. Referencing non-existing Alarm Id will cause an error.
-    /// </summary>
-    /// <param name="alarmId"></param>
-    /// <param name="throwIfNotExist">Indicate if exception should be thrown if alarm does not exist</param>
-    /// <param name="cancel"></param>
-    /// <returns></returns>
-    Task DeleteAlarmAsync(Guid alarmId, bool throwIfNotExist, CancellationToken cancel = default);
+    /// <returns>return false if alarm not found</returns>
+    Task<bool> DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default);
 
     /// <summary>
     /// Returns a page of alarms for the selected entity. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See the 'Model' tab of the Response Class for more details.
