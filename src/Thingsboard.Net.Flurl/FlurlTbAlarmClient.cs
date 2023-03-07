@@ -210,10 +210,22 @@ public class FlurlTbAlarmClient : FlurlTbClient<ITbAlarmClient>, ITbAlarmClient
     /// <returns></returns>
     public Task DeleteAlarmAsync(Guid alarmId, CancellationToken cancel = default)
     {
+        return DeleteAlarmAsync(alarmId, true, cancel);
+    }
+
+    /// <summary>
+    /// Deletes the Alarm. Referencing non-existing Alarm Id will cause an error.
+    /// </summary>
+    /// <param name="alarmId"></param>
+    /// <param name="throwIfNotExist">Indicate if exception should be thrown if alarm does not exist</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteAlarmAsync(Guid alarmId, bool throwIfNotExist, CancellationToken cancel = default)
+    {
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.ALARM, alarmId))
+            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbEntityNotFoundException(TbEntityType.ALARM, alarmId) : Task.CompletedTask)
             .Build();
 
         return policy.ExecuteAsync(async builder =>

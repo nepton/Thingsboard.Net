@@ -46,6 +46,16 @@ public interface ITbAssetClient : ITbClient<ITbAssetClient>
     Task DeleteAssetAsync(Guid assetId, CancellationToken cancel = default);
 
     /// <summary>
+    /// Deletes the asset and all the relations (from and to the asset). Referencing non-existing asset Id will cause an error.
+    /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+    /// </summary>
+    /// <param name="assetId"></param>
+    /// <param name="throwIfNotExist"></param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    Task DeleteAssetAsync(Guid assetId, bool throwIfNotExist, CancellationToken cancel = default);
+
+    /// <summary>
     /// Fetch the Asset Info object based on the provided Asset Id. If the user has the authority of 'Tenant Administrator', the server checks that the asset is owned by the same tenant. If the user has the authority of 'Customer User', the server checks that the asset is assigned to the same customer. Asset Info is an extension of the default Asset object that contains information about the assigned customer name.
     /// Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
     /// </summary>

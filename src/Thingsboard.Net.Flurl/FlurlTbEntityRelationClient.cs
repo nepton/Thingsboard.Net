@@ -88,6 +88,20 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// <returns></returns>
     public Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, CancellationToken cancel = default)
     {
+        return DeleteRelationAsync(from, to, relationType, true, cancel);
+    }
+
+    /// <summary>
+    /// Deletes a relation between two entities in the platform.
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="relationType"></param>
+    /// <param name="throwIfNotExist">If true, throws exception if relation does not exist. Otherwise, does nothing.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteRelationAsync(TbEntityId from, TbEntityId to, string relationType, bool throwIfNotExist, CancellationToken cancel = default)
+    {
         if (from == null) throw new ArgumentNullException(nameof(from));
         if (to == null) throw new ArgumentNullException(nameof(to));
         if (relationType == null) throw new ArgumentNullException(nameof(relationType));
@@ -95,7 +109,7 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbRelationNotFoundException())
+            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbRelationNotFoundException() : Task.CompletedTask)
             .Build();
 
         return policy.ExecuteAsync(async builder =>
@@ -147,12 +161,24 @@ public class FlurlTbEntityRelationClient : FlurlTbClient<ITbEntityRelationClient
     /// <returns></returns>
     public Task DeleteRelationsAsync(TbEntityId entityId, CancellationToken cancel = default)
     {
+        return DeleteRelationsAsync(entityId, true, cancel);
+    }
+
+    /// <summary>
+    /// Deletes all the relation (both 'from' and 'to' direction) for the specified entity.
+    /// </summary>
+    /// <param name="entityId"></param>
+    /// <param name="throwIfNotExist">If true, throws exception if relation does not exist. Otherwise, does nothing.</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteRelationsAsync(TbEntityId entityId, bool throwIfNotExist, CancellationToken cancel = default)
+    {
         if (entityId == null) throw new ArgumentNullException(nameof(entityId));
 
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbRelationNotFoundException())
+            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbRelationNotFoundException() : Task.CompletedTask)
             .Build();
 
         return policy.ExecuteAsync(async builder =>

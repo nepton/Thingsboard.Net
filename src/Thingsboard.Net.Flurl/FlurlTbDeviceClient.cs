@@ -274,10 +274,23 @@ public class FlurlTbDeviceClient : FlurlTbClient<ITbDeviceClient>, ITbDeviceClie
     /// <returns></returns>
     public Task DeleteDeviceAsync(Guid deviceId, CancellationToken cancel = default)
     {
+        return DeleteDeviceAsync(deviceId, true, cancel);
+    }
+
+    /// <summary>
+    /// Deletes the device, it's credentials and all the relations (from and to the device). Referencing non-existing device Id will cause an error.
+    /// Available for users with 'TENANT_ADMIN' authority.
+    /// </summary>
+    /// <param name="deviceId">A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'</param>
+    /// <param name="throwIfNotExist">Indicates whether to throw an exception if the device does not exist</param>
+    /// <param name="cancel"></param>
+    /// <returns></returns>
+    public Task DeleteDeviceAsync(Guid deviceId, bool throwIfNotExist, CancellationToken cancel = default)
+    {
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
             .RetryOnUnauthorized()
-            .FallbackOn(HttpStatusCode.NotFound, () => throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId))
+            .FallbackOn(HttpStatusCode.NotFound, () => throwIfNotExist ? throw new TbEntityNotFoundException(TbEntityType.DEVICE, deviceId): Task.CompletedTask)
             .Build();
 
         return policy.ExecuteAsync(async builder =>
