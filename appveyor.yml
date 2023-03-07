@@ -2,7 +2,7 @@ version: '{build}'  # This version number is used by AppVeyor to identify the bu
 
 environment:
   # This is the version of the software
-  VERSION: 3.4.26
+  VERSION: 3.4.27
   TARGET_CONFIGURATION: Release
 
 image: Visual Studio 2022
