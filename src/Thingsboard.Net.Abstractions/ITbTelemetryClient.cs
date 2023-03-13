@@ -284,7 +284,7 @@ public interface ITbTelemetryClient : ITbClient<ITbTelemetryClient>
         DateTime              startTs,
         DateTime              endTs,
         TbTimeSeriesAggregate agg,
-        long                  interval,
+        long?                 interval           = null,
         TbSortOrder?          orderBy            = null,
         bool?                 useStrictDataTypes = null,
         CancellationToken     cancel             = default);

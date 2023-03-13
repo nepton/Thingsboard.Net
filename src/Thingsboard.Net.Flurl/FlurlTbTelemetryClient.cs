@@ -491,7 +491,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
         DateTime              startTs,
         DateTime              endTs,
         TbTimeSeriesAggregate agg,
-        long                  interval,
+        long?                 interval           = null,
         TbSortOrder?          orderBy            = null,
         bool?                 useStrictDataTypes = null,
         CancellationToken     cancel             = default)
