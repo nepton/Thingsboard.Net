@@ -5,6 +5,7 @@ environment:
   VERSION: 3.4.32
   TARGET_CONFIGURATION: Release
 
+
 image: Visual Studio 2022
 
 platform: Any CPU
