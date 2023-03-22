@@ -27,7 +27,7 @@ public class DeleteEntityTimeSeriesAllTests
     {
         // Arrange
         var client  = TbTestFactory.Instance.CreateTelemetryClient();
-        var testKey = "testDeleteExistsEntityTimeSeries";
+        var testKey = "TestDeleteExistsEntityTimeSeries";
         await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new Dictionary<string, object> {{testKey, "testValue"}});
 
         // Act
@@ -38,6 +38,8 @@ public class DeleteEntityTimeSeriesAllTests
 
         // Assert
         Assert.Null(ex);
+        var keys = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
+        Assert.DoesNotContain(testKey, keys);
     }
 
     [Fact]

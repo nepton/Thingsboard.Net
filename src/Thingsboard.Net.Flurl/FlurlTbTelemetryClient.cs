@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Newtonsoft.Json;
 using Thingsboard.Net.Exceptions;
 using Thingsboard.Net.Flurl.Utilities;
 
@@ -269,6 +270,8 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     {
         if (telemetry == null) throw new ArgumentNullException(nameof(telemetry));
 
+        // Use PascalCase for JSON to keep the name of the properties
+        var telemetryJson = JsonConvert.SerializeObject(telemetry);
 
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
@@ -281,7 +284,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             await builder.CreateRequest()
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .PostJsonAsync(telemetry, cancel);
+                .PostStringAsync(telemetryJson, cancel);
         });
     }
 
@@ -305,6 +308,8 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
     {
         if (telemetry == null) throw new ArgumentNullException(nameof(telemetry));
 
+        // Use PascalCase for JSON to keep the name of the properties
+        var telemetryJson = JsonConvert.SerializeObject(telemetry);
 
         var policy = RequestBuilder.GetPolicyBuilder()
             .RetryOnHttpTimeout()
@@ -317,7 +322,7 @@ public class FlurlTbTelemetryClient : FlurlTbClient<ITbTelemetryClient>, ITbTele
             await builder.CreateRequest()
                 .AppendPathSegment($"api/plugins/telemetry/{entityType}/{entityId}/timeseries/ANY/{ttl}")
                 .WithOAuthBearerToken(await builder.GetAccessTokenAsync())
-                .PostJsonAsync(telemetry, cancel);
+                .PostStringAsync(telemetryJson, cancel);
         });
     }
 

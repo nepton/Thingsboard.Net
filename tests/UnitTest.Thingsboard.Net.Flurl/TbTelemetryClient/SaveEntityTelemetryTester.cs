@@ -25,20 +25,61 @@ public class SaveEntityTelemetryTester
     }
 
     [Fact]
-    public async Task TestSaveEntityTelemetry()
+    public async Task TestSaveEntityTelemetryByDict()
     {
         // arrange
         var client   = TbTestFactory.Instance.CreateTelemetryClient();
         var deviceId = _fixture.DeviceId;
+        var upperKey = "UpperKey"; // check UpperKey
+        var lowerKey = "lowerKey";
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {upperKey, lowerKey});
 
         // act
         var ex = await Record.ExceptionAsync(async () =>
         {
-            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE, deviceId, new Dictionary<string, string> {{"key", "value"}});
+            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
+                deviceId,
+                new Dictionary<string, string>
+                {
+                    [upperKey] = "value",
+                    [lowerKey] = "value"
+                });
         });
 
-        // act
+        // asset
         Assert.Null(ex);
+        var keys = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
+        Assert.Contains(upperKey, keys);
+        Assert.Contains(lowerKey, keys);
+    }
+
+    [Fact]
+    public async Task TestSaveEntityTelemetryByObject()
+    {
+        // arrange
+        var client   = TbTestFactory.Instance.CreateTelemetryClient();
+        var deviceId = _fixture.DeviceId;
+        var upperKey = "UpperKey"; // check UpperKey
+        var lowerKey = "lowerKey";
+        await client.DeleteEntityTimeSeriesAsync(TbEntityType.DEVICE, _fixture.DeviceId, new[] {upperKey, lowerKey});
+
+        // act
+        var ex = await Record.ExceptionAsync(async () =>
+        {
+            await client.SaveEntityTimeSeriesAsync(TbEntityType.DEVICE,
+                deviceId,
+                new
+                {
+                    UpperKey = "value",
+                    lowerKey = "value"
+                });
+        });
+
+        // asset
+        Assert.Null(ex);
+        var keys = await client.GetTimeSeriesKeysAsync(TbEntityType.DEVICE, _fixture.DeviceId);
+        Assert.Contains(upperKey, keys);
+        Assert.Contains(lowerKey, keys);
     }
 
     /// <summary>
