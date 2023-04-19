@@ -26,7 +26,7 @@ public class FlurlTbClientFactory
 
     public FlurlTbClientFactory(ThingsboardNetFlurlOptions options, ILoggerFactory loggerFactory)
     {
-        Options       = options;
+        Options = options;
         LoggerFactory = loggerFactory;
     }
 
@@ -73,4 +73,6 @@ public class FlurlTbClientFactory
     public ITbAuthClient CreateAuthClient() => new FlurlTbAuthClient(CreateRequestBuilder());
 
     public ITbDeviceProfileClient CreateDeviceProfileClient() => new FlurlTbDeviceProfileClient(CreateRequestBuilder());
+
+    public ITbAssetProfileClient CreateAssetProfileClient() => new FlurlTbAssetProfileClient(CreateRequestBuilder());
 }
