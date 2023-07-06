@@ -7,7 +7,8 @@ namespace Thingsboard.Net;
 public class TbFindEntityDataResponse
 {
     /// <summary>Initializes a new instance of the <see cref="T:System.Object"></see> class.</summary>
-    public TbFindEntityDataResponse(TbEntityId                                      entityId,
+    public TbFindEntityDataResponse(
+        TbEntityId                                                               entityId,
         ReadOnlyDictionary<string, ReadOnlyDictionary<string, TbEntityTsValue>>? latest,
         ReadOnlyDictionary<string, TbEntityTsValue[]>?                           timeseries)
     {
