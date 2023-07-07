@@ -5,11 +5,11 @@ namespace Thingsboard.Net;
 
 public class TbAlarmDataQueryResponse
 {
+    public TbEntityId Id { get; set; } = TbEntityId.Empty;
+
     public TbEntityId? EntityId { get; set; }
 
     public ReadOnlyDictionary<TbEntityFieldType, ReadOnlyDictionary<string, TbEntityTsValue>>? Latest { get; set; }
-
-    public TbEntityId? Id { get; set; }
 
     public DateTime CreatedTime { get; set; }
 
@@ -17,9 +17,9 @@ public class TbAlarmDataQueryResponse
 
     public TbEntityId? CustomerId { get; set; }
 
-    public string? Name { get; set; }
+    public string Name { get; set; } = "";
 
-    public string? Type { get; set; }
+    public string Type { get; set; } = "";
 
     public TbEntityId? Originator { get; set; }
 
@@ -31,15 +31,15 @@ public class TbAlarmDataQueryResponse
 
     public TbEntityId? AssigneeId { get; set; }
 
-    public DateTime StartTs { get; set; }
+    public DateTime? StartTs { get; set; }
 
-    public DateTime EndTs { get; set; }
+    public DateTime? EndTs { get; set; }
 
-    public DateTime AckTs { get; set; }
+    public DateTime? AckTs { get; set; }
 
-    public DateTime ClearTs { get; set; }
+    public DateTime? ClearTs { get; set; }
 
-    public DateTime AssignTs { get; set; }
+    public DateTime? AssignTs { get; set; }
 
     public object? Details { get; set; }
 
