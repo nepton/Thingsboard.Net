@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Thingsboard.Net;
@@ -41,7 +42,7 @@ public class TbAlarmDataQueryResponse
 
     public DateTime? AssignTs { get; set; }
 
-    public object? Details { get; set; }
+    public Dictionary<string, object?>? Details { get; set; }
 
     public bool Propagate { get; set; }
 
