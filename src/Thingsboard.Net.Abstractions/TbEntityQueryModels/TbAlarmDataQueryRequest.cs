@@ -1,8 +1,16 @@
+using System;
+
 namespace Thingsboard.Net;
 
 public class TbAlarmDataQueryRequest
 {
-    public TbEntityField[]? AlarmFields { get; set; }
+    /// <summary>
+    /// Which fields of the alarm to fetch. If not specified, all fields are fetched.
+    /// </summary>
+    /// <remarks>
+    /// We got 500 if we set this to null.
+    /// </remarks>
+    public TbEntityField[] AlarmFields { get; set; } = Array.Empty<TbEntityField>();
 
     public TbEntityField[]? EntityFields { get; set; }
 
