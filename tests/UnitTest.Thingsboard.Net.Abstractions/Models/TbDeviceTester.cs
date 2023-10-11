@@ -29,16 +29,16 @@ public class TbDeviceTester
         device.IsGateway = true;
         Assert.True(device.IsGateway);
         Assert.True(device.AdditionalInfo.ContainsKey("gateway"));
-        Assert.True((bool) device.AdditionalInfo["gateway"]);
+        Assert.True((bool) device.AdditionalInfo["gateway"]!);
 
         device.IsGateway = false;
         Assert.False(device.IsGateway);
         Assert.True(device.AdditionalInfo.ContainsKey("gateway"));
-        Assert.False((bool) device.AdditionalInfo["gateway"]);
+        Assert.False((bool) device.AdditionalInfo["gateway"]!);
 
         device.IsGateway = true;
         Assert.True(device.IsGateway);
         Assert.True(device.AdditionalInfo.ContainsKey("gateway"));
-        Assert.True((bool) device.AdditionalInfo["gateway"]);
+        Assert.True((bool) device.AdditionalInfo["gateway"]!);
     }
 }

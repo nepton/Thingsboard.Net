@@ -170,7 +170,7 @@ public class FlurlRequestBuilder : IRequestBuilder
 
     private async Task LogCalledAsync(FlurlCall call)
     {
-        var level = call.Completed ? call.Response.StatusCode >= 400 ? LogLevel.Warning : LogLevel.Information : LogLevel.Error;
+        var level = call.Completed ? call.Response.StatusCode >= 400 ? LogLevel.Warning : LogLevel.Debug : LogLevel.Error;
 
         if (!_logger.IsEnabled(level))
             return;

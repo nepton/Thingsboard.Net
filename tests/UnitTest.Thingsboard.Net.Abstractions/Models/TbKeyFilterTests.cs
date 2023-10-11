@@ -23,7 +23,7 @@ public class TbKeyFilterTests
 
         // assert
         Assert.NotNull(filter);
-        Assert.Equal(TbKeyFilterBooleanOperation.EQUAL, filter.Operation);
+        Assert.Equal(TbKeyFilterBooleanOperation.EQUAL, filter!.Operation);
         Assert.NotNull(filter.Value);
         Assert.Equal(true, filter.Value.DefaultValue);
     }

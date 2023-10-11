@@ -12,33 +12,33 @@ public class TbRelationQueryFilterTests
     {
         // Arrange
         var json = """
-        {
-            "type": "relationsQuery",
-            "rootEntity": {
-              "entityType": "DEVICE",
-              "id": "848aba50-a1ff-11ed-9135-d3a6ac6c1c62"
-            },
-            "direction": "TO",
-            "maxLevel": 100,
-            "fetchLastLevelOnly": false,
-            "filters": [
-              {
-                "relationType": "Contains",
-                "entityTypes": [
-                  "DEVICE",
-                  "ASSET"
-                ]
-              }
-            ]
-          }
-        """;
+                   {
+                       "type": "relationsQuery",
+                       "rootEntity": {
+                         "entityType": "DEVICE",
+                         "id": "848aba50-a1ff-11ed-9135-d3a6ac6c1c62"
+                       },
+                       "direction": "TO",
+                       "maxLevel": 100,
+                       "fetchLastLevelOnly": false,
+                       "filters": [
+                         {
+                           "relationType": "Contains",
+                           "entityTypes": [
+                             "DEVICE",
+                             "ASSET"
+                           ]
+                         }
+                       ]
+                     }
+                   """;
 
         // Act
         var result = JsonConvert.DeserializeObject<TbRelationsQueryFilter>(json);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("relationsQuery",                                   result.Type);
+        Assert.Equal("relationsQuery",                                   result!.Type);
         Assert.Equal(TbEntityType.DEVICE,                                result.RootEntity.EntityType);
         Assert.Equal(Guid.Parse("848aba50-a1ff-11ed-9135-d3a6ac6c1c62"), result.RootEntity.Id);
         Assert.Equal(TbRelationDirection.TO,                             result.Direction);
