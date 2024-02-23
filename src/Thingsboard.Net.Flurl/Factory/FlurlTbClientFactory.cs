@@ -62,6 +62,8 @@ public class FlurlTbClientFactory
 
     public ITbEntityQueryClient CreateEntityQueryClient() => new FlurlTbEntityQueryClient(CreateRequestBuilder());
 
+    public ITbEntityRelationClient CreateEntityRelationClient() => new FlurlTbEntityRelationClient(CreateRequestBuilder());
+
     public ITbLoginClient CreateLoginClient() => new FlurlTbLoginClient(CreateRequestBuilder());
 
     public ITbQueueClient CreateQueueClient() => new FlurlTbQueueClient(CreateRequestBuilder());
